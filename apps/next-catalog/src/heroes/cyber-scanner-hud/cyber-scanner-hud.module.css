@@ -142,7 +142,7 @@
   font-size: 0.58rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  padding-top: 2.1rem;
+  padding-top: 2.4rem; /* clears the 2.9rem host chrome band */
 }
 
 .tag {

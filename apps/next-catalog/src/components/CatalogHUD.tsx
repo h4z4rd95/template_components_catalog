@@ -41,7 +41,12 @@ export default function CatalogHUD({ variation, defaultOpen = true }: CatalogHUD
     try {
       const stored = window.localStorage.getItem(STORAGE_KEY);
       if (stored === "1") setOpen(false);
-      if (stored === "0") setOpen(true);
+      else if (stored === "0") setOpen(true);
+      else {
+        // No stored preference: a 480px-wide panel would eat most of a phone (or a small laptop
+        // window) in a catalogue where the artwork *is* the content, so start collapsed there.
+        if (window.innerWidth < 900 || window.innerHeight < 720) setOpen(false);
+      }
     } catch {
       /* private mode — default state is fine */
     }

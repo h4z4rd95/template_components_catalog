@@ -93,7 +93,7 @@ function ParticleCloud({ state, profile }: { state: SceneState; profile: DeviceP
           uColorA: { value: new THREE.Color("#12236b") },
           uColorB: { value: new THREE.Color("#5b8cff") },
           uColorC: { value: new THREE.Color("#cdf4ff") },
-          uOpacity: { value: 0.92 },
+          uOpacity: { value: 0.62 },
           uFade: { value: profile.reducedMotion ? 1 : 0 },
           uRipple: { value: new THREE.Vector3(0, 0, 0) },
           uRippleTime: { value: 10 },
@@ -242,7 +242,7 @@ export default function ParticleScene({ state, profile }: { state: SceneState; p
       onCreated={({ gl }) => {
         gl.setClearColor(0x000000, 0);
         gl.toneMapping = THREE.ACESFilmicToneMapping;
-        gl.toneMappingExposure = 1.15;
+        gl.toneMappingExposure = 0.92;
       }}
     >
       <PerformanceMonitor

@@ -18,6 +18,8 @@
   position: fixed;
   inset: 0;
   z-index: 0;
+  /* The grain overlay is inset -10% by design; clip it here so it can never widen the layout. */
+  overflow: clip;
   pointer-events: none;
 }
 

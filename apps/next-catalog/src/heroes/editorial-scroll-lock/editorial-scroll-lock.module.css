@@ -91,6 +91,7 @@
 /* ------------------------------------------------------------------ image grid */
 
 .grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-column: 4 / -1;
   grid-row: 2;
   align-self: center;
@@ -105,6 +106,8 @@
 
 .cell {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
   gap: 0.7rem;
 }
 
@@ -154,7 +157,9 @@
 
 .caption {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.18rem;
+  overflow-wrap: anywhere;
   font-family: var(--font-mono);
   font-size: 0.55rem;
   letter-spacing: 0.16em;
@@ -168,6 +173,7 @@
 }
 
 .capTitle {
+  overflow-wrap: anywhere;
   font-family: var(--font-sans);
   font-size: 0.72rem;
   letter-spacing: 0.02em;

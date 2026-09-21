@@ -62,6 +62,7 @@ export default function KineticBrutalGrid() {
   const asideRef = useRef<HTMLDivElement | null>(null);
   const ctaRef = useRef<HTMLDivElement | null>(null);
   const tapeSectionRef = useRef<HTMLElement | null>(null);
+  const tapeInnerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const headline = headlineRef.current;
@@ -177,7 +178,7 @@ export default function KineticBrutalGrid() {
           once: true,
         });
 
-        gsap.from(tapeSectionRef.current, {
+        gsap.from(tapeInnerRef.current, {
           rotate: 1.2,
           ease: "none",
           scrollTrigger: {
@@ -326,6 +327,7 @@ export default function KineticBrutalGrid() {
       </section>
 
       <section ref={tapeSectionRef} className={styles.tapeSection} id="capabilities" aria-label="Capabilities">
+        <div className={styles.tapeInner} ref={tapeInnerRef}>
         <div className={styles.tapeHead}>
           <h2 className={styles.tapeTitle}>
             Structure first.
@@ -348,10 +350,11 @@ export default function KineticBrutalGrid() {
           ))}
         </ul>
 
-        <footer className={styles.foot}>
-          <span>© {new Date().getFullYear()} Studio Härt</span>
-          <span className={styles.footMeta}>Hero_V01_KineticBrutalGrid — GSAP timeline · ScrollTrigger · Observer</span>
-        </footer>
+          <footer className={styles.foot}>
+            <span>© {new Date().getFullYear()} Studio Härt</span>
+            <span className={styles.footMeta}>Hero_V01_KineticBrutalGrid — GSAP timeline · ScrollTrigger · Observer</span>
+          </footer>
+        </div>
       </section>
     </>
   );

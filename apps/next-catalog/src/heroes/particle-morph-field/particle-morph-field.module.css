@@ -204,7 +204,8 @@
 
 .telemetry {
   position: fixed;
-  top: clamp(3.2rem, 8vh, 4.6rem);
+  /* below the host chrome band (2.9rem) plus breathing room */
+  top: clamp(3.6rem, 8vh, 4.8rem);
   right: var(--gutter);
   z-index: 4;
   width: min(15rem, 42vw);
@@ -358,6 +359,9 @@
   position: fixed;
   inset: 0;
   z-index: 8000;
+  /* Rings translate to the pointer; paint containment stops them from ever contributing to the
+     document's scroll width. */
+  contain: paint;
   pointer-events: none;
   opacity: 0;
   transition: opacity 260ms linear;

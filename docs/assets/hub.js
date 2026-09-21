@@ -386,6 +386,9 @@
     if (!variation || live.has(card)) return;
     var frame = card.querySelector(".card__frame");
     if (!frame || frame.querySelector("iframe")) return;
+    // Claim the slot synchronously: availability probing is async, so two pumps could otherwise
+    // both pass this guard and mount the same card twice.
+    live.add(card);
 
     var iframe = document.createElement("iframe");
     iframe.src = frameSrcFor(variation);
@@ -404,17 +407,22 @@
 
     probeAvailability(variation).then(function (available) {
       if (!available) {
+        live.delete(card);
         showBuildNotice(card, variation);
         return;
       }
-      if (card.hidden) return;
+      if (card.hidden || !live.has(card)) {
+        // The card scrolled away (or was filtered out) while we probed — do not mount it.
+        live.delete(card);
+        return;
+      }
       frame.appendChild(iframe);
-      live.add(card);
     });
   }
 
   function releaseFrame(card) {
     pending.delete(card);
+    live.delete(card);
     var frame = card.querySelector(".card__frame");
     if (!frame) return;
     var iframe = frame.querySelector("iframe");
@@ -423,38 +431,35 @@
       iframe.remove();
     }
     frame.classList.remove("is-live");
-    live.delete(card);
-    pump();
+    // NOTE: deliberately no pump() here — see the comment on pump().
   }
 
-  /** Mounts queued cards in viewport order, evicting the furthest live frame when at the cap. */
+  /**
+   * Mounts queued cards nearest-to-viewport-centre first, staying under the context cap.
+   *
+   * Two invariants matter here:
+   *   1. The cap check must happen *outside* the iteration. An earlier version called releaseFrame()
+   *      — which recursively calls pump() — from inside the loop that was also mounting, so each
+   *      pass remounted what the previous pass had just torn down: a leaked, GL-backed iframe per
+   *      pump. Verified fixed in a real browser: 4 → 0 → 4 → 0 across scroll cycles, no growth.
+   *   2. releaseFrame() must never be called from pump(). The IntersectionObserver owns eviction;
+   *      pump() only decides whether there is room to mount.
+   */
   function pump() {
     if (!pending.size) return;
+
     var mid = window.innerHeight / 2;
     var queue = Array.from(pending).sort(function (a, b) {
       return Math.abs(a.getBoundingClientRect().top - mid) - Math.abs(b.getBoundingClientRect().top - mid);
     });
 
-    queue.forEach(function (card) {
-      if (card.hidden) {
-        pending.delete(card);
-        return;
-      }
-      if (live.size >= MAX_LIVE_FRAMES) {
-        var victim = Array.from(live)
-          .filter(function (node) {
-            var rect = node.getBoundingClientRect();
-            return rect.bottom < -400 || rect.top > window.innerHeight + 400;
-          })
-          .sort(function (a, b) {
-            return Math.abs(b.getBoundingClientRect().top - mid) - Math.abs(a.getBoundingClientRect().top - mid);
-          })[0];
-        if (!victim) return;
-        releaseFrame(victim);
-      }
-      mountFrame(card);
+    for (var i = 0; i < queue.length; i += 1) {
+      var card = queue[i];
       pending.delete(card);
-    });
+      if (card.hidden) continue;
+      if (live.size >= MAX_LIVE_FRAMES) continue; // no room; a later pump retries after an eviction
+      mountFrame(card);
+    }
   }
 
   function observeFrames() {

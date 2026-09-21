@@ -212,8 +212,10 @@ export default function ParticleMorphField() {
           <span aria-hidden="true">/</span> GPU morph
         </p>
 
+        {/* The trailing space keeps the accessible text a real sentence: without it the DOM
+            string concatenates across the <br> into "a rumour" → "arumour". */}
         <h1 className={styles.title}>
-          Every form is a
+          Every form is a{" "}
           <br />
           <em>rumour</em> of the next.
         </h1>

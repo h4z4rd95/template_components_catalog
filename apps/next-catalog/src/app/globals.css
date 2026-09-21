@@ -54,6 +54,18 @@
   color-scheme: dark;
 }
 
+/**
+ * `hidden` must win.
+ *
+ * The UA stylesheet ships `[hidden] { display: none }` at user-agent priority, so a single author
+ * declaration — `.stage { display: grid }` for the hub overlay, `.body { display: grid }` for the
+ * variation HUD — silently defeats it and the element JavaScript believes is hidden stays painted.
+ * Found by real-browser screenshot verification; jsdom has no layout engine and cannot see it.
+ */
+[hidden] {
+  display: none !important;
+}
+
 *,
 *::before,
 *::after {

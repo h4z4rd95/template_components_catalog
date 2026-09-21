@@ -153,7 +153,7 @@ export default function LiquidChromaGlass() {
         <motion.div className={styles.heroInner} style={{ y: heroY }}>
           <p className={styles.eyebrow}>chroma systems · colour engine v3</p>
           <h1 className={styles.title}>
-            Colour,
+            Colour,{" "}
             <br />
             <em>alive.</em>
           </h1>

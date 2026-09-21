@@ -112,8 +112,10 @@ void main() {
   float d = length(centred);
   if (d > 0.5) discard;
 
-  float core = smoothstep(0.5, 0.03, d);
-  float halo = smoothstep(0.5, 0.16, d) * 0.55;
+  // Under additive blending a generous halo saturates to white and the palette disappears;
+  // a tight core with a restrained halo keeps hue while still reading as a glowing field.
+  float core = smoothstep(0.5, 0.04, d);
+  float halo = smoothstep(0.5, 0.22, d) * 0.28;
 
   // vertical + seed colour ramp: warm rim on the outer shell, cool core inside
   vec3 col = mix(uColorA, uColorB, smoothstep(0.0, 1.0, vGlow));
