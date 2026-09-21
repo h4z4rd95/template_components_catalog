@@ -1,0 +1,33 @@
+{
+  "name": "template-components-catalog",
+  "private": true,
+  "version": "1.0.0",
+  "description": "The Catalog — an Awwwards-grade, live, scrollable showroom of components across Next.js, Nuxt and vanilla stacks.",
+  "type": "module",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "catalog:sync": "node scripts/sync-catalog.mjs",
+    "catalog:watch": "node --watch-path=catalog scripts/sync-catalog.mjs",
+    "dev": "npm run catalog:sync && npm --workspace @catalog/next run dev",
+    "dev:next": "npm --workspace @catalog/next run dev",
+    "build": "node scripts/build-all.mjs",
+    "build:next": "npm --workspace @catalog/next run build",
+    "build:nuxt": "npm --workspace @catalog/nuxt run build",
+    "preview": "node scripts/serve.mjs",
+    "check:styles": "node scripts/check-styles.mjs",
+    "test:hub": "node scripts/smoke-hub.mjs",
+    "typecheck": "npm --workspace @catalog/next run typecheck",
+    "test": "npm run catalog:sync && npm run check:styles && npm run typecheck && npm run test:hub",
+    "clean": "node -e \"const{rmSync}=require('fs');['apps/next-catalog/.next','apps/next-catalog/out','apps/nuxt-catalog/.nuxt','apps/nuxt-catalog/.output','docs/framework'].forEach(p=>rmSync(p,{recursive:true,force:true}));console.log('cleaned')\""
+  },
+  "devDependencies": {
+    "jsdom": "^27.4.0",
+    "typescript": "^5.9.0"
+  }
+}

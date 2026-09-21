@@ -1,0 +1,377 @@
+/* Hero_V01_KineticBrutalGrid — raw paper, hard ink, one acid accent. No soft edges. */
+
+.hero,
+.tapeSection {
+  --paper: #f1ede3;
+  --ink: #0b0b0c;
+  --accent: #ff3b1f;
+  --acid: #e7ff3d;
+  --hair: rgba(11, 11, 12, 0.16);
+}
+
+/* ------------------------------------------------------------------ hero */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.6rem, 1.5vw, 1.4rem);
+  padding: 1.1rem var(--gutter) 0;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.railItem {
+  white-space: nowrap;
+}
+
+.rule {
+  flex: 1;
+  height: 2px;
+  background: var(--ink);
+  min-width: 1.5rem;
+}
+
+.board {
+  display: grid;
+  align-items: center;
+  padding: clamp(1.5rem, 5vh, 4rem) var(--gutter);
+  will-change: transform;
+}
+
+.boardGrid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2.5rem);
+  align-items: end;
+  width: 100%;
+}
+
+.glyph {
+  will-change: transform, opacity;
+}
+
+.headline {
+  grid-column: 1 / span 8;
+  font-family: var(--font-display);
+  font-size: clamp(3.4rem, 13.5vw, 13rem);
+  line-height: 0.78;
+  letter-spacing: -0.045em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0;
+  padding-bottom: 0.06em;
+  overflow: hidden;
+}
+
+/* the split engine's leaves — hairline tiles.
+   `.glyph` is the class handed to splitText() from the component, so CSS Modules keeps
+   the binding scoped (no global selector leakage). */
+.glyph {
+  position: relative;
+  padding-inline: 0.012em;
+  border-right: 1px solid var(--hair);
+  transition: background-color 140ms linear, color 140ms linear, transform 140ms var(--ease-snap);
+}
+.headline :global(.split-unit:hover) {
+  background: var(--ink);
+  color: var(--paper);
+  transform: translateY(-0.06em);
+}
+.glyph::selection {
+  background: var(--accent);
+  color: var(--paper);
+}
+
+.aside {
+  grid-column: 9 / span 4;
+  display: grid;
+  gap: 1.4rem;
+  align-content: end;
+  padding-bottom: 0.4rem;
+}
+
+.asideLead {
+  font-size: var(--step-1);
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: rgba(11, 11, 12, 0.86);
+  max-width: 34ch;
+  border-left: 3px solid var(--accent);
+  padding-left: 1rem;
+}
+
+.spec {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--hair);
+}
+
+.specRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--hair);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.specLabel {
+  color: rgba(11, 11, 12, 0.55);
+}
+
+.specValueWrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.15rem;
+}
+
+.specValue {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.specUnit {
+  font-size: 0.55rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.ctaPrimary,
+.ctaGhost {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 0.85rem 1.15rem;
+  border: 2px solid var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: background-color 200ms var(--ease-snap), color 200ms var(--ease-snap),
+    box-shadow 200ms var(--ease-snap), transform 200ms var(--ease-snap);
+  will-change: transform;
+}
+
+.ctaPrimary {
+  background: var(--ink);
+  color: var(--paper);
+}
+.ctaPrimary:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--paper);
+  box-shadow: 6px 6px 0 var(--ink);
+  transform: translate(-3px, -3px);
+}
+
+.ctaGhost:hover {
+  background: var(--acid);
+  box-shadow: 6px 6px 0 var(--ink);
+  transform: translate(-3px, -3px);
+}
+
+/* ------------------------------------------------------------------ marquee */
+
+.marquee {
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+  padding: 0.5rem 0;
+}
+
+.tape {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.tapeGroup {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.tapeItem {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.6vw, 2.1rem);
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  padding: 0 clamp(0.6rem, 1.4vw, 1.4rem);
+  white-space: nowrap;
+}
+.tapeItem[data-alt="true"] {
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------------ section */
+
+.tapeSection {
+  position: relative;
+  background: var(--paper);
+  color: var(--ink);
+  padding: clamp(3.5rem, 10vh, 8rem) var(--gutter) clamp(2rem, 6vh, 4rem);
+  border-top: 3px solid var(--ink);
+  overflow: hidden;
+}
+
+.tapeHead {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2.5rem);
+  align-items: end;
+  margin-bottom: clamp(2.5rem, 7vh, 5rem);
+}
+
+.tapeTitle {
+  grid-column: 1 / span 7;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 5rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.tapeLede {
+  grid-column: 9 / span 4;
+  font-size: var(--step-0);
+  line-height: 1.5;
+  color: rgba(11, 11, 12, 0.68);
+  border-top: 1px solid var(--hair);
+  padding-top: 1rem;
+}
+
+.capabilities {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  border-top: 1px solid var(--hair);
+}
+
+.capability {
+  padding: 1.6rem 1.4rem 1.9rem 0;
+  border-bottom: 1px solid var(--hair);
+  border-right: 1px solid var(--hair);
+  padding-left: 1.1rem;
+  transition: background-color var(--dur-base) var(--ease-editorial);
+}
+.capability:hover {
+  background: rgba(11, 11, 12, 0.035);
+}
+
+.capNum {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.24em;
+  color: var(--accent);
+}
+
+.capTitle {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--step-2);
+  letter-spacing: -0.03em;
+  margin: 0.7rem 0 0.6rem;
+  line-height: 1.02;
+}
+
+.capNote {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: rgba(11, 11, 12, 0.62);
+  max-width: 30ch;
+}
+
+.foot {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(11, 11, 12, 0.5);
+}
+
+.footMeta {
+  text-align: right;
+}
+
+/* ------------------------------------------------------------------ responsive */
+
+@media (max-width: 1100px) {
+  .headline {
+    grid-column: 1 / span 12;
+  }
+  .aside {
+    grid-column: 1 / span 12;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    align-items: start;
+  }
+  .asideLead {
+    grid-column: span 2;
+  }
+  .tapeTitle {
+    grid-column: 1 / span 12;
+  }
+  .tapeLede {
+    grid-column: 1 / span 12;
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    font-size: 0.5rem;
+    letter-spacing: 0.16em;
+    padding-top: 0.85rem;
+  }
+  .rule {
+    height: 1px;
+  }
+  .headline {
+    font-size: clamp(3rem, 21vw, 6rem);
+    line-height: 0.82;
+  }
+  .board {
+    padding-top: 1.5rem;
+  }
+  .footMeta {
+    text-align: left;
+  }
+  .capability {
+    padding-right: 1.1rem;
+    border-right: 0;
+  }
+}

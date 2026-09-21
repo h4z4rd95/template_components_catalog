@@ -1,0 +1,35 @@
+# deps & build output
+node_modules/
+.npm/
+.npmrc.local
+
+# framework build output (CI regenerates these into docs/ at deploy time)
+.next/
+.nuxt/
+.output/
+out/
+dist/
+build/
+.turbo/
+.vite/
+
+# generated framework exports inside the Pages root — artifacts, never source
+docs/framework/
+
+# caches & logs
+.cache/
+*.log
+coverage/
+.DS_Store
+.pytest_cache/
+.ruff_cache/
+__pycache__/
+
+# typescript build info
+*.tsbuildinfo
+next-env.d.ts.bak
+
+# env
+.env
+.env.local
+.env.*.local

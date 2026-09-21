@@ -1,0 +1,292 @@
+/* CatalogHUD — glass metadata panel. Fixed bottom-left on desktop, bottom sheet on mobile. */
+
+.hud {
+  --hud-accent: #ff4fd8;
+  position: fixed;
+  z-index: var(--z-hud);
+  left: clamp(0.75rem, 0.2rem + 1.6vw, 1.75rem);
+  bottom: clamp(0.75rem, 0.2rem + 1.6vw, 1.75rem);
+  width: min(30rem, calc(100vw - 1.5rem));
+  font-family: var(--font-mono);
+  color: #fff;
+  border: 1px solid color-mix(in oklab, var(--hud-accent) 45%, transparent);
+  background: linear-gradient(
+    170deg,
+    color-mix(in oklab, #0b0b10 88%, var(--hud-accent) 12%),
+    rgba(6, 6, 9, 0.92)
+  );
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow:
+    0 1px 0 color-mix(in oklab, var(--hud-accent) 30%, transparent) inset,
+    0 24px 70px -28px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.03);
+  transition: transform var(--dur-base) var(--ease-editorial), opacity var(--dur-base) var(--ease-editorial);
+}
+
+/* corner ticks — the "instrumentation" flourish */
+.hud::before,
+.hud::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--hud-accent);
+  opacity: 0.9;
+  pointer-events: none;
+}
+.hud::before {
+  top: -1px;
+  left: -1px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.hud::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: 0;
+  border-top: 0;
+}
+
+.collapsed {
+  width: auto;
+  max-width: calc(100vw - 1.5rem);
+  background: rgba(6, 6, 9, 0.82);
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.collapsed .tab {
+  border-bottom: 0;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--hud-accent);
+  box-shadow: 0 0 12px var(--hud-accent);
+  animation: hudPulse 2.6s ease-in-out infinite;
+}
+
+@keyframes hudPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.8);
+  }
+}
+
+.tabId {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--hud-accent) 70%, #fff 30%);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tabToggle {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0.25rem 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+  white-space: nowrap;
+}
+.tabToggle:hover {
+  color: #fff;
+  border-color: var(--hud-accent);
+  background: color-mix(in oklab, var(--hud-accent) 16%, transparent);
+}
+
+.body {
+  padding: 0.85rem 0.9rem 0.95rem;
+  display: grid;
+  gap: 0.65rem;
+  max-height: min(60vh, 30rem);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.56rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.badge {
+  padding: 0.2rem 0.4rem;
+  background: var(--hud-accent);
+  color: #05050a;
+  font-weight: 700;
+}
+
+.discipline {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.status {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+.status::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status[data-status="stable"] {
+  color: #6ef0b0;
+}
+.status[data-status="beta"] {
+  color: #ffd166;
+}
+.status[data-status="planned"] {
+  color: #9a9aa8;
+}
+
+.id {
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 0.7rem + 0.5vw, 0.95rem);
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  color: #fff;
+  word-break: break-word;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.62);
+  margin-top: -0.4rem;
+}
+
+.meta {
+  display: grid;
+  gap: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.6rem;
+}
+
+.metaRow {
+  display: grid;
+  grid-template-columns: 5.6rem 1fr;
+  gap: 0.55rem;
+  align-items: start;
+}
+
+.meta dt {
+  font-size: 0.54rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.38);
+  padding-top: 0.15rem;
+}
+
+.meta dd {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.chip {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  padding: 0.16rem 0.4rem;
+  color: color-mix(in oklab, var(--hud-accent) 55%, #fff 45%);
+  border: 1px solid color-mix(in oklab, var(--hud-accent) 32%, transparent);
+  background: color-mix(in oklab, var(--hud-accent) 8%, transparent);
+  white-space: nowrap;
+}
+
+.vibe {
+  color: #fff !important;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.68rem !important;
+}
+
+.note {
+  color: rgba(255, 255, 255, 0.74) !important;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.6rem;
+}
+
+.action {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.34rem 0.55rem;
+  color: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.02);
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease, transform 150ms ease;
+}
+.action:hover {
+  color: #05050a;
+  background: var(--hud-accent);
+  border-color: var(--hud-accent);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .hud {
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    width: auto;
+  }
+  .metaRow {
+    grid-template-columns: 4.6rem 1fr;
+  }
+  .body {
+    max-height: 46vh;
+  }
+}
+
+/* Respect the OS setting: keep the panel, drop the pulse. */
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
+}
