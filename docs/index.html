@@ -51,6 +51,7 @@
           <span class="sep" aria-hidden="true">·</span>
           <span id="stat-stacks" class="counter">—</span> stacks
         </span>
+        <a class="masthead__cta" href="vision/index.html">Vision reel ↗</a>
         <a class="masthead__cta" href="#how">How to run it</a>
       </nav>
 
@@ -122,6 +123,20 @@
 
     <!-- ============================================================ how-to -->
     <section class="how" id="how" aria-label="How to run and extend the catalog">
+      <div class="how__col">
+        <h2>See it verified</h2>
+        <pre><code>npm run setup:browser   # Chromium from npm
+npm run verify:browser  # audit + capture
+#  → docs/vision/index.html</code></pre>
+        <p>
+          The <a href="vision/index.html" style="color: var(--accent-3)">vision reel</a> is a real
+          browser, driven through each variation's signature interaction — pointer arcs, scroll
+          trajectories, clicks — with the audit results printed beside every capture. It is where the
+          bugs that jsdom cannot see (a `display` rule defeating `hidden`, `<br>` breaking screen-reader
+          text) were found.
+        </p>
+      </div>
+
       <div class="how__col">
         <h2>Run it locally</h2>
         <pre><code>npm install

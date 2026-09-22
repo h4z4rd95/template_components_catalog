@@ -24,10 +24,17 @@
     "test:hub": "node scripts/smoke-hub.mjs",
     "typecheck": "npm --workspace @catalog/next run typecheck",
     "test": "npm run catalog:sync && npm run check:styles && npm run typecheck && npm run test:hub",
-    "clean": "node -e \"const{rmSync}=require('fs');['apps/next-catalog/.next','apps/next-catalog/out','apps/nuxt-catalog/.nuxt','apps/nuxt-catalog/.output','docs/framework'].forEach(p=>rmSync(p,{recursive:true,force:true}));console.log('cleaned')\""
+    "clean": "node -e \"const{rmSync}=require('fs');['apps/next-catalog/.next','apps/next-catalog/out','apps/nuxt-catalog/.nuxt','apps/nuxt-catalog/.output','docs/framework'].forEach(p=>rmSync(p,{recursive:true,force:true}));console.log('cleaned')\"",
+    "setup:browser": "node scripts/setup-browser.mjs",
+    "verify:browser": "node scripts/vision.mjs",
+    "verify:browser:audit": "node scripts/vision.mjs --audit"
   },
   "devDependencies": {
+    "@sparticuz/chromium": "^153.0.0",
+    "gifenc": "^1.0.3",
+    "jpeg-js": "^0.4.4",
     "jsdom": "^27.4.0",
+    "puppeteer-core": "^25.11.0",
     "typescript": "^5.9.0"
   }
 }

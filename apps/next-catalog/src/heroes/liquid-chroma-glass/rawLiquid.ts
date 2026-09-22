@@ -107,7 +107,11 @@ export function createLiquid(
       throw new Error(`program link error: ${gl.getProgramInfoLog(program)}`);
     }
   } catch (error) {
-    console.warn("[liquid-chroma-glass] falling back to CSS gradient:", error);
+    // Deliberately quiet: an unavailable GPU is an expected environment, not an application fault,
+    // and the CSS mesh-gradient fallback is a designed state (see LiquidChromaGlass), not an error.
+    if (process.env.NODE_ENV === "development") {
+      console.info("[liquid-chroma-glass] using the CSS gradient fallback:", error);
+    }
     return { destroy: () => {}, setPointer: () => {}, setProgress: () => {}, pulse: () => {}, ok: false };
   }
 

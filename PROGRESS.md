@@ -138,3 +138,93 @@ thing not machine-verified here is painted pixels: run `npm run preview` and scr
 
 **NEXT:** user says “Continue” → Batch 2 (Nuxt 4 + TresJS + vanilla WebGL heroes). See `PLAN.md`
 § Current Focus, which also carries ten hard-won gotchas to read before touching the code again.
+
+---
+
+## [2026-09-22 12:58 UTC] · INCIDENT + RECOVERY — the sandbox died mid-capture
+
+**What happened.** A full vision capture (real Chromium screencasting all six targets) was started as a
+*foreground* command. It exceeded the 30-minute tool ceiling on the retry, and the sandbox itself went
+down hard — every tool call, including plain file reads, failed with "Sandbox is probably not running
+anymore". The turn ended mid-flight.
+
+**What was lost.**
+- `node_modules/` (never snapshotted, by design) — reinstalled in 14s.
+- `docs/framework/` (a build artifact, git-ignored) — rebuilt.
+- `scripts/vision.mjs` and `docs/vision/*` — the untracked new files.
+
+**What was recovered.** Everything else, and losslessly. The platform had auto-committed the turn's work
+as `5fa42db "Fix 13 defects found by real-browser screenshot verification"` and pushed it to
+`origin/arena/01a0c55d-template-components-catalog` — including all 13 browser-found fixes, because they
+touched already-tracked files. The local clone had been reset to `b9924f0`, so the fix was:
+
+```bash
+git fetch origin arena/01a0c55d-template-components-catalog
+git reset --hard FETCH_HEAD     # 5fa42db — all 13 fixes back
+```
+
+**Lesson encoded in the repo (not just in this log):**
+1. **Long jobs run detached.** A 20-minute software-rasterized capture now runs via the process tools as
+   a background process, never in a foreground command. The harness also writes
+   `docs/vision/report.partial.json` after *every* target, so a mid-flight death keeps the finished work.
+2. **Browser provisioning is a script, not a shell history.** `npm run setup:browser` (new) installs
+   `@sparticuz/chromium` from npm (the only browser source reachable when CDNs and apt are blocked),
+   inflates its brotli archives into `.cache/catalog-browser/` (git-ignored, snapshot-excluded), and
+   smoke-tests the binary. Re-runnable from zero in ~8 seconds.
+3. **Verification is a first-class npm script.** `npm run verify:browser` (audit + vision capture),
+   `npm run verify:browser:audit` (fast, no media), `-- --only <key>` for one target.
+
+**The 13 defects that only a real browser could find** (all in `5fa42db`, all re-verified since):
+two critical (`[hidden]` silently defeated by an author `display` rule; a self-recursive `pump()` leaking
+GPU-backed iframes), five layout (host chrome blending into variation headers; `max-content` grid columns
+overflowing the viewport; a rotated section widening scroll width; a clipped mobile label; uncontained
+decorative layers), two accessibility (`<br>` concatenation producing "arumour" and "Colour,alive." for
+screen readers), two visual (additive shader blowing out to white; HUD swallowing small viewports), and
+one in the harness itself (a TDZ crash that silently voided half the audit report).
+
+**NEXT:** vision capture completes → inspect every frame myself → commit → **Batch 2** (Nuxt 4 + TresJS +
+vanilla WebGL heroes). See `PLAN.md` § Current Focus.
+
+---
+
+## [2026-09-22 13:30 UTC] · Verification — WebGL restored (the libraries must sit beside the binary)
+
+**Symptom.** After the sandbox restart every shader variation failed its audit with
+`THREE.WebGLRenderer: A WebGL context could not be created … ErrorMessage = BindToCurrentSequence failed`,
+and ANGLE logged `Internal Vulkan error (-3) … eglInitialize SwANGLE failed`. The same binaries had
+rendered `ANGLE (… Vulkan 1.3.0 (SwiftShader Device (Subzero)))` earlier in the session, so the shaders
+were never the suspect.
+
+**Every hypothesis was measured, not guessed** (recorded so none of it is ever re-run):
+
+| Hypothesis | Test | Verdict |
+| --- | --- | --- |
+| SwiftShader's Vulkan is broken here | `vkCreateInstance` + `vkEnumeratePhysicalDevices` via `ctypes` | **fine** — instance created, 1 physical device |
+| JIT / executable memory blocked | `mmap(PROT_EXEC)`, `memfd_create` | **fine** |
+| `vk_swiftshader_icd.json` never extracted (the extractor kept only `*.so`) | kept every archive member | necessary, **not** sufficient |
+| The ICD's *relative* `library_path` resolves against the wrong directory | rewrote the manifest absolute | still failed |
+| Environment never reaches the GPU process | `--gpu-launcher` wrapper + `VK_LOADER_DEBUG=all` | **no loader output at all** ⇒ the GPU process does not inherit `LD_LIBRARY_PATH` |
+| Wrong ANGLE backend switch | 9 flag combinations | `--use-angle=swiftshader` fails; **`--use-angle=vulkan --enable-features=Vulkan,VulkanFromANGLE` works — once the libraries are beside the binary** |
+
+**Root cause.** Chrome `dlopen`s its graphics libraries lazily and the GPU process does not inherit the
+browser's environment. A Chromium provisioned with the SwiftShader/ANGLE libraries *only* in `lib/`
+launches perfectly, answers `--version`, and then refuses **every** WebGL context with an opaque ANGLE
+error. The libraries must be discoverable **relative to the executable**.
+
+**Fix — both halves, verified from a wiped cache:**
+1. `scripts/setup-browser.mjs` hardlinks every archived library **beside the Chromium binary** (copy as a
+   fallback), rewrites the Vulkan ICD manifest with an absolute `library_path`, and closes by
+   **probing real WebGL**, so provisioning proves graphics instead of deferring the discovery to a
+   20-minute capture. From zero it now reports:
+   `graphics  WebGL 2.0 (OpenGL ES 3.0 Chromium) — ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)…`.
+2. `scripts/vision.mjs` stopped hard-coding one backend: it negotiates **two GPU profiles** (`swangle`,
+   then `vulkan-swiftshader`), keeps the first that grants a context, logs the winner to
+   `report.json` as `gpuProfile`, exports `VK_ICD_FILENAMES` next to `LD_LIBRARY_PATH`, and records
+   "this environment has no WebGL" as an **environment fact** instead of a false variation failure.
+
+**Proof:** `npm run verify:browser -- --audit --only particle-morph-field` → `✔ webgl 2.0 · clean`
+(previously 4 console errors over a blank canvas). A full six-target capture then re-ran in the
+background so the reel reflects it.
+
+**NEXT:** inspect the fresh frames myself → commit the reel + tooling → **Batch 2** (Nuxt 4 + TresJS +
+vanilla WebGL heroes). See `PLAN.md` § *Current Focus*.

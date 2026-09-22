@@ -20,7 +20,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { deviceProfile, clamp, damp, type DeviceProfile } from "@catalog/shared";
+import { deviceProfile, supportsWebGL2, clamp, damp, type DeviceProfile } from "@catalog/shared";
 import type { SceneState } from "./ParticleScene";
 import styles from "./particle-morph-field.module.css";
 
@@ -56,6 +56,7 @@ export default function ParticleMorphField() {
   const cursorLayerRef = useRef<HTMLDivElement | null>(null);
   const ringRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const [profile, setProfile] = useState<DeviceProfile | null>(null);
+  const [gpuBlocked, setGpuBlocked] = useState(false);
   const [stage, setStage] = useState(0);
   const [stats, setStats] = useState({ fps: 60, points: 0, tier: "high" });
 
@@ -66,6 +67,21 @@ export default function ParticleMorphField() {
   /* ---------------------------------------------------------------- device profile */
   useEffect(() => {
     const p = deviceProfile();
+
+    /**
+     * Pre-flight the context before mounting R3F.
+     *
+     * If the machine cannot hand out a WebGL context (GPU blocklisted, driver reset, contexts
+     * exhausted by other tabs), mounting <Canvas> produces three console errors and an empty
+     * rectangle. Instead we detect it up front, keep the composed fallback composition on screen and
+     * say so plainly — a catalogue may not present a blank frame as if it were the artwork.
+     */
+    if (!supportsWebGL2()) {
+      setGpuBlocked(true);
+      setProfile(null);
+      return;
+    }
+
     setProfile(p);
     interactiveRef.current = !p.reducedMotion && !p.coarsePointer;
     const initialProgress = p.reducedMotion ? 0.35 : 0;
@@ -204,6 +220,16 @@ export default function ParticleMorphField() {
         <div className={styles.vignette} />
         <div className={styles.grid} />
       </div>
+
+      {gpuBlocked ? (
+        <p className={styles.gpuNotice} role="status">
+          <b>WebGL unavailable</b>
+          <span>
+            This variation needs a GPU context. Showing the composed fallback — the copy, layout and scroll
+            behaviour are unaffected.
+          </span>
+        </p>
+      ) : null}
 
       {/* ------------------------------------------------------------------ content */}
       <section className={styles.hero} aria-label="Particle morph field hero">

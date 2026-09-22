@@ -45,6 +45,32 @@
     linear-gradient(180deg, rgba(4, 4, 10, 0.65), transparent 30%, transparent 62%, rgba(4, 4, 10, 0.92));
 }
 
+.gpuNotice {
+  position: fixed;
+  z-index: 5;
+  left: 50%;
+  bottom: 1.2rem;
+  transform: translateX(-50%);
+  display: grid;
+  gap: 0.25rem;
+  width: min(30rem, calc(100vw - 2rem));
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(255, 196, 71, 0.5);
+  background: rgba(20, 14, 4, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: rgba(255, 236, 200, 0.9);
+}
+.gpuNotice b {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffc447;
+}
+
 .grid {
   position: absolute;
   inset: 0;

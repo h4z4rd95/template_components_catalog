@@ -26,6 +26,8 @@ npm run preview      # serve docs/ at http://localhost:4173
 
 npm test             # manifest sync + CSS-module integrity + typecheck + hub smoke test
 npm run dev:next     # run the Next.js track with hot reload at :3000
+
+npm run setup:browser && npm run verify:browser   # real Chromium audit + vision reel
 ```
 
 **Requirements:** Node ≥ 20.11 (developed on 22), npm ≥ 10. No global tooling, no paid GSAP plugins —
@@ -35,13 +37,46 @@ GSAP 3.13+ ships SplitText/Observer free in the public package, and this repo us
 
 ## Verified state
 
-| Gate | Command | Result |
+Six gates, each catching a class of defect the others structurally cannot:
+
+| Gate | Command | What it proves |
 | --- | --- | --- |
-| Manifest integrity | `npm run catalog:sync` | 5 / 5 variations valid, sources exist |
-| CSS-Module integrity | `npm run check:styles` | every `styles.*` reference resolves |
-| Types | `npm run typecheck` | clean, `strict: true` |
-| Showroom runtime | `npm run test:hub` | 23 assertions, incl. filters, deep-links, iframe caps |
+| Manifest integrity | `npm run catalog:sync` | ids, enums, accents and on-disk source paths are valid |
+| CSS-Module integrity | `npm run check:styles` | every `styles.*` reference resolves to a declared class (typos fail *silently* otherwise) |
+| Types | `npm run typecheck` | strict TypeScript across the app and the shared kit |
+| Showroom runtime | `npm run test:hub` | 23 jsdom assertions: filters, search, deep-links, stage overlay, postMessage relay, iframe caps, missing-build notice |
 | Production build | `npm run build` | 8 static routes exported and spliced into `docs/` |
+| **Real-browser audit + vision** | `npm run verify:browser` | **actual painted pixels**: 4 breakpoints, WebGL context creation, console/network, `hidden`-attribute leaks, text colliding with chrome, reduced-motion composition — plus an animated capture of every variation |
+
+`npm test` runs gates 1–4 (fast, no browser). The browser gate is separate because it needs a Chromium.
+
+### Real-browser verification & the vision reel
+
+```bash
+npm run setup:browser        # provision Chromium 153 (~8s, from npm — no CDN, no apt)
+npm run build                # the reel screenshots the built showroom
+npm run verify:browser       # audit every route, then screencast/encode each variation
+                             #   prints the GPU profile it negotiated and stores it in report.json
+#   → docs/vision/index.html   the reel: animated captures beside their audit results
+#   → docs/vision/report.json  machine-readable findings
+#   → docs/vision/shots/*.png  stills at three scroll depths + reduced-motion frames
+
+npm run verify:browser:audit           # audit only (fast, no media)
+npm run verify:browser -- --only hub   # one target
+```
+
+The harness drives a **real interaction script per variation** — pointer arcs to trigger hover physics
+(tile recoil, liquid advection, radar pings), eased scroll trajectories, and real clicks to fire the
+particle shockwave and the cyber glitch burst — then encodes the screencast to GIF at true playback speed
+(timing is measured, never assumed), with ordered dithering and a hard byte budget so a particle-heavy
+variation cannot bloat the repository.
+
+**Why a browser gate exists at all.** jsdom has no layout engine. Two of the worst bugs this project has
+had were invisible to every other gate: `.stage { display: grid }` silently defeating the `hidden`
+attribute (the fullscreen overlay covered the entire hub while types, manifest, CSS bindings and 23 DOM
+assertions all passed), and a self-recursive `pump()` that leaked a GPU-backed iframe on every scroll
+pass. Both are now regression-guarded in the harness. Thirteen defects were found this way in a single
+pass — see `PROGRESS.md`.
 
 ---
 
@@ -72,6 +107,8 @@ catalog/catalog.json        single source of truth for every variation
 scripts/sync-catalog.mjs    validates the manifest → emits docs/data/* and per-app copies
 scripts/check-styles.mjs    catches typo'd CSS-module class names (they fail silently otherwise)
 scripts/smoke-hub.mjs       runs docs/ in jsdom and asserts the showroom actually works
+scripts/setup-browser.mjs   provisions Chromium from npm (CDN-free) for real-browser verification
+scripts/vision.mjs          audits every route in Chromium and captures the animated vision reel
 scripts/build-all.mjs       local twin of CI: export apps → splice into docs/framework/
 scripts/serve.mjs           zero-dependency static server (binds 0.0.0.0, GitHack-Pages-like paths)
 
