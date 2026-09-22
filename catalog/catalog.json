@@ -290,6 +290,33 @@
         "tresjs",
         "scroll"
       ]
+    },
+    {
+      "id": "Hero_V09_VanillaRaymarch",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Volumetric Nebula",
+      "stack": [
+        "Vanilla HTML5",
+        "WebGL2",
+        "GLSL ES 3.00",
+        "Canvas",
+        "CSS"
+      ],
+      "vibe": "Immersive WebGL-First \u00b7 Volumetric",
+      "interaction": "The pointer stirs a raymarched noise volume and scrolling dollies the camera through it, raising exposure as the glowing core passes the frame centre.",
+      "href": "vanilla/raymarch-nebula/",
+      "source": "docs/vanilla/raymarch-nebula/index.html",
+      "status": "stable",
+      "accent": "#7CF0D0",
+      "tags": [
+        "webgl2",
+        "raymarch",
+        "vanilla",
+        "no-dependencies",
+        "volumetric",
+        "glsl"
+      ]
     }
   ]
 }

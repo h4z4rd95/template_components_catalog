@@ -30,7 +30,7 @@
  * background process; see `npm run verify:browser:bg`.
  */
 import { spawn } from "node:child_process";
-import { access, mkdir, writeFile, readFile, stat } from "node:fs/promises";
+import { access, mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { constants, existsSync } from "node:fs";
 import { join, resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -694,7 +694,7 @@ async function captureTarget(browser, target) {
 
   /* ---- reduced motion: does a composed frame still exist? -------------- */
   await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
-  await page.reload({ waitUntil: "load" });
+  await page.reload({ waitUntil: "load", timeout: 90_000 });
   await sleep(1600);
   const reduced = await probePage(page);
   report.reducedMotion = {
@@ -706,7 +706,7 @@ async function captureTarget(browser, target) {
   };
   if (!AUDIT_ONLY) await page.screenshot({ path: join(SHOTS, `${target.key}-reduced-motion.png`) });
   await page.emulateMediaFeatures([]);
-  await page.reload({ waitUntil: "load" });
+  await page.reload({ waitUntil: "load", timeout: 90_000 });
 
   if (AUDIT_ONLY) {
     await page.close();
@@ -1072,19 +1072,37 @@ async function main() {
     gpuProfile: launched.profile,
   };
 
+  /**
+   * `--only <key>` refreshes one variation's evidence *without discarding the rest of the reel*.
+   * Iterating on a single variation is the normal case, and a 20-minute re-capture of everything is
+   * exactly the wrong tax to charge for it — so merge into the existing report, ordered by manifest.
+   */
+  let allReports = reports;
+  if (ONLY) {
+    try {
+      const previous = JSON.parse(await readFile(join(OUT, "report.json"), "utf8"));
+      const order = ["hub", ...variations.map((variation) => variation.slug)];
+      const merged = new Map((previous.reports ?? []).map((entry) => [entry.key, entry]));
+      for (const report of reports) merged.set(report.key, report);
+      allReports = order.map((key) => merged.get(key)).filter(Boolean);
+    } catch {
+      /* first run, or no previous report: this run's reports stand on their own */
+    }
+  }
+
   await mkdir(OUT, { recursive: true });
   await writeFile(
     join(OUT, "report.json"),
-    JSON.stringify({ ...meta, complete: true, reports }, null, 2) + "\n",
+    JSON.stringify({ ...meta, complete: true, reports: allReports }, null, 2) + "\n",
   );
-  await writeGallery(reports, variations, meta);
+  await writeGallery(allReports, variations, meta);
 
   /* ---- console summary -------------------------------------------------- */
   const line = "─".repeat(84);
   console.log(`\n${line}`);
   console.log("  BROWSER VERIFICATION");
   console.log(line);
-  for (const report of reports) {
+  for (const report of allReports) {
     const flags = [];
     if ((report.errors || []).length) flags.push(`${report.errors.length} console error(s)`);
     if ((report.failedRequests || []).length) flags.push(`${report.failedRequests.length} failed request(s)`);

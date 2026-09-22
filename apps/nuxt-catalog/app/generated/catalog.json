@@ -314,13 +314,43 @@
       "slug": "tres-liquid-terrain",
       "route": "hero/tres-liquid-terrain/",
       "url": "framework/nuxt/hero/tres-liquid-terrain/"
+    },
+    {
+      "id": "Hero_V09_VanillaRaymarch",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Volumetric Nebula",
+      "stack": [
+        "Vanilla HTML5",
+        "WebGL2",
+        "GLSL ES 3.00",
+        "Canvas",
+        "CSS"
+      ],
+      "vibe": "Immersive WebGL-First · Volumetric",
+      "interaction": "The pointer stirs a raymarched noise volume and scrolling dollies the camera through it, raising exposure as the glowing core passes the frame centre.",
+      "href": "vanilla/raymarch-nebula/",
+      "source": "docs/vanilla/raymarch-nebula/index.html",
+      "status": "stable",
+      "accent": "#7CF0D0",
+      "tags": [
+        "webgl2",
+        "raymarch",
+        "vanilla",
+        "no-dependencies",
+        "volumetric",
+        "glsl"
+      ],
+      "slug": "vanilla-raymarch",
+      "route": "hero/vanilla-raymarch/",
+      "url": "vanilla/raymarch-nebula/"
     }
   ],
   "counts": {
-    "total": 8,
-    "stable": 8,
+    "total": 9,
+    "stable": 9,
     "beta": 0,
     "planned": 0
   },
-  "generatedAt": "2026-09-22T13:39:33.473Z"
+  "generatedAt": "2026-09-22T13:44:31.690Z"
 }

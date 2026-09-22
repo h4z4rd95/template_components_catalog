@@ -273,3 +273,32 @@ cost ~9 minutes per hub capture under software rasterization; the harness now ca
 **NEXT:** Batch 2 part 2 — the vanilla track (`docs/vanilla/**`, no build step): a raw WebGL2 raymarch
 hero and a Canvas2D + Motion One kinetic-brutal hero, registered in the manifest, then the reel is
 re-verified and the batch closed. See `PLAN.md` § *Current Focus*.
+
+---
+
+## [2026-09-22 14:10 UTC] · Batch 2 (part 2, first variation) — the vanilla track exists
+
+**Shipped: `Hero_V09_VanillaRaymarch` — Volumetric Nebula** at `docs/vanilla/raymarch-nebula/index.html`.
+
+The vanilla dimension of the matrix is now real, and it is deliberately extreme: **one HTML file, zero
+dependencies, zero network requests** — no framework, no bundler, no webfonts, no CDN. A raymarched
+volumetric nebula (GLSL ES 3.00, ~96 steps, fBm-carved density, emission accumulated with transmission)
+that consumes pointer position and scroll as field modifiers. It carries the *same* contract as the
+framework tracks: 2.9rem chrome band with a live `nn / nn` counter, the `data-catalog-hud` metadata HUD
+(H to toggle, copy ID/link, expand via `postMessage`), a telemetry panel, a blueprint section, and three
+designed states — WebGL2, reduced motion, and no-WebGL2-at-all. The HUD reads the shared manifest at
+runtime and falls back to its inline record when `fetch()` is not permitted (i.e. `file://`).
+
+**Two harness fixes found while verifying it:**
+1. `[hidden]` guard — the page styles `canvas { display: block }` and `.poster { display: grid }`, which
+   is *exactly* the author-`display`-beats-`hidden` bug class from Batch 1. One global
+   `[hidden] { display: none !important }` rule now protects all four toggled elements.
+2. The two `page.reload()` calls in the harness used puppeteer's 30s default while a saturated CPU was
+   busy compiling shaders; they now share the 90s navigation budget.
+
+**Also improved:** `--only <key>` captures now **merge into the existing reel** instead of replacing the
+report, so iterating on a single variation costs one capture rather than a full re-run. (The key is the
+derived slug, e.g. `vanilla-raymarch`, `tres-instanced-shards`.)
+
+**NEXT:** Batch 2 part 2 finishes with `Hero_V10` — a Canvas2D + Motion One kinetic-brutal hero on the
+same vanilla track (vendored Motion One, no bundler) — then the reel is re-verified end to end.

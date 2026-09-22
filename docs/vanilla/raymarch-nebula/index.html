@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark" />
+    <title>Hero_V09_VanillaRaymarch — Volumetric Nebula | The Catalog</title>
+    <meta
+      name="description"
+      content="A raymarched volumetric nebula in raw WebGL2 — no framework, no bundler, no dependencies. One HTML file."
+    />
+    <style>
+      /* ── shell ──────────────────────────────────────────────────────────────────────────────
+         The vanilla track ships *zero* external requests: no framework, no bundler, no webfonts.
+         That is the point of the exercise — a single file you can open from disk and it works. */
+      :root {
+        --bg: #05060c;
+        --ink: #f5f2ec;
+        --ink-dim: rgba(245, 242, 236, 0.62);
+        --ink-faint: rgba(245, 242, 236, 0.34);
+        --line: rgba(245, 242, 236, 0.14);
+        --accent: #7cf0d0;
+        --accent-2: #8a7cff;
+        --chrome-h: 2.9rem;
+        --sans: "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+        --mono: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
+        --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+        --display: "Archivo Black", "Inter Variable", system-ui, sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--bg);
+        color: var(--ink);
+        font-family: var(--sans);
+      }
+
+      body {
+        margin: 0;
+        overscroll-behavior-y: none;
+      }
+
+      h1,
+      h2,
+      h3,
+      p,
+      dl,
+      dd,
+      figure {
+        margin: 0;
+      }
+
+      canvas {
+        display: block;
+      }
+
+      /* An author `display` must never defeat the `hidden` attribute — this page has four elements
+         whose visibility is toggled that way (poster, canvas, HUD body, raw link). */
+      [hidden] {
+        display: none !important;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      ::selection {
+        background: var(--accent);
+        color: #05060c;
+      }
+
+      .eyebrow {
+        font: 500 0.66rem/1 var(--mono);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      .skip {
+        position: fixed;
+        top: 0;
+        left: 1rem;
+        z-index: 9999;
+        transform: translateY(-120%);
+        padding: 0.5rem 0.85rem;
+        background: var(--ink);
+        color: var(--bg);
+        font: 600 0.72rem/1 var(--mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .skip:focus-visible {
+        transform: translateY(0);
+      }
+
+      /* ── host chrome: a reserved 2.9rem band, exactly like the framework tracks ───────────── */
+      .chrome {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 9000;
+        height: var(--chrome-h);
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        padding: 0 clamp(0.75rem, 3vw, 1.75rem);
+        border-bottom: 1px solid var(--line);
+        background: rgba(5, 6, 12, 0.78);
+        backdrop-filter: blur(14px) saturate(140%);
+        font: 500 0.68rem/1 var(--mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+      }
+
+      .chrome__mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--ink);
+        font-weight: 700;
+      }
+
+      .chrome__dot {
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+
+      .chrome__counter {
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .chrome a:hover,
+      .chrome a:focus-visible {
+        color: var(--ink);
+        text-decoration: underline;
+        text-underline-offset: 0.25em;
+      }
+
+      /* ── metadata HUD (same DOM contract as the framework tracks) ─────────────────────────── */
+      .hud {
+        position: fixed;
+        left: clamp(0.75rem, 2.5vw, 1.6rem);
+        bottom: clamp(0.75rem, 2.5vw, 1.6rem);
+        z-index: 9500;
+        width: min(30rem, calc(100vw - 1.5rem));
+        border: 1px solid var(--line);
+        border-radius: 0.85rem;
+        background: rgba(12, 13, 22, 0.86);
+        backdrop-filter: blur(18px) saturate(150%);
+        box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.55);
+        overflow: hidden;
+        font-family: var(--mono);
+      }
+
+      .hud__tab {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.7rem 0.85rem;
+      }
+
+      .hud__dot {
+        width: 0.4rem;
+        height: 0.4rem;
+        border-radius: 50%;
+        background: var(--accent);
+        flex: none;
+      }
+
+      .hud__id {
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .hud__toggle {
+        margin-left: auto;
+        padding: 0.3rem 0.5rem;
+        border: 1px solid var(--line);
+        border-radius: 0.35rem;
+        background: transparent;
+        cursor: pointer;
+        font: 500 0.62rem/1 var(--mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+      }
+
+      .hud__toggle:hover,
+      .hud__toggle:focus-visible {
+        color: var(--ink);
+        border-color: var(--accent);
+      }
+
+      .hud__body {
+        display: grid;
+        gap: 0.7rem;
+        padding: 0 0.9rem 0.95rem;
+        border-top: 1px solid var(--line);
+      }
+
+      .hud__head {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding-top: 0.8rem;
+        font-size: 0.6rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      .hud__badge {
+        padding: 0.22rem 0.4rem;
+        border-radius: 0.25rem;
+        background: rgba(124, 240, 208, 0.2);
+        color: var(--ink);
+      }
+
+      .hud__status {
+        color: #7ee0a8;
+      }
+
+      .hud__name {
+        font: 700 0.95rem/1.1 var(--sans);
+        letter-spacing: 0.02em;
+      }
+
+      .hud__title {
+        color: var(--ink-dim);
+        font-size: 0.72rem;
+      }
+
+      .hud__meta {
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .hud__row {
+        display: grid;
+        grid-template-columns: 5.5rem 1fr;
+        gap: 0.6rem;
+        align-items: start;
+      }
+
+      .hud__row dt {
+        font-size: 0.6rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        padding-top: 0.2rem;
+      }
+
+      .hud__chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+      }
+
+      .hud__chip {
+        padding: 0.2rem 0.42rem;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        font-size: 0.6rem;
+        color: var(--ink-dim);
+      }
+
+      .hud__vibe {
+        font-size: 0.7rem;
+        color: var(--ink);
+      }
+
+      .hud__note {
+        font: 400 0.7rem/1.5 var(--sans);
+        color: var(--ink-dim);
+      }
+
+      .hud__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+      }
+
+      .hud__action {
+        padding: 0.36rem 0.55rem;
+        border: 1px solid var(--line);
+        border-radius: 0.35rem;
+        background: transparent;
+        cursor: pointer;
+        font: 500 0.6rem/1 var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ink-dim);
+      }
+
+      .hud__action:hover,
+      .hud__action:focus-visible {
+        color: var(--ink);
+        border-color: var(--accent);
+        background: rgba(124, 240, 208, 0.1);
+      }
+
+      /* ── hero ─────────────────────────────────────────────────────────────────────────────── */
+      .stage {
+        position: relative;
+        min-height: 100svh;
+        overflow: hidden;
+        background: radial-gradient(120% 90% at 62% 38%, #0a1030 0%, #05060c 62%);
+      }
+
+      #nebula {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .poster {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 6rem clamp(1.5rem, 8vw, 8rem);
+        background:
+          radial-gradient(45% 40% at 62% 42%, rgba(138, 124, 255, 0.4), transparent 70%),
+          radial-gradient(30% 24% at 58% 46%, rgba(124, 240, 208, 0.35), transparent 72%),
+          radial-gradient(70% 60% at 50% 60%, rgba(10, 16, 48, 0.9), transparent 75%),
+          linear-gradient(180deg, #05060c, #0a0f26 60%, #05060c);
+      }
+
+      .poster p {
+        display: grid;
+        gap: 0.55rem;
+        max-width: 34rem;
+        text-align: center;
+        font: 400 0.92rem/1.7 var(--sans);
+        color: var(--ink-dim);
+      }
+
+      .poster strong {
+        font: 600 0.68rem/1 var(--mono);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      .type {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        gap: 1.05rem;
+        align-content: center;
+        min-height: 100svh;
+        padding: calc(var(--chrome-h) + clamp(3rem, 9vh, 7rem)) clamp(1.25rem, 6vw, 6.5rem)
+          clamp(3rem, 10vh, 7rem);
+        pointer-events: none;
+      }
+
+      .title {
+        font: 400 clamp(2.6rem, 9vw, 7.6rem) / 0.95 var(--display);
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+      }
+
+      .title__line {
+        display: block;
+      }
+
+      .title__line--thin {
+        font-family: var(--serif);
+        font-style: italic;
+        text-transform: none;
+        letter-spacing: 0;
+        font-size: 0.6em;
+        color: var(--accent);
+      }
+
+      /* Entrance is a CSS transition, not a library: one class, one frame of state. */
+      .reveal {
+        opacity: 0;
+        transform: translate3d(0, 1.4rem, 0);
+        transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .reveal.is-in {
+        opacity: 1;
+        transform: none;
+      }
+
+      .lede {
+        max-width: 34rem;
+        font: 400 clamp(0.92rem, 1.1vw, 1.05rem) / 1.68 var(--sans);
+        color: var(--ink-dim);
+      }
+
+      .cta {
+        justify-self: start;
+        margin-top: 0.4rem;
+        pointer-events: auto;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.85rem 1.3rem;
+        border: 1px solid rgba(124, 240, 208, 0.5);
+        border-radius: 999px;
+        background: rgba(124, 240, 208, 0.08);
+        font: 600 0.7rem/1 var(--mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        transition: background 0.3s, transform 0.3s;
+      }
+
+      .cta:hover,
+      .cta:focus-visible {
+        background: rgba(124, 240, 208, 0.2);
+        transform: translateY(-2px);
+      }
+
+      .panel {
+        position: absolute;
+        right: clamp(0.9rem, 3vw, 2.4rem);
+        bottom: calc(clamp(0.9rem, 3vw, 2.4rem) + 4.6rem);
+        z-index: 3;
+        width: min(21rem, calc(100vw - 2rem));
+        padding: 0.85rem 0.95rem;
+        border: 1px solid var(--line);
+        border-radius: 0.7rem;
+        background: rgba(7, 9, 20, 0.72);
+        backdrop-filter: blur(12px);
+        font-family: var(--mono);
+      }
+
+      .panel dl {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem;
+      }
+
+      .panel dt {
+        font-size: 0.56rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      .panel dd {
+        margin-top: 0.25rem;
+        font-size: 0.82rem;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .panel__hint {
+        margin-top: 0.7rem;
+        padding-top: 0.6rem;
+        border-top: 1px solid var(--line);
+        font-size: 0.58rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      /* ── blueprint ───────────────────────────────────────────────────────────────────────── */
+      .notes {
+        display: grid;
+        gap: clamp(1.4rem, 4vh, 2.4rem);
+        padding: clamp(3rem, 9vh, 7rem) clamp(1.25rem, 6vw, 6rem);
+        background: #070911;
+      }
+
+      .notes h2 {
+        font: 400 clamp(1.6rem, 3.2vw, 2.6rem) / 1.12 var(--sans);
+        letter-spacing: -0.02em;
+        max-width: 44rem;
+      }
+
+      .notes__grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+      }
+
+      .notes article {
+        display: grid;
+        gap: 0.5rem;
+        padding: 1.15rem;
+        border: 1px solid var(--line);
+        border-radius: 0.7rem;
+      }
+
+      .notes h3 {
+        font: 600 0.7rem/1 var(--mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent);
+      }
+
+      .notes p {
+        font: 400 0.86rem/1.7 var(--sans);
+        color: var(--ink-dim);
+      }
+
+      .notes code {
+        font-family: var(--mono);
+        font-size: 0.82em;
+        color: var(--ink);
+      }
+
+      .notes footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.4rem;
+        padding-top: 1.1rem;
+        border-top: 1px solid var(--line);
+        font: 500 0.62rem/1 var(--mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      @media (max-width: 860px) {
+        .panel {
+          position: static;
+          margin: 0 clamp(1.25rem, 6vw, 6.5rem) clamp(1.5rem, 5vh, 3rem);
+        }
+
+        .type {
+          min-height: auto;
+          padding-bottom: 1.6rem;
+        }
+
+        .hud__row {
+          grid-template-columns: 1fr;
+          gap: 0.25rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .reveal {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip" href="#stage">Skip to the artwork</a>
+
+    <header class="chrome">
+      <a class="chrome__mark" href="../../index.html"><span class="chrome__dot" aria-hidden="true"></span>THE CATALOG</a>
+      <span class="chrome__counter"><span id="chrome-count">09 / 09</span> · Hero</span>
+    </header>
+
+    <main>
+      <section class="stage" id="stage">
+        <canvas id="nebula" aria-hidden="true"></canvas>
+        <div class="poster" id="poster" hidden>
+          <p>
+            <strong id="poster-strong">Reduced motion</strong>
+            <span id="poster-copy"
+              >The volumetric pass is presented as a still composition. Every layer of this hero has a
+              static form, because motion is a preference — not a requirement.</span
+            >
+          </p>
+        </div>
+
+        <div class="type">
+          <p class="eyebrow reveal">V09 · Vanilla track · Raw WebGL2</p>
+          <h1 class="title">
+            <span class="title__line reveal">VOLUMETRIC</span>
+            <span class="title__line title__line--thin reveal">nebula, marched</span>
+          </h1>
+          <p class="lede reveal">
+            No framework, no bundler, no dependencies — one HTML file that raymarches a glowing volume
+            through a noise field. Move the pointer to stir it, scroll to push the camera in.
+          </p>
+          <a class="cta reveal" href="#blueprint">Read the shader notes</a>
+        </div>
+
+        <aside class="panel" aria-label="Renderer telemetry">
+          <dl>
+            <div>
+              <dt>Steps</dt>
+              <dd id="t-steps">96</dd>
+            </div>
+            <div>
+              <dt>Scale</dt>
+              <dd id="t-scale">100%</dd>
+            </div>
+            <div>
+              <dt>Loop</dt>
+              <dd id="t-fps">— fps</dd>
+            </div>
+          </dl>
+          <p class="panel__hint" id="t-hint">Pointer stirs the field · scroll dollies the camera</p>
+        </aside>
+      </section>
+
+      <section class="notes" id="blueprint">
+        <p class="eyebrow">Blueprint</p>
+        <h2>What one file can do when you skip the framework</h2>
+
+        <div class="notes__grid">
+          <article>
+            <h3>Volume, not surfaces</h3>
+            <p>
+              The shader marches a ray per pixel through a 3D noise field, accumulating density and
+              emission. There is no geometry at all — the nebula is a number that happens to look like
+              a cloud.
+            </p>
+          </article>
+          <article>
+            <h3>Budgeted by device</h3>
+            <p>
+              Step count and render scale come from <code>deviceMemory</code>, hardware concurrency and
+              DPR, then a frame watcher lowers them once if the budget is missed — the same policy the
+              framework tracks use.
+            </p>
+          </article>
+          <article>
+            <h3>Pointer as a field modifier</h3>
+            <p>
+              Pointer position is smoothed into a 2D uniform that both tilts the ray direction and moves
+              the light source, so the volume appears to churn rather than slide.
+            </p>
+          </article>
+          <article>
+            <h3>Three honest states</h3>
+            <p>
+              WebGL2, reduced motion, or no WebGL2 at all: each has a designed composition. A catalogue
+              may never present a blank frame and call it art.
+            </p>
+          </article>
+          <article>
+            <h3>Zero network requests</h3>
+            <p>
+              No fonts, no scripts, no stylesheets — everything ships in this document. The metadata HUD
+              reads the shared manifest when it can and falls back to the inline record when it cannot.
+            </p>
+          </article>
+          <article>
+            <h3>Metadata, in public</h3>
+            <p>
+              The HUD is the same contract as every other variation: ID, stack, vibe and a one-sentence
+              interaction blueprint. Copying the ID gets you the exact variant name.
+            </p>
+          </article>
+        </div>
+
+        <footer>
+          <span>One file · 0 dependencies</span>
+          <span>GLSL ES 3.00 raymarch</span>
+          <span>Vanilla HTML5 · Canvas · CSS</span>
+        </footer>
+      </section>
+    </main>
+
+    <!-- The metadata HUD mirrors the framework tracks' DOM contract (`data-catalog-hud`) -------- -->
+    <aside class="hud" data-catalog-hud aria-label="Metadata for Hero_V09_VanillaRaymarch" style="--accent: #7cf0d0">
+      <div class="hud__tab">
+        <span class="hud__dot" aria-hidden="true"></span>
+        <span class="hud__id" id="hud-id">Hero_V09_VanillaRaymarch</span>
+        <button type="button" class="hud__toggle" id="hud-toggle" aria-expanded="true" aria-controls="hud-body">
+          Hide HUD (H)
+        </button>
+      </div>
+
+      <div class="hud__body" id="hud-body">
+        <header class="hud__head">
+          <span class="hud__badge">BATCH 02</span>
+          <span>Hero</span>
+          <span class="hud__status">stable</span>
+          <span id="hud-count" style="margin-left: auto">09 / 09</span>
+        </header>
+
+        <h2 class="hud__name" id="hud-name">Hero_V09_VanillaRaymarch</h2>
+        <p class="hud__title" id="hud-title">Volumetric Nebula</p>
+
+        <dl class="hud__meta">
+          <div class="hud__row">
+            <dt>Stack</dt>
+            <dd class="hud__chips" id="hud-stack">
+              <span class="hud__chip">Vanilla HTML5</span>
+              <span class="hud__chip">WebGL2</span>
+              <span class="hud__chip">GLSL ES 3.00</span>
+              <span class="hud__chip">Canvas</span>
+            </dd>
+          </div>
+          <div class="hud__row">
+            <dt>Vibe</dt>
+            <dd class="hud__vibe" id="hud-vibe">Immersive WebGL-First · Volumetric</dd>
+          </div>
+          <div class="hud__row">
+            <dt>Interaction</dt>
+            <dd class="hud__note" id="hud-interaction">
+              The pointer stirs a raymarched noise volume and scrolling dollies the camera through it,
+              raising exposure as the core passes the frame centre.
+            </dd>
+          </div>
+        </dl>
+
+        <div class="hud__actions">
+          <button type="button" class="hud__action" id="hud-copy-id">Copy ID</button>
+          <button type="button" class="hud__action" id="hud-copy-link">Copy link</button>
+          <button type="button" class="hud__action" id="hud-expand">Expand</button>
+          <a
+            class="hud__action"
+            href="https://github.com/h4z4rd95/template_components_catalog/blob/main/docs/vanilla/raymarch-nebula/index.html"
+            target="_blank"
+            rel="noreferrer noopener"
+            >Source ↗</a
+          >
+          <a class="hud__action" href="../../index.html">Hub ↩</a>
+          <a class="hud__action" href="./index.html" id="hud-raw" target="_blank" rel="noreferrer noopener" hidden
+            >Raw ↗</a
+          >
+        </div>
+      </div>
+    </aside>
+
+    <script>
+      /* ==========================================================================================
+         Hero_V09_VanillaRaymarch — every line of this page is hand-written vanilla JavaScript.
+         Structure:
+           1. capability + quality tier      2. metadata HUD (manifest-aware)      3. WebGL2 raymarcher
+         ========================================================================================== */
+      (function () {
+        "use strict";
+
+        var VARIATION_ID = "Hero_V09_VanillaRaymarch";
+        var requestedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        /* ---------------------------------------------------------------- 1. capability + tier */
+        function tier() {
+          var memory = navigator.deviceMemory || 4;
+          var cores = navigator.hardwareConcurrency || 4;
+          var dpr = window.devicePixelRatio || 1;
+          if (memory <= 2 || cores <= 2) return "low";
+          if (memory >= 8 && cores >= 8 && dpr >= 2) return "ultra";
+          if (memory >= 4 && cores >= 4) return "high";
+          return "medium";
+        }
+
+        var TIERS = {
+          low: { steps: 56, scale: 0.62, dpr: 1 },
+          medium: { steps: 72, scale: 0.78, dpr: 1 },
+          high: { steps: 96, scale: 0.92, dpr: Math.min(window.devicePixelRatio || 1, 1.5) },
+          ultra: { steps: 128, scale: 1, dpr: Math.min(window.devicePixelRatio || 1, 2) },
+        };
+
+        /* ------------------------------------------------------------------- 2. metadata HUD */
+        var hud = {
+          body: document.getElementById("hud-body"),
+          toggle: document.getElementById("hud-toggle"),
+          expanded: true,
+        };
+
+        function setExpanded(next) {
+          hud.expanded = next;
+          hud.body.hidden = !next;
+          hud.toggle.setAttribute("aria-expanded", String(next));
+          hud.toggle.textContent = next ? "Hide HUD (H)" : "Show HUD (H)";
+          try {
+            window.localStorage.setItem("catalog:hud:collapsed", next ? "0" : "1");
+          } catch (err) {
+            /* private mode: the default state is fine */
+          }
+        }
+
+        hud.toggle.addEventListener("click", function () {
+          setExpanded(!hud.expanded);
+        });
+
+        window.addEventListener("keydown", function (event) {
+          var target = event.target;
+          if (target && /input|textarea|select/i.test(target.tagName || "")) return;
+          if (event.key === "h" || event.key === "H") setExpanded(!hud.expanded);
+        });
+
+        try {
+          var stored = window.localStorage.getItem("catalog:hud:collapsed");
+          if (stored === "1") setExpanded(false);
+          else if (stored === "0") setExpanded(true);
+          else if (window.innerWidth < 900 || window.innerHeight < 720) setExpanded(false);
+        } catch (err) {
+          /* ignore */
+        }
+
+        function copy(value, button, label) {
+          var done = function () {
+            button.textContent = label + " ✓";
+            window.setTimeout(function () {
+              button.textContent = label;
+            }, 1600);
+          };
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(value).then(done, function () {
+              done();
+            });
+            return;
+          }
+          var helper = document.createElement("textarea");
+          helper.value = value;
+          helper.setAttribute("readonly", "");
+          helper.style.position = "fixed";
+          helper.style.opacity = "0";
+          document.body.appendChild(helper);
+          helper.select();
+          try {
+            document.execCommand("copy");
+          } catch (err) {
+            /* the button still reports the attempt */
+          }
+          helper.remove();
+          done();
+        }
+
+        var copyId = document.getElementById("hud-copy-id");
+        var copyLink = document.getElementById("hud-copy-link");
+        copyId.addEventListener("click", function () {
+          copy(VARIATION_ID, copyId, "Copy ID");
+        });
+        copyLink.addEventListener("click", function () {
+          copy(window.location.href, copyLink, "Copy link");
+        });
+
+        var inIframe = false;
+        try {
+          inIframe = window.self !== window.top;
+        } catch (err) {
+          inIframe = true;
+        }
+        if (inIframe) document.getElementById("hud-raw").hidden = false;
+
+        document.getElementById("hud-expand").addEventListener("click", function () {
+          if (inIframe) {
+            window.parent.postMessage({ type: "catalog:expand", id: VARIATION_ID }, "*");
+            return;
+          }
+          if (document.fullscreenElement) document.exitFullscreen();
+          else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+        });
+
+        // The shared manifest is the single source of truth; the inline record above is the fallback
+        // for `file://`, where fetch() is not allowed to read local files.
+        fetch("../../data/catalog.json")
+          .then(function (response) {
+            return response.ok ? response.json() : null;
+          })
+          .then(function (manifest) {
+            if (!manifest || !manifest.variations) return;
+            var record = null;
+            for (var i = 0; i < manifest.variations.length; i += 1) {
+              if (manifest.variations[i].id === VARIATION_ID) record = manifest.variations[i];
+            }
+            if (!record) return;
+            document.getElementById("hud-name").textContent = record.id;
+            document.getElementById("hud-id").textContent = record.id;
+            document.getElementById("hud-title").textContent = record.title;
+            document.getElementById("hud-vibe").textContent = record.vibe;
+            document.getElementById("hud-interaction").textContent = record.interaction;
+            document.getElementById("hud-stack").innerHTML = record.stack
+              .map(function (tech) {
+                return '<span class="hud__chip"></span>';
+              })
+              .join("");
+            var chips = document.getElementById("hud-stack").children;
+            record.stack.forEach(function (tech, index) {
+              if (chips[index]) chips[index].textContent = tech;
+            });
+            if (record.accent) document.querySelector(".hud").style.setProperty("--accent", record.accent);
+            var position = manifest.variations.indexOf(record) + 1;
+            var total = String(manifest.variations.length).padStart(2, "0");
+            var label = String(position).padStart(2, "0") + " / " + total;
+            document.getElementById("hud-count").textContent = label;
+            document.getElementById("chrome-count").textContent = label;
+          })
+          .catch(function () {
+            /* offline or file:// — the inline record is already on screen */
+          });
+
+        /* ------------------------------------------------------------------ 3. the raymarcher */
+        var canvas = document.getElementById("nebula");
+        var poster = document.getElementById("poster");
+        var stepsOut = document.getElementById("t-steps");
+        var scaleOut = document.getElementById("t-scale");
+        var fpsOut = document.getElementById("t-fps");
+
+        var gl = null;
+        try {
+          gl = canvas.getContext("webgl2", { antialias: false, alpha: false, powerPreference: "high-performance" });
+        } catch (err) {
+          gl = null;
+        }
+
+        var QUALITY = TIERS[tier()];
+        stepsOut.textContent = String(QUALITY.steps);
+        scaleOut.textContent = Math.round(QUALITY.scale * 100) + "%";
+
+        var VERT = "#version 300 es\nin vec2 aPos;\nvoid main() { gl_Position = vec4(aPos, 0.0, 1.0); }";
+
+        var FRAG = [
+          "#version 300 es",
+          "precision highp float;",
+          "uniform vec2 uRes;",
+          "uniform float uTime;",
+          "uniform vec2 uPointer;",
+          "uniform float uScroll;",
+          "uniform float uSteps;",
+          "out vec4 fragColor;",
+          "",
+          "float hash(vec3 p) {",
+          "  p = fract(p * 0.3183099 + vec3(0.11, 0.17, 0.13));",
+          "  p *= 17.0;",
+          "  return fract(p.x * p.y * p.z * (p.x + p.y + p.z));",
+          "}",
+          "",
+          "float valueNoise(vec3 p) {",
+          "  vec3 i = floor(p);",
+          "  vec3 f = fract(p);",
+          "  f = f * f * (3.0 - 2.0 * f);",
+          "  float n000 = hash(i + vec3(0.0, 0.0, 0.0));",
+          "  float n100 = hash(i + vec3(1.0, 0.0, 0.0));",
+          "  float n010 = hash(i + vec3(0.0, 1.0, 0.0));",
+          "  float n110 = hash(i + vec3(1.0, 1.0, 0.0));",
+          "  float n001 = hash(i + vec3(0.0, 0.0, 1.0));",
+          "  float n101 = hash(i + vec3(1.0, 0.0, 1.0));",
+          "  float n011 = hash(i + vec3(0.0, 1.0, 1.0));",
+          "  float n111 = hash(i + vec3(1.0, 1.0, 1.0));",
+          "  return mix(",
+          "    mix(mix(n000, n100, f.x), mix(n010, n110, f.x), f.y),",
+          "    mix(mix(n001, n101, f.x), mix(n011, n111, f.x), f.y),",
+          "    f.z",
+          "  );",
+          "}",
+          "",
+          "float fbm(vec3 p) {",
+          "  float value = 0.0;",
+          "  float amplitude = 0.5;",
+          "  for (int i = 0; i < 5; i++) {",
+          "    value += amplitude * valueNoise(p);",
+          "    p = p * 2.03 + vec3(11.3, 7.7, 5.1);",
+          "    amplitude *= 0.5;",
+          "  }",
+          "  return value;",
+          "}",
+          "",
+          "// Density of the volume: a shell around the origin, carved by noise so it reads as gas.",
+          "float density(vec3 p, float t) {",
+          "  float radius = length(p);",
+          "  float shell = smoothstep(2.6, 1.1, radius) * smoothstep(0.15, 0.7, radius);",
+          "  float cloud = fbm(p * 1.15 + vec3(0.0, t * 0.07, t * 0.05));",
+          "  float filaments = fbm(p * 3.1 - vec3(t * 0.11, 0.0, t * 0.06));",
+          "  return max(0.0, shell * (cloud * 0.85 + filaments * 0.35 - 0.42));",
+          "}",
+          "",
+          "void main() {",
+          "  vec2 uv = (gl_FragCoord.xy - 0.5 * uRes) / min(uRes.x, uRes.y);",
+          "  float t = uTime;",
+          "",
+          "  // Camera dollies inward on scroll; the pointer tilts the whole volume.",
+          "  float dolly = 5.4 - uScroll * 1.9;",
+          "  vec3 origin = vec3(uPointer.x * 0.55, uPointer.y * 0.4, dolly);",
+          "  vec3 dir = normalize(vec3(uv + uPointer * 0.06, -1.35));",
+          "",
+          "  vec3 lightPos = vec3(sin(t * 0.12) * 1.1, 0.7 + cos(t * 0.09) * 0.4, -0.6);",
+          "  vec3 color = vec3(0.0);",
+          "  float transmission = 1.0;",
+          "  float travelled = 0.0;",
+          "  float stepSize = 5.6 / uSteps;",
+          "",
+          "  for (int i = 0; i < 200; i++) {",
+          "    if (float(i) >= uSteps || transmission < 0.015) break;",
+          "    vec3 p = origin + dir * travelled;",
+          "    float d = density(p, t);",
+          "    if (d > 0.002) {",
+          "      float toLight = length(p - lightPos);",
+          "      float glow = 0.85 / (1.0 + toLight * toLight * 0.85);",
+          "      float core = 1.0 / (1.0 + length(p) * length(p) * 2.2);",
+          "      vec3 cool = vec3(0.22, 0.34, 1.0);",
+          "      vec3 warm = vec3(1.0, 0.86, 0.62);",
+          "      vec3 hot = mix(cool, warm, clamp(core * 2.4 + glow * 0.6, 0.0, 1.0));",
+          "      hot = mix(hot, vec3(0.48, 0.94, 0.82), clamp(glow * 0.5, 0.0, 1.0));",
+          "      float emit = d * (glow * 2.6 + core * 3.4) * stepSize;",
+          "      color += hot * emit * transmission;",
+          "      transmission *= exp(-d * stepSize * 2.4);",
+          "    }",
+          "    travelled += stepSize;",
+          "    if (travelled > 6.4) break;",
+          "  }",
+          "",
+          "  // Exposure rises as the camera pushes in, so the scroll has a photographic effect too.",
+          "  color *= 1.0 + uScroll * 0.55;",
+          "",
+          "  // Vignette + ordered dither: 8-bit banding is the giveaway of a cheap volumetric pass.",
+          "  float vignette = smoothstep(1.25, 0.25, length(uv));",
+          "  color *= 0.55 + vignette * 0.65;",
+          "  float dither = (fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453) - 0.5) / 255.0;",
+          "  color += dither;",
+          "",
+          "  fragColor = vec4(max(color, vec3(0.0)), 1.0);",
+          "}",
+        ].join("\n");
+
+        function compile(type, source) {
+          var shader = gl.createShader(type);
+          gl.shaderSource(shader, source);
+          gl.compileShader(shader);
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            throw new Error(gl.getShaderInfoLog(shader) || "shader failed to compile");
+          }
+          return shader;
+        }
+
+        var program = null;
+        var uniforms = {};
+        var started = 0;
+        var pointerTarget = { x: 0, y: 0 };
+        var pointerCurrent = { x: 0, y: 0 };
+        var scrollValue = 0;
+        var scrollTarget = 0;
+        var frames = 0;
+        var span = 0;
+        var lastFrame = 0;
+        var reduceScale = true;
+
+        function report(strength, copy) {
+          poster.hidden = false;
+          canvas.hidden = true;
+          if (strength) document.getElementById("poster-strong").textContent = strength;
+          if (copy) document.getElementById("poster-copy").textContent = copy;
+          fpsOut.textContent = "static";
+          document.getElementById("t-hint").textContent = "Static composition";
+        }
+
+        function build() {
+          program = gl.createProgram();
+          gl.attachShader(program, compile(gl.VERTEX_SHADER, VERT));
+          gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAG));
+          gl.linkProgram(program);
+          if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+            throw new Error(gl.getProgramInfoLog(program) || "program failed to link");
+          }
+          gl.useProgram(program);
+
+          var buffer = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+          gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+          var location = gl.getAttribLocation(program, "aPos");
+          gl.enableVertexAttribArray(location);
+          gl.vertexAttribPointer(location, 2, gl.FLOAT, false, 0, 0);
+
+          ["uRes", "uTime", "uPointer", "uScroll", "uSteps"].forEach(function (name) {
+            uniforms[name] = gl.getUniformLocation(program, name);
+          });
+          gl.uniform1f(uniforms.uSteps, QUALITY.steps);
+        }
+
+        function resize() {
+          var ratio = window.devicePixelRatio || 1;
+          var scale = QUALITY.scale * (reduceScale ? 1 : 0.72);
+          var dpr = Math.min(ratio, QUALITY.dpr) * scale;
+          var width = Math.max(320, Math.floor(canvas.clientWidth * dpr));
+          var height = Math.max(240, Math.floor(canvas.clientHeight * dpr));
+          canvas.width = width;
+          canvas.height = height;
+          gl.viewport(0, 0, width, height);
+          gl.uniform2f(uniforms.uRes, width, height);
+        }
+
+        function frame(now) {
+          if (!started) started = now;
+          var seconds = (now - started) / 1000;
+          var delta = lastFrame ? now - lastFrame : 16;
+          lastFrame = now;
+
+          pointerCurrent.x += (pointerTarget.x - pointerCurrent.x) * 0.06;
+          pointerCurrent.y += (pointerTarget.y - pointerCurrent.y) * 0.06;
+          scrollValue += (scrollTarget - scrollValue) * 0.08;
+
+          gl.uniform1f(uniforms.uTime, seconds);
+          gl.uniform2f(uniforms.uPointer, pointerCurrent.x, pointerCurrent.y);
+          gl.uniform1f(uniforms.uScroll, scrollValue);
+          gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+          frames += 1;
+          span += delta;
+          if (span > 500) {
+            var fps = (frames * 1000) / span;
+            fpsOut.textContent = Math.round(fps) + " fps";
+            // One degradation, never a loop: rebuilding every second would starve the renderer.
+            if (fps < 34 && reduceScale) {
+              reduceScale = false;
+              stepsOut.textContent = String(Math.max(48, Math.round(QUALITY.steps * 0.75)));
+              gl.uniform1f(uniforms.uSteps, Math.max(48, Math.round(QUALITY.steps * 0.75)));
+              resize();
+            }
+            frames = 0;
+            span = 0;
+          }
+          window.requestAnimationFrame(frame);
+        }
+
+        function animateScroll() {
+          var max = document.documentElement.scrollHeight - window.innerHeight;
+          scrollTarget = max > 0 ? Math.min(1, Math.max(0, window.scrollY / (max * 0.85))) : 0;
+        }
+
+        function onPointerMove(event) {
+          var rect = canvas.getBoundingClientRect();
+          pointerTarget.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+          pointerTarget.y = -(((event.clientY - rect.top) / rect.height) * 2 - 1);
+        }
+
+        function reveal() {
+          var nodes = document.querySelectorAll(".reveal");
+          for (var i = 0; i < nodes.length; i += 1) {
+            (function (node, index) {
+              window.setTimeout(function () {
+                node.classList.add("is-in");
+              }, reduceMotion ? 0 : 90 * index);
+            })(nodes[i], i);
+          }
+        }
+
+        var reduceMotion = requestedMotion.matches;
+
+        if (reduceMotion) {
+          report(
+            "Reduced motion",
+            "This device asks for reduced motion, so the volumetric pass is presented as its still composition — the layering, the palette and the type are all unchanged."
+          );
+        } else if (!gl) {
+          report(
+            "WebGL2 unavailable",
+            "This browser cannot create a WebGL2 context, so the nebula renders as its composed poster. Nothing is broken — the raymarch simply does not run here."
+          );
+        } else {
+          try {
+            build();
+            resize();
+            window.addEventListener("resize", resize);
+            window.addEventListener("scroll", animateScroll, { passive: true });
+            window.addEventListener("pointermove", onPointerMove, { passive: true });
+            animateScroll();
+            window.requestAnimationFrame(frame);
+          } catch (error) {
+            report("WebGL2 renderer unavailable", String(error && error.message ? error.message : error));
+          }
+        }
+
+        reveal();
+
+        // Watching the preference live: flipping it must swap compositions, not freeze the page.
+        var onPreferenceChange = function (event) {
+          if (event.matches === reduceMotion) return;
+          window.location.reload();
+        };
+        if (requestedMotion.addEventListener) requestedMotion.addEventListener("change", onPreferenceChange);
+        else if (requestedMotion.addListener) requestedMotion.addListener(onPreferenceChange);
+      })();
+    </script>
+  </body>
+</html>

@@ -128,11 +128,11 @@ Legend: `[x]` shipped · `[~]` in progress · `[ ]` queued · *(counts = variati
 
 | Metric | Value |
 |---|---|
-| Variations shipped (`stable`) | **8** |
+| Variations shipped (`stable`) | **9** |
 | Variations implemented but unpolished (`beta`) | 0 |
 | Batches complete | 0 foundation + 1 content + Batch 2 part 1 = **3 / 10** |
 | Verification gates green | manifest ✔ · CSS modules ✔ · types ✔ · hub runtime (23 assertions) ✔ · production build ✔ · **real-browser audit + vision reel ✔** |
-| Stack coverage | Next.js ✅ · Nuxt ✅ (TresJS + GSAP) · Vanilla ✅(hub) · standalone vanilla ⏳ |
+| Stack coverage | Next.js ✅ · Nuxt ✅ (TresJS + GSAP) · **standalone vanilla ✅** (zero deps, one file) |
 | Motion engines live | GSAP Timeline ✅ · ScrollTrigger ✅ · SplitText ✅ · Observer ✅ · quickTo ✅ · Motion ✅ · Lenis ✅ |
 | GPU techniques live | Raw WebGL2 fragment shader ✅ · R3F particle shader ✅ · **TresJS instanced shader ✅** · **shader-derived normals + displaced terrain ✅** · Canvas2D ✅ |
 | Aesthetic schools live | Kinetic-Brutal ✅ · Editorial Luxury ✅ · WebGL-First ✅ · Cyberpunk ✅ · Chromatic Liquid ✅ |
@@ -150,10 +150,11 @@ screenshot verification; the vision reel is the evidence).
 shader-derived normals). The track derives its prerender routes from the manifest, mirrors the React
 HUD's DOM contract, and degrades honestly without WebGL2. `npm test` now type-checks both tracks.
 
-**Part 2 (next):** the standalone vanilla track — `docs/vanilla/**`, no build step, no dependencies:
-a raw WebGL2 raymarch hero and a Canvas2D + Motion One kinetic-brutal hero, each registered in
-`catalog/catalog.json` with `href: "vanilla/<slug>/"`. Batch 2 closes only when the reel contains a
-GIF for every variation — including these two.
+**Part 2 (in progress):** the standalone vanilla track (`docs/vanilla/**`, no build step, no deps).
+`Hero_V09_VanillaRaymarch` (raw WebGL2 raymarch, one HTML file, zero network requests) is shipped and
+registered. **Remaining:** `Hero_V10` — a Canvas2D + Motion One kinetic-brutal hero with Motion One
+vendored into `docs/vanilla/shared/vendor/` by the sync step (no bundler, no CDN). Batch 2 closes only
+when the reel contains a GIF for every variation, including both of these.
 
 ### When Batch 2 starts (Nuxt 4 + TresJS + vanilla WebGL)
 1. `npx nuxi init apps/nuxt-catalog` — or hand-scaffold Nuxt 4 + TS. Keep `ssr: false` for WebGL routes;
