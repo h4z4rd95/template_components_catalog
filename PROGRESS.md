@@ -228,3 +228,48 @@ background so the reel reflects it.
 
 **NEXT:** inspect the fresh frames myself → commit the reel + tooling → **Batch 2** (Nuxt 4 + TresJS +
 vanilla WebGL heroes). See `PLAN.md` § *Current Focus*.
+
+---
+
+## [2026-09-22 14:00 UTC] · Batch 2 (part 1) — Nuxt 4 track: TresJS + GSAP, three variations
+
+**Shipped.** A second framework track, `apps/nuxt-catalog/`, that satisfies the *same* contract as the
+React track — same manifest, same metadata HUD, same chrome band, same honest degradation — plus three
+variations with no repeated `(framework, motion, aesthetic)` triple from Batch 1:
+
+| ID | Name | Aesthetic | What it actually does |
+| --- | --- | --- | --- |
+| `Hero_V06_TresInstancedShards` | Volumetric Shard Field | Immersive WebGL-First · Volumetric | One instanced draw call (1.8k–11k octahedra) displaced by shared curl noise in the vertex shader; pointer is a pressure bubble, scroll stretches the field in z while the camera stays locked |
+| `Hero_V07_EditorialChapterRail` | Editorial Chapter Rail | Luxury Minimalism · Editorial | Scroll pins the spread and glides three chapters sideways; SplitText reveals headlines word-by-word; drag, arrow keys and the index all drive **one** scroll progress |
+| `Hero_V08_TresLiquidTerrain` | Liquid Terrain Sweep | Chromatic Liquid Gradient · Shader Terrain | Ridged-noise mesh with normals derived by finite differences in the shader; pointer is a travelling bump of light; a scrubbed timeline sweeps all three palette stops |
+
+**Track engineering, not just pages.** `nuxt.config.ts` derives the prerender route list *from the
+manifest*, so a variation cannot ship without a working deep link (`nuxt generate` emitted all three
+routes plus the track index). `CatalogHUD.vue` mirrors the React HUD's behaviour and its `data-catalog-hud`
+DOM contract; `RouteFrame.vue` reserves the same 2.9rem chrome band. Both WebGL variations pre-flight
+`supportsWebGL2()` and present a composed poster with an honest notice instead of a blank frame.
+
+**Three real defects the browser/type gates caught in this batch (all fixed):**
+1. **`watchPerformance` degraded every second.** The shared helper fired on every slow 1s window, so on
+   a software rasterizer the heroes rebuilt their entire geometry once per second and the page stopped
+   finishing frames — the audit died with a protocol timeout. Added `{ once: true }`, which is now the
+   documented mode for destructive reactions (reallocating geometry), and used it in both scenes.
+2. **The harness audited `…/index.html`.** That URL shape is what a static export guarantees on disk,
+   but Nuxt's router 404s it (Next tolerated it) — and no visitor ever types it. Targets now navigate to
+   the *directory* URL, which is what the hub's iframes and GitHub Pages actually serve.
+3. **Three Vue-specific type errors** the strict `vue-tsc` gate found: `gl_PointSize` on triangle
+   geometry (a shader that renders nothing), TresJS camera props needing real `Vector3` instances rather
+   than arrays, and `noUncheckedIndexedAccess` violations in the new heroes *and* in
+   `packages/shared/src/split.ts`.
+
+**Gates:** `npm test` is green (sync · styles · **typecheck now covers both tracks** · 23 hub assertions),
+`npm run build` splices 2 apps (8 routes total), and the harness confirmed `✔ editorial-chapter-rail
+clean` plus audits for the two shader routes.
+
+**Hub improvement:** `?live=N` (0–6) caps how many previews run at once. Six simultaneous WebGL scenes
+cost ~9 minutes per hub capture under software rasterization; the harness now captures the hub at
+`?live=4`, and `?live=0` is the honest poster-only state for a GPU-less device.
+
+**NEXT:** Batch 2 part 2 — the vanilla track (`docs/vanilla/**`, no build step): a raw WebGL2 raymarch
+hero and a Canvas2D + Motion One kinetic-brutal hero, registered in the manifest, then the reel is
+re-verified and the batch closed. See `PLAN.md` § *Current Focus*.

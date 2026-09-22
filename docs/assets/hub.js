@@ -16,6 +16,23 @@
 
   var MAX_LIVE_FRAMES = 6; // browsers throttle beyond ~8-16 GL contexts; stay well clear
 
+  // `?live=N` caps how many previews run at once. The default stays at six because a showroom with
+  // live artwork is the point — but six simultaneous WebGL scenes on a software rasterizer (a
+  // headless capture, a locked-down laptop) is minutes per frame, so the budget has to be a dial,
+  // not a constant. N=0 renders the composed posters only, which is also the honest state for a
+  // device with no GPU at all.
+  (function applyLiveBudget() {
+    try {
+      var requested = new URLSearchParams(window.location.search).get("live");
+      if (requested === null) return;
+      var value = parseInt(requested, 10);
+      if (isNaN(value)) return;
+      MAX_LIVE_FRAMES = Math.max(0, Math.min(6, value));
+    } catch (err) {
+      /* no URL API: keep the default */
+    }
+  })();
+
   var state = {
     manifest: null,
     variations: [],

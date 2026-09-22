@@ -56,7 +56,8 @@ Six gates, each catching a class of defect the others structurally cannot:
 npm run setup:browser        # provision Chromium 153 (~8s, from npm — no CDN, no apt)
 npm run build                # the reel screenshots the built showroom
 npm run verify:browser       # audit every route, then screencast/encode each variation
-                             #   prints the GPU profile it negotiated and stores it in report.json
+                             #   prints the GPU profile it negotiated (report.json → gpuProfile)
+                             #   variations are audited at their real directory URL, never …/index.html
 #   → docs/vision/index.html   the reel: animated captures beside their audit results
 #   → docs/vision/report.json  machine-readable findings
 #   → docs/vision/shots/*.png  stills at three scroll depths + reduced-motion frames

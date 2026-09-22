@@ -64,7 +64,9 @@ function groupIntoLines(nodes: HTMLElement[]): HTMLElement[][] {
       lines.push([node]);
       currentTop = top;
     } else {
-      lines[lines.length - 1].push(node);
+      // `noUncheckedIndexedAccess` is on for every app in this repo: read the line, then push.
+      const line = lines[lines.length - 1];
+      if (line) line.push(node);
     }
   }
   return lines;

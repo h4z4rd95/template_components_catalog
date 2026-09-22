@@ -128,13 +128,13 @@ Legend: `[x]` shipped · `[~]` in progress · `[ ]` queued · *(counts = variati
 
 | Metric | Value |
 |---|---|
-| Variations shipped (`stable`) | **5** |
+| Variations shipped (`stable`) | **8** |
 | Variations implemented but unpolished (`beta`) | 0 |
-| Batches complete | 0 foundation + 1 content = **2 / 10** |
+| Batches complete | 0 foundation + 1 content + Batch 2 part 1 = **3 / 10** |
 | Verification gates green | manifest ✔ · CSS modules ✔ · types ✔ · hub runtime (23 assertions) ✔ · production build ✔ · **real-browser audit + vision reel ✔** |
-| Stack coverage | Next.js ✅ · Vanilla ✅(hub) · Nuxt ⏳ |
-| Motion engines live | GSAP Timeline ✅ · ScrollTrigger ✅ · SplitText ✅ · Observer ✅ · Motion ✅ · Lenis ✅ |
-| GPU techniques live | Raw WebGL2 fragment shader ✅ · R3F instanced points shader ✅ · Canvas2D ✅ |
+| Stack coverage | Next.js ✅ · Nuxt ✅ (TresJS + GSAP) · Vanilla ✅(hub) · standalone vanilla ⏳ |
+| Motion engines live | GSAP Timeline ✅ · ScrollTrigger ✅ · SplitText ✅ · Observer ✅ · quickTo ✅ · Motion ✅ · Lenis ✅ |
+| GPU techniques live | Raw WebGL2 fragment shader ✅ · R3F particle shader ✅ · **TresJS instanced shader ✅** · **shader-derived normals + displaced terrain ✅** · Canvas2D ✅ |
 | Aesthetic schools live | Kinetic-Brutal ✅ · Editorial Luxury ✅ · WebGL-First ✅ · Cyberpunk ✅ · Chromatic Liquid ✅ |
 
 ---
@@ -142,7 +142,18 @@ Legend: `[x]` shipped · `[~]` in progress · `[ ]` queued · *(counts = variati
 ## 7. § Current Focus
 
 **Batch 1 is complete and verified to the pixel level** (13 defects found and fixed by real-browser
-screenshot verification; the vision reel is the evidence). **Awaiting “Continue” for Batch 2.**
+screenshot verification; the vision reel is the evidence).
+
+**Batch 2 is in progress — part 1 (Nuxt track) has shipped:** `apps/nuxt-catalog/` with three variations,
+`Hero_V06_TresInstancedShards` (TresJS instanced shader field), `Hero_V07_EditorialChapterRail`
+(GSAP pinning + SplitText + Observer drag) and `Hero_V08_TresLiquidTerrain` (displaced terrain with
+shader-derived normals). The track derives its prerender routes from the manifest, mirrors the React
+HUD's DOM contract, and degrades honestly without WebGL2. `npm test` now type-checks both tracks.
+
+**Part 2 (next):** the standalone vanilla track — `docs/vanilla/**`, no build step, no dependencies:
+a raw WebGL2 raymarch hero and a Canvas2D + Motion One kinetic-brutal hero, each registered in
+`catalog/catalog.json` with `href: "vanilla/<slug>/"`. Batch 2 closes only when the reel contains a
+GIF for every variation — including these two.
 
 ### When Batch 2 starts (Nuxt 4 + TresJS + vanilla WebGL)
 1. `npx nuxi init apps/nuxt-catalog` — or hand-scaffold Nuxt 4 + TS. Keep `ssr: false` for WebGL routes;

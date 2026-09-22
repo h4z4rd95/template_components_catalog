@@ -974,8 +974,20 @@ async function main() {
   const manifest = JSON.parse(await readFile(join(DOCS, "data", "catalog.json"), "utf8"));
   const variations = manifest.variations.filter((v) => v.status !== "planned");
 
-  const targets = [{ key: "hub", path: "/" }].concat(
-    variations.map((v) => ({ key: v.slug, path: `/${v.href}index.html`, variation: v })),
+  // Navigate to the *directory* URL, never `…/index.html`: that is the address a visitor, the hub's
+  // iframes and GitHub Pages all use, and a client-side router may legitimately refuse the explicit
+  // file form (Nuxt does: it 404s `/route/index.html` while serving `/route/` perfectly). The file
+  // is still what we check for existence below.
+  // The hub runs its previews live — that is the product. Four is the sweet spot for a capture:
+  // enough real artwork to prove the grid composes, few enough that a software rasterizer finishes
+  // the tour (six cost ~9 minutes; four cost ~3). Pass ?live=0..6 by hand to see the other budgets.
+  const targets = [{ key: "hub", path: "/?live=4" }].concat(
+    variations.map((v) => ({
+      key: v.slug,
+      path: `/${v.href}`,
+      file: join(DOCS, v.href, "index.html"),
+      variation: v,
+    })),
   );
 
   const selected = ONLY ? targets.filter((t) => t.key === ONLY) : targets;
@@ -988,7 +1000,7 @@ async function main() {
   for (const target of selected) {
     if (target.key === "hub") continue;
     try {
-      await stat(join(DOCS, target.path.replace(/^\//, "")));
+      await stat(target.file ?? join(DOCS, "index.html"));
     } catch {
       console.error(`\n  ✖ docs${target.path} does not exist. Run \`npm run build\` first.\n`);
       process.exit(1);

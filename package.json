@@ -2,7 +2,7 @@
   "name": "template-components-catalog",
   "private": true,
   "version": "1.0.0",
-  "description": "The Catalog — an Awwwards-grade, live, scrollable showroom of components across Next.js, Nuxt and vanilla stacks.",
+  "description": "The Catalog \u2014 an Awwwards-grade, live, scrollable showroom of components across Next.js, Nuxt and vanilla stacks.",
   "type": "module",
   "workspaces": [
     "apps/*",
@@ -22,12 +22,13 @@
     "preview": "node scripts/serve.mjs",
     "check:styles": "node scripts/check-styles.mjs",
     "test:hub": "node scripts/smoke-hub.mjs",
-    "typecheck": "npm --workspace @catalog/next run typecheck",
+    "typecheck": "npm --workspace @catalog/next run typecheck && npm --workspace @catalog/nuxt run typecheck",
     "test": "npm run catalog:sync && npm run check:styles && npm run typecheck && npm run test:hub",
     "clean": "node -e \"const{rmSync}=require('fs');['apps/next-catalog/.next','apps/next-catalog/out','apps/nuxt-catalog/.nuxt','apps/nuxt-catalog/.output','docs/framework'].forEach(p=>rmSync(p,{recursive:true,force:true}));console.log('cleaned')\"",
     "setup:browser": "node scripts/setup-browser.mjs",
     "verify:browser": "node scripts/vision.mjs",
-    "verify:browser:audit": "node scripts/vision.mjs --audit"
+    "verify:browser:audit": "node scripts/vision.mjs --audit",
+    "typecheck:nuxt": "npm --workspace @catalog/nuxt run typecheck"
   },
   "devDependencies": {
     "@sparticuz/chromium": "^153.0.0",

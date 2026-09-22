@@ -84,7 +84,10 @@ export const clampDpr = (dpr = 1, tier: QualityTier = qualityTier()): number =>
  * Watches for runtime slowdowns (browser throttling, thermal falloff) and lets a scene
  * drop one tier. Returns an unsubscribe function.
  */
-export function watchPerformance(onDegrade: (fps: number) => void, { floor = 34, window = 90 } = {}): () => void {
+export function watchPerformance(
+  onDegrade: (fps: number) => void,
+  { floor = 34, window = 90, once = false }: { floor?: number; window?: number; once?: boolean } = {},
+): () => void {
   if (!isBrowser) return () => {};
   let frames = 0;
   let start = performance.now();
@@ -97,7 +100,18 @@ export function watchPerformance(onDegrade: (fps: number) => void, { floor = 34,
     const now = performance.now();
     if (now - start >= 1000) {
       const fps = (frames * 1000) / (now - start);
-      if (fps < floor && fps > 0) onDegrade(fps);
+      if (fps < floor && fps > 0) {
+        // `once: true` is the right default for *destructive* reactions (reallocating geometry,
+        // rebuilding a scene): a slow device stays slow, and rebuilding every second turns one
+        // stutter into a page that never finishes a frame.
+        if (once) {
+          alive = false;
+          cancelAnimationFrame(raf);
+          onDegrade(fps);
+          return;
+        }
+        onDegrade(fps);
+      }
       frames = 0;
       start = now;
     }

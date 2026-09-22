@@ -8,13 +8,41 @@
     "updated": "2026-09-21"
   },
   "disciplines": [
-    { "id": "Hero", "label": "Hero Sections", "blurb": "Above-the-fold statements: type-driven, 3D-driven, scroll-locked." },
-    { "id": "Nav", "label": "Navigation & Mega-Menus", "blurb": "Systems that reveal, morph and anticipate." },
-    { "id": "Loader", "label": "Loaders & Transitions", "blurb": "Preloaders, curtain wipes, fluid page changes." },
-    { "id": "Scroll", "label": "Scroll & Pinning", "blurb": "Infinite canvases, scrubbed timelines, section triggers." },
-    { "id": "Footer", "label": "Footers & CTA Zones", "blurb": "Endings that convert: marquees, magnetic CTAs, sign-offs." },
-    { "id": "UX", "label": "UX Primitives", "blurb": "Magnetic buttons, inertia cursors, ripples, toggles." },
-    { "id": "Dashboard", "label": "App & Dashboards", "blurb": "Glassmorphic tables, live telemetry, interactive node graphs." }
+    {
+      "id": "Hero",
+      "label": "Hero Sections",
+      "blurb": "Above-the-fold statements: type-driven, 3D-driven, scroll-locked."
+    },
+    {
+      "id": "Nav",
+      "label": "Navigation & Mega-Menus",
+      "blurb": "Systems that reveal, morph and anticipate."
+    },
+    {
+      "id": "Loader",
+      "label": "Loaders & Transitions",
+      "blurb": "Preloaders, curtain wipes, fluid page changes."
+    },
+    {
+      "id": "Scroll",
+      "label": "Scroll & Pinning",
+      "blurb": "Infinite canvases, scrubbed timelines, section triggers."
+    },
+    {
+      "id": "Footer",
+      "label": "Footers & CTA Zones",
+      "blurb": "Endings that convert: marquees, magnetic CTAs, sign-offs."
+    },
+    {
+      "id": "UX",
+      "label": "UX Primitives",
+      "blurb": "Magnetic buttons, inertia cursors, ripples, toggles."
+    },
+    {
+      "id": "Dashboard",
+      "label": "App & Dashboards",
+      "blurb": "Glassmorphic tables, live telemetry, interactive node graphs."
+    }
   ],
   "variations": [
     {
@@ -22,75 +50,246 @@
       "discipline": "Hero",
       "batch": 1,
       "title": "Brutal Grid Cascade",
-      "stack": ["Next.js 16", "React 19", "GSAP Timeline", "SplitText", "Observer", "CSS Grid"],
-      "vibe": "Kinetic Typography · Neo-Brutalism",
+      "stack": [
+        "Next.js 16",
+        "React 19",
+        "GSAP Timeline",
+        "SplitText",
+        "Observer",
+        "CSS Grid"
+      ],
+      "vibe": "Kinetic Typography \u00b7 Neo-Brutalism",
       "interaction": "The headline punches in tile-by-tile from a raw 12-column board, then scroll skews the board and re-speeds the marquee band while hover inverts individual tiles.",
       "href": "framework/next/hero/kinetic-brutal-grid/",
       "source": "apps/next-catalog/src/heroes/kinetic-brutal-grid/",
       "status": "stable",
       "accent": "#FF3B1F",
-      "tags": ["kinetic-type", "brutalism", "gsap", "scroll", "marquee", "high-contrast"],
-      "perf": { "webgl": false, "assetWeight": "light" }
+      "tags": [
+        "kinetic-type",
+        "brutalism",
+        "gsap",
+        "scroll",
+        "marquee",
+        "high-contrast"
+      ],
+      "perf": {
+        "webgl": false,
+        "assetWeight": "light"
+      }
     },
     {
       "id": "Hero_V02_EditorialScrollLock",
       "discipline": "Hero",
       "batch": 1,
       "title": "Editorial Scroll Lock",
-      "stack": ["Next.js 16", "React 19", "GSAP ScrollTrigger", "Lenis", "CSS Grid"],
-      "vibe": "Luxury Minimalism · Editorial",
+      "stack": [
+        "Next.js 16",
+        "React 19",
+        "GSAP ScrollTrigger",
+        "Lenis",
+        "CSS Grid"
+      ],
+      "vibe": "Luxury Minimalism \u00b7 Editorial",
       "interaction": "A 320vh stage pins the viewport while one line of type deconstructs into an editorial image grid; Lenis keeps the whole scrub butter-smooth.",
       "href": "framework/next/hero/editorial-scroll-lock/",
       "source": "apps/next-catalog/src/heroes/editorial-scroll-lock/",
       "status": "stable",
       "accent": "#C6A15B",
-      "tags": ["editorial", "minimalism", "scrolltrigger", "pin", "scrub", "lenis", "typography"],
-      "perf": { "webgl": false, "assetWeight": "light" }
+      "tags": [
+        "editorial",
+        "minimalism",
+        "scrolltrigger",
+        "pin",
+        "scrub",
+        "lenis",
+        "typography"
+      ],
+      "perf": {
+        "webgl": false,
+        "assetWeight": "light"
+      }
     },
     {
       "id": "Hero_V03_ParticleMorphField",
       "discipline": "Hero",
       "batch": 1,
       "title": "Particle Morph Field",
-      "stack": ["Next.js 16", "React Three Fiber", "Drei", "Three.js", "GLSL (raw)", "Motion"],
+      "stack": [
+        "Next.js 16",
+        "React Three Fiber",
+        "Drei",
+        "Three.js",
+        "GLSL (raw)",
+        "Motion"
+      ],
       "vibe": "Immersive WebGL-First",
-      "interaction": "30k GPU points morph torus → helix → sphere as you scroll, the cursor dents and displaces the field with springy inertia, and a click sends a shockwave through the cloud while a triple-ring ripple cursor replaces the pointer.",
+      "interaction": "30k GPU points morph torus \u2192 helix \u2192 sphere as you scroll, the cursor dents and displaces the field with springy inertia, and a click sends a shockwave through the cloud while a triple-ring ripple cursor replaces the pointer.",
       "href": "framework/next/hero/particle-morph-field/",
       "source": "apps/next-catalog/src/heroes/particle-morph-field/",
       "status": "stable",
       "accent": "#5B8CFF",
-      "tags": ["webgl", "r3f", "shader", "particles", "cursor", "scroll", "immersive"],
-      "perf": { "webgl": true, "assetWeight": "medium" }
+      "tags": [
+        "webgl",
+        "r3f",
+        "shader",
+        "particles",
+        "cursor",
+        "scroll",
+        "immersive"
+      ],
+      "perf": {
+        "webgl": true,
+        "assetWeight": "medium"
+      }
     },
     {
       "id": "Hero_V04_CyberScannerHUD",
       "discipline": "Hero",
       "batch": 1,
       "title": "Cyber Scanner HUD",
-      "stack": ["Next.js 16", "React 19", "Canvas2D", "GSAP Timeline", "SplitText", "CSS"],
-      "vibe": "Cyberpunk · High-Density UI",
+      "stack": [
+        "Next.js 16",
+        "React 19",
+        "Canvas2D",
+        "GSAP Timeline",
+        "SplitText",
+        "CSS"
+      ],
+      "vibe": "Cyberpunk \u00b7 High-Density UI",
       "interaction": "A boot sequence types itself out over a dense telemetry HUD while a scanline sweeps a perspective grid; hovering fires radar pings and scrolling detonates a micro-glitch burst.",
       "href": "framework/next/hero/cyber-scanner-hud/",
       "source": "apps/next-catalog/src/heroes/cyber-scanner-hud/",
       "status": "stable",
       "accent": "#00F0A8",
-      "tags": ["cyberpunk", "glitch", "canvas", "telemetry", "hud", "typewriter", "grid"],
-      "perf": { "webgl": false, "assetWeight": "medium" }
+      "tags": [
+        "cyberpunk",
+        "glitch",
+        "canvas",
+        "telemetry",
+        "hud",
+        "typewriter",
+        "grid"
+      ],
+      "perf": {
+        "webgl": false,
+        "assetWeight": "medium"
+      }
     },
     {
       "id": "Hero_V05_LiquidChromaGlass",
       "discipline": "Hero",
       "batch": 1,
       "title": "Liquid Chroma Glass",
-      "stack": ["Next.js 16", "Raw WebGL2", "Custom Fragment Shader", "Motion", "Backdrop Filter"],
-      "vibe": "Chromatic Liquid Gradient · Glassmorphism",
+      "stack": [
+        "Next.js 16",
+        "Raw WebGL2",
+        "Custom Fragment Shader",
+        "Motion",
+        "Backdrop Filter"
+      ],
+      "vibe": "Chromatic Liquid Gradient \u00b7 Glassmorphism",
       "interaction": "A mesh gradient is advected by your mouse inertia, scroll zooms the liquid field, and glassmorphic cards drift over it in staggered parallax.",
       "href": "framework/next/hero/liquid-chroma-glass/",
       "source": "apps/next-catalog/src/heroes/liquid-chroma-glass/",
       "status": "stable",
       "accent": "#FF4FD8",
-      "tags": ["gradient", "glassmorphism", "webgl2", "shader", "inertia", "motion", "luxury"],
-      "perf": { "webgl": true, "assetWeight": "medium" }
+      "tags": [
+        "gradient",
+        "glassmorphism",
+        "webgl2",
+        "shader",
+        "inertia",
+        "motion",
+        "luxury"
+      ],
+      "perf": {
+        "webgl": true,
+        "assetWeight": "medium"
+      }
+    },
+    {
+      "id": "Hero_V06_TresInstancedShards",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Volumetric Shard Field",
+      "stack": [
+        "Nuxt 4",
+        "Vue 3",
+        "TresJS",
+        "Three.js",
+        "Custom GLSL",
+        "GSAP ScrollTrigger"
+      ],
+      "vibe": "Immersive WebGL-First \u00b7 Volumetric",
+      "interaction": "Instanced shards drift on one shared curl-noise field; the pointer opens a pressure bubble in the cloud and scrolling stretches the field into depth while the camera stays locked.",
+      "href": "framework/nuxt/hero/tres-instanced-shards/",
+      "source": "apps/nuxt-catalog/app/components/heroes/TresInstancedShards.vue",
+      "status": "stable",
+      "accent": "#6EE7FF",
+      "tags": [
+        "webgl",
+        "instancing",
+        "nuxt",
+        "tresjs",
+        "glsl",
+        "volumetric"
+      ]
+    },
+    {
+      "id": "Hero_V07_EditorialChapterRail",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Editorial Chapter Rail",
+      "stack": [
+        "Nuxt 4",
+        "Vue 3",
+        "GSAP ScrollTrigger",
+        "Observer",
+        "SplitText",
+        "CSS Grid"
+      ],
+      "vibe": "Luxury Minimalism \u00b7 Editorial",
+      "interaction": "Scroll pins the spread and glides three chapters sideways; SplitText reveals each headline word-by-word, and drag, arrow keys or the index all drive the same scroll progress.",
+      "href": "framework/nuxt/hero/editorial-chapter-rail/",
+      "source": "apps/nuxt-catalog/app/components/heroes/EditorialChapterRail.vue",
+      "status": "stable",
+      "accent": "#D8B472",
+      "tags": [
+        "editorial",
+        "luxury",
+        "gsap",
+        "pinning",
+        "splittext",
+        "horizontal"
+      ]
+    },
+    {
+      "id": "Hero_V08_TresLiquidTerrain",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Liquid Terrain Sweep",
+      "stack": [
+        "Nuxt 4",
+        "Vue 3",
+        "TresJS",
+        "Three.js",
+        "Custom GLSL",
+        "GSAP ScrollTrigger"
+      ],
+      "vibe": "Chromatic Liquid Gradient \u00b7 Shader Terrain",
+      "interaction": "Ridged-noise displacement with shader-derived normals; the pointer is a bump of light crossing the plane, and scrolling sweeps the three-stop palette from deep water to magenta.",
+      "href": "framework/nuxt/hero/tres-liquid-terrain/",
+      "source": "apps/nuxt-catalog/app/components/heroes/TresLiquidTerrain.vue",
+      "status": "stable",
+      "accent": "#9D7BFF",
+      "tags": [
+        "glsl",
+        "terrain",
+        "chromatic",
+        "nuxt",
+        "tresjs",
+        "scroll"
+      ]
     }
   ]
 }

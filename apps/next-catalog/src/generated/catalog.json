@@ -221,13 +221,106 @@
       "slug": "liquid-chroma-glass",
       "route": "hero/liquid-chroma-glass/",
       "url": "framework/next/hero/liquid-chroma-glass/"
+    },
+    {
+      "id": "Hero_V06_TresInstancedShards",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Volumetric Shard Field",
+      "stack": [
+        "Nuxt 4",
+        "Vue 3",
+        "TresJS",
+        "Three.js",
+        "Custom GLSL",
+        "GSAP ScrollTrigger"
+      ],
+      "vibe": "Immersive WebGL-First · Volumetric",
+      "interaction": "Instanced shards drift on one shared curl-noise field; the pointer opens a pressure bubble in the cloud and scrolling stretches the field into depth while the camera stays locked.",
+      "href": "framework/nuxt/hero/tres-instanced-shards/",
+      "source": "apps/nuxt-catalog/app/components/heroes/TresInstancedShards.vue",
+      "status": "stable",
+      "accent": "#6EE7FF",
+      "tags": [
+        "webgl",
+        "instancing",
+        "nuxt",
+        "tresjs",
+        "glsl",
+        "volumetric"
+      ],
+      "slug": "tres-instanced-shards",
+      "route": "hero/tres-instanced-shards/",
+      "url": "framework/nuxt/hero/tres-instanced-shards/"
+    },
+    {
+      "id": "Hero_V07_EditorialChapterRail",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Editorial Chapter Rail",
+      "stack": [
+        "Nuxt 4",
+        "Vue 3",
+        "GSAP ScrollTrigger",
+        "Observer",
+        "SplitText",
+        "CSS Grid"
+      ],
+      "vibe": "Luxury Minimalism · Editorial",
+      "interaction": "Scroll pins the spread and glides three chapters sideways; SplitText reveals each headline word-by-word, and drag, arrow keys or the index all drive the same scroll progress.",
+      "href": "framework/nuxt/hero/editorial-chapter-rail/",
+      "source": "apps/nuxt-catalog/app/components/heroes/EditorialChapterRail.vue",
+      "status": "stable",
+      "accent": "#D8B472",
+      "tags": [
+        "editorial",
+        "luxury",
+        "gsap",
+        "pinning",
+        "splittext",
+        "horizontal"
+      ],
+      "slug": "editorial-chapter-rail",
+      "route": "hero/editorial-chapter-rail/",
+      "url": "framework/nuxt/hero/editorial-chapter-rail/"
+    },
+    {
+      "id": "Hero_V08_TresLiquidTerrain",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Liquid Terrain Sweep",
+      "stack": [
+        "Nuxt 4",
+        "Vue 3",
+        "TresJS",
+        "Three.js",
+        "Custom GLSL",
+        "GSAP ScrollTrigger"
+      ],
+      "vibe": "Chromatic Liquid Gradient · Shader Terrain",
+      "interaction": "Ridged-noise displacement with shader-derived normals; the pointer is a bump of light crossing the plane, and scrolling sweeps the three-stop palette from deep water to magenta.",
+      "href": "framework/nuxt/hero/tres-liquid-terrain/",
+      "source": "apps/nuxt-catalog/app/components/heroes/TresLiquidTerrain.vue",
+      "status": "stable",
+      "accent": "#9D7BFF",
+      "tags": [
+        "glsl",
+        "terrain",
+        "chromatic",
+        "nuxt",
+        "tresjs",
+        "scroll"
+      ],
+      "slug": "tres-liquid-terrain",
+      "route": "hero/tres-liquid-terrain/",
+      "url": "framework/nuxt/hero/tres-liquid-terrain/"
     }
   ],
   "counts": {
-    "total": 5,
-    "stable": 5,
+    "total": 8,
+    "stable": 8,
     "beta": 0,
     "planned": 0
   },
-  "generatedAt": "2026-09-22T13:18:27.435Z"
+  "generatedAt": "2026-09-22T13:39:33.473Z"
 }
