@@ -2,7 +2,7 @@
   "name": "template-components-catalog",
   "private": true,
   "version": "1.0.0",
-  "description": "The Catalog \u2014 an Awwwards-grade, live, scrollable showroom of components across Next.js, Nuxt and vanilla stacks.",
+  "description": "The Catalog — an Awwwards-grade, live, scrollable showroom of components across Next.js, Nuxt and vanilla stacks.",
   "type": "module",
   "workspaces": [
     "apps/*",

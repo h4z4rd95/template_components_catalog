@@ -796,7 +796,7 @@
           var stored = window.localStorage.getItem("catalog:hud:collapsed");
           if (stored === "1") setExpanded(false);
           else if (stored === "0") setExpanded(true);
-          else if (window.innerWidth < 900 || window.innerHeight < 720) setExpanded(false);
+          else if (window.innerWidth < 900 || window.innerHeight < 860) setExpanded(false);
         } catch (err) {
           /* ignore */
         }
