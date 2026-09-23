@@ -58,7 +58,7 @@
         "Observer",
         "CSS Grid"
       ],
-      "vibe": "Kinetic Typography \u00b7 Neo-Brutalism",
+      "vibe": "Kinetic Typography · Neo-Brutalism",
       "interaction": "The headline punches in tile-by-tile from a raw 12-column board, then scroll skews the board and re-speeds the marquee band while hover inverts individual tiles.",
       "href": "framework/next/hero/kinetic-brutal-grid/",
       "source": "apps/next-catalog/src/heroes/kinetic-brutal-grid/",
@@ -89,7 +89,7 @@
         "Lenis",
         "CSS Grid"
       ],
-      "vibe": "Luxury Minimalism \u00b7 Editorial",
+      "vibe": "Luxury Minimalism · Editorial",
       "interaction": "A 320vh stage pins the viewport while one line of type deconstructs into an editorial image grid; Lenis keeps the whole scrub butter-smooth.",
       "href": "framework/next/hero/editorial-scroll-lock/",
       "source": "apps/next-catalog/src/heroes/editorial-scroll-lock/",
@@ -123,7 +123,7 @@
         "Motion"
       ],
       "vibe": "Immersive WebGL-First",
-      "interaction": "30k GPU points morph torus \u2192 helix \u2192 sphere as you scroll, the cursor dents and displaces the field with springy inertia, and a click sends a shockwave through the cloud while a triple-ring ripple cursor replaces the pointer.",
+      "interaction": "30k GPU points morph torus → helix → sphere as you scroll, the cursor dents and displaces the field with springy inertia, and a click sends a shockwave through the cloud while a triple-ring ripple cursor replaces the pointer.",
       "href": "framework/next/hero/particle-morph-field/",
       "source": "apps/next-catalog/src/heroes/particle-morph-field/",
       "status": "stable",
@@ -155,7 +155,7 @@
         "SplitText",
         "CSS"
       ],
-      "vibe": "Cyberpunk \u00b7 High-Density UI",
+      "vibe": "Cyberpunk · High-Density UI",
       "interaction": "A boot sequence types itself out over a dense telemetry HUD while a scanline sweeps a perspective grid; hovering fires radar pings and scrolling detonates a micro-glitch burst.",
       "href": "framework/next/hero/cyber-scanner-hud/",
       "source": "apps/next-catalog/src/heroes/cyber-scanner-hud/",
@@ -187,7 +187,7 @@
         "Motion",
         "Backdrop Filter"
       ],
-      "vibe": "Chromatic Liquid Gradient \u00b7 Glassmorphism",
+      "vibe": "Chromatic Liquid Gradient · Glassmorphism",
       "interaction": "A mesh gradient is advected by your mouse inertia, scroll zooms the liquid field, and glassmorphic cards drift over it in staggered parallax.",
       "href": "framework/next/hero/liquid-chroma-glass/",
       "source": "apps/next-catalog/src/heroes/liquid-chroma-glass/",
@@ -220,7 +220,7 @@
         "Custom GLSL",
         "GSAP ScrollTrigger"
       ],
-      "vibe": "Immersive WebGL-First \u00b7 Volumetric",
+      "vibe": "Immersive WebGL-First · Volumetric",
       "interaction": "Instanced shards drift on one shared curl-noise field; the pointer opens a pressure bubble in the cloud and scrolling stretches the field into depth while the camera stays locked.",
       "href": "framework/nuxt/hero/tres-instanced-shards/",
       "source": "apps/nuxt-catalog/app/components/heroes/TresInstancedShards.vue",
@@ -248,7 +248,7 @@
         "SplitText",
         "CSS Grid"
       ],
-      "vibe": "Luxury Minimalism \u00b7 Editorial",
+      "vibe": "Luxury Minimalism · Editorial",
       "interaction": "Scroll pins the spread and glides three chapters sideways; SplitText reveals each headline word-by-word, and drag, arrow keys or the index all drive the same scroll progress.",
       "href": "framework/nuxt/hero/editorial-chapter-rail/",
       "source": "apps/nuxt-catalog/app/components/heroes/EditorialChapterRail.vue",
@@ -276,7 +276,7 @@
         "Custom GLSL",
         "GSAP ScrollTrigger"
       ],
-      "vibe": "Chromatic Liquid Gradient \u00b7 Shader Terrain",
+      "vibe": "Chromatic Liquid Gradient · Shader Terrain",
       "interaction": "Ridged-noise displacement with shader-derived normals; the pointer is a bump of light crossing the plane, and scrolling sweeps the three-stop palette from deep water to magenta.",
       "href": "framework/nuxt/hero/tres-liquid-terrain/",
       "source": "apps/nuxt-catalog/app/components/heroes/TresLiquidTerrain.vue",
@@ -303,7 +303,7 @@
         "Canvas",
         "CSS"
       ],
-      "vibe": "Immersive WebGL-First \u00b7 Volumetric",
+      "vibe": "Immersive WebGL-First · Volumetric",
       "interaction": "The pointer stirs a raymarched noise volume and scrolling dollies the camera through it, raising exposure as the glowing core passes the frame centre.",
       "href": "vanilla/raymarch-nebula/",
       "source": "docs/vanilla/raymarch-nebula/index.html",
@@ -316,6 +316,33 @@
         "no-dependencies",
         "volumetric",
         "glsl"
+      ]
+    },
+    {
+      "id": "Hero_V10_BrutalStampPress",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Letterpress Riot",
+      "stack": [
+        "Vanilla HTML5",
+        "Canvas2D",
+        "Motion One",
+        "CSS"
+      ],
+      "vibe": "Kinetic Typography · Neo-Brutalism · Print-shop",
+      "interaction": "The pointer presses ink into a square halftone while scrolling skews the headline and spins the marquee bands; every click strikes the press and leaves an impression.",
+      "href": "vanilla/brutal-stamp-press/",
+      "source": "docs/vanilla/brutal-stamp-press/index.html",
+      "status": "stable",
+      "accent": "#D8FF36",
+      "tags": [
+        "vanilla",
+        "canvas2d",
+        "motion-one",
+        "kinetic-typography",
+        "neo-brutalism",
+        "halftone",
+        "no-bundler"
       ]
     }
   ]

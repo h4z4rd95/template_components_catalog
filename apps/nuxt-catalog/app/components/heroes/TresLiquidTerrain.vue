@@ -11,7 +11,15 @@
  * so a visitor without WebGL gets a composed gradient poster and an honest notice instead.
  */
 import { TresCanvas } from "@tresjs/core";
-import { clampDpr, prefersReducedMotion, qualityTier, supportsWebGL2, watchPerformance, type QualityTier } from "@catalog/shared";
+import {
+  clampDpr,
+  prefersReducedMotion,
+  qualityTier,
+  softwareRenderer,
+  supportsWebGL2,
+  watchPerformance,
+  type QualityTier,
+} from "@catalog/shared";
 import { glsl } from "@catalog/shared";
 import * as THREE from "three";
 import gsap from "gsap";
@@ -192,7 +200,8 @@ function onPointerMove(event: PointerEvent) {
 onMounted(() => {
   reduced.value = prefersReducedMotion();
   supported.value = supportsWebGL2();
-  tier.value = qualityTier();
+  // See TresInstancedShards: emulated renderers start one tier lower than a slow GPU.
+  tier.value = softwareRenderer() ? "low" : qualityTier();
   dpr.value = clampDpr(window.devicePixelRatio, tier.value);
   segments.value = SEGMENTS_BY_TIER[tier.value];
 
@@ -254,7 +263,10 @@ onUnmounted(() => {
         @loop="onLoop"
       >
         <TresPerspectiveCamera :args="[42, 1.6, 0.1, 60]" :position="cameraPosition" :fov="42" />
-        <TresPrimitive :key="segments" :object="terrain" />
+        <!-- `primitive`, lowercase: TresJS resolves `TresPrimitive` to a bare `Primitive` on the
+             THREE namespace, which does not exist — the render then throws on every update and the
+             page spins. This is the documented wrapper for an object we built by hand. -->
+        <primitive :key="segments" :object="terrain" />
       </TresCanvas>
 
       <div v-else class="terrain__poster">

@@ -1,0 +1,1963 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light" />
+    <title>Hero_V10_BrutalStampPress — Letterpress Riot | The Catalog</title>
+    <meta
+      name="description"
+      content="A kinetic-brutalist letterpress hero: springs, a halftone drawn dot by dot on a 2D canvas, and scroll-driven marquee bands. Vanilla HTML5, Motion One, no bundler, no CDN."
+    />
+    <style>
+      /* ── shell ──────────────────────────────────────────────────────────────────────────────
+         The vanilla track ships no bundler and no CDN. Two same-origin vendored assets are all it
+         loads: docs/vanilla/shared/vendor/motion.min.js and one woff2 display face. Everything
+         else — the halftone, the marquee integrator, the telemetry — is written here by hand. */
+      @font-face {
+        font-family: "Archivo Black";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("../shared/fonts/archivo-black-latin-400-normal.woff2") format("woff2");
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+          U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+          U+FEFF, U+FFFD;
+      }
+
+      :root {
+        --paper: #f3efe4;
+        --paper-2: #e7e1cf;
+        --ink: #0e0e10;
+        --ink-2: #1b1b1f;
+        --ink-soft: rgba(14, 14, 16, 0.66);
+        --ink-faint: rgba(14, 14, 16, 0.34);
+        --line: rgba(14, 14, 16, 0.16);
+        --line-2: rgba(14, 14, 16, 0.28);
+        --acid: #d8ff36;
+        --hot: #ff2d55;
+        --accent: #d8ff36;
+        --chrome-h: 2.9rem;
+        --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        --mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+        --display: "Archivo Black", "Arial Black", "Helvetica Neue", Impact, system-ui, sans-serif;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--sans);
+        -webkit-text-size-adjust: 100%;
+      }
+
+      /* `clip`, not `hidden`: the rotated marquee bands must never create a scroll container. */
+      body {
+        margin: 0;
+        overflow-x: clip;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* An author `display` must never defeat the `hidden` attribute. */
+      [hidden] {
+        display: none !important;
+      }
+
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        z-index: 9999;
+        padding: 0.6rem 0.9rem;
+        background: var(--ink);
+        color: var(--paper);
+        font: 600 0.7rem/1 var(--mono);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      .skip:focus {
+        left: 0.5rem;
+        top: calc(var(--chrome-h) + 0.5rem);
+      }
+
+      :focus-visible {
+        outline: 2px solid var(--hot);
+        outline-offset: 3px;
+      }
+
+      /* ── host chrome: the same reserved 2.9rem band the framework tracks use ───────────────── */
+      .chrome {
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 9000;
+        height: var(--chrome-h);
+        display: flex;
+        align-items: center;
+        gap: 0.9rem;
+        padding: 0 clamp(0.75rem, 3vw, 1.75rem);
+        border-bottom: 1px solid rgba(243, 239, 228, 0.16);
+        background: rgba(14, 14, 16, 0.94);
+        backdrop-filter: blur(14px) saturate(140%);
+        font: 500 0.68rem/1 var(--mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(243, 239, 228, 0.62);
+      }
+
+      .chrome__mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--paper);
+        font-weight: 700;
+      }
+
+      .chrome__dot {
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 50%;
+        background: var(--acid);
+      }
+
+      .chrome__counter {
+        margin-left: auto;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+
+      .chrome a:hover,
+      .chrome a:focus-visible {
+        color: var(--paper);
+        text-decoration: underline;
+        text-underline-offset: 0.25em;
+      }
+
+      /* ── stage: paper, a printed grid, and one halftone canvas ─────────────────────────────── */
+      .stage {
+        position: relative;
+        min-height: 100svh;
+        padding: calc(var(--chrome-h) + clamp(2.4rem, 8vh, 6rem)) clamp(1.1rem, 6vw, 6rem)
+          clamp(2.6rem, 9vh, 5.5rem);
+        overflow: hidden;
+        background: var(--paper);
+      }
+
+      .stage__grid {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(to right, var(--line) 1px, transparent 1px),
+          linear-gradient(to bottom, var(--line) 1px, transparent 1px);
+        background-size: clamp(2.6rem, 6vw, 5.2rem) clamp(2.6rem, 6vw, 5.2rem);
+        opacity: 0.5;
+        -webkit-mask-image: radial-gradient(120% 100% at 20% 0%, #000 20%, transparent 78%);
+        mask-image: radial-gradient(120% 100% at 20% 0%, #000 20%, transparent 78%);
+        pointer-events: none;
+      }
+
+      #ink {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+
+      .stage__flash {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background: var(--acid);
+        opacity: 0;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+      }
+
+      .stage__inner {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr);
+        gap: clamp(1.4rem, 4vw, 3.4rem);
+        align-items: start;
+        min-height: calc(100svh - var(--chrome-h) - 8rem);
+        max-width: 74rem;
+      }
+
+      .col {
+        display: grid;
+        gap: clamp(0.9rem, 2.4vh, 1.5rem);
+        align-content: start;
+        min-width: 0;
+      }
+
+      /* Both columns ride the top of the stage. The metadata HUD owns the bottom-left corner of
+         every variation in the catalogue, so the headline is sized to finish above it — the third
+         plate is the punchline of the hero and must never be the part that gets covered. */
+      .col--type {
+        align-self: start;
+      }
+
+      .notice {
+        justify-self: start;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.45rem 0.7rem;
+        border: 2px solid var(--ink);
+        background: var(--paper);
+        font: 500 0.62rem/1.35 var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        max-width: 34rem;
+      }
+
+      .notice strong {
+        color: var(--hot);
+      }
+
+      .eyebrow {
+        font: 500 0.66rem/1 var(--mono);
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+
+      .eyebrow b {
+        color: var(--ink);
+      }
+
+      /* ── the kinetic type ──────────────────────────────────────────────────────────────────── */
+      .title {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(2.7rem, 9vw, 8.1rem);
+        line-height: 0.86;
+        letter-spacing: -0.035em;
+        text-transform: uppercase;
+        display: grid;
+        gap: clamp(0.1rem, 0.6vw, 0.35rem);
+      }
+
+      .plate {
+        display: block;
+        will-change: transform, opacity;
+      }
+
+      .word {
+        display: inline-block;
+      }
+
+      .word--solid {
+        color: var(--ink);
+        text-shadow: 0.075em 0.075em 0 var(--hot);
+      }
+
+      /* A knock-out: the paper is left clean behind the outlined word, so however dense the ink
+         field gets, "Type" still reads at a glance. */
+      .word--outline {
+        color: var(--paper);
+        background: var(--paper);
+        padding: 0 0.06em;
+        -webkit-text-stroke: clamp(1.5px, 0.3vw, 3.5px) var(--ink);
+        paint-order: stroke fill;
+        text-shadow: none;
+      }
+
+      .plate--3 {
+        justify-self: start;
+      }
+
+      .word--block {
+        position: relative;
+        padding: 0 0.14em 0.02em;
+        background: var(--acid);
+        color: var(--ink);
+        box-shadow: 0.075em 0.075em 0 var(--ink);
+      }
+
+      .word--block small {
+        position: absolute;
+        right: -0.2em;
+        bottom: -1.05em;
+        font: 500 0.66rem/1 var(--mono);
+        letter-spacing: 0.16em;
+        text-shadow: none;
+      }
+
+      /* Without JavaScript — or with Motion One unavailable — the type is simply *there*.
+         Only `.has-motion` may take the plates off screen, and a watchdog puts them back. */
+      .has-motion .plate {
+        opacity: 0;
+      }
+
+      .has-motion .fade {
+        opacity: 0;
+      }
+
+      .has-motion .card {
+        opacity: 0;
+        transform: translate3d(0, 44px, 0);
+      }
+
+      .card {
+        transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .plate.is-in,
+      .fade.is-in,
+      .card.is-in {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .lede {
+        max-width: 30rem;
+        margin: 0;
+        font: 400 clamp(0.95rem, 1.15vw, 1.12rem) / 1.62 var(--sans);
+        color: var(--ink-soft);
+      }
+
+      .lede b {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      .cta-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: clamp(0.7rem, 1.6vw, 1.1rem);
+        margin-top: 0.3rem;
+      }
+
+      .stamp-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        padding: 0.95rem 1.35rem;
+        border: 2px solid var(--ink);
+        background: var(--ink);
+        color: var(--paper);
+        cursor: pointer;
+        font: 500 0.7rem/1 var(--mono);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        box-shadow: 0.42rem 0.42rem 0 var(--hot);
+        transition: box-shadow 0.22s ease, transform 0.22s ease, background 0.22s ease;
+      }
+
+      .stamp-btn:hover,
+      .stamp-btn:focus-visible {
+        box-shadow: 0.62rem 0.62rem 0 var(--hot);
+      }
+
+      .stamp-btn:active,
+      .stamp-btn[data-struck] {
+        box-shadow: 0.06rem 0.06rem 0 var(--hot);
+        transform: translate(0.2rem, 0.2rem);
+      }
+
+      .stamp-btn span.k {
+        padding: 0.16rem 0.34rem;
+        border: 1px solid rgba(243, 239, 228, 0.5);
+        font-size: 0.58rem;
+        letter-spacing: 0.08em;
+      }
+
+      .ghost {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.9rem 0.2rem;
+        border-bottom: 2px solid var(--ink);
+        font: 500 0.7rem/1 var(--mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink);
+      }
+
+      .ghost:hover,
+      .ghost:focus-visible {
+        border-bottom-color: var(--hot);
+        color: var(--hot);
+      }
+
+      /* ── the rotary stamp badge ────────────────────────────────────────────────────────────── */
+      .badge {
+        position: relative;
+        justify-self: end;
+        width: clamp(7.5rem, 13vw, 10.5rem);
+        aspect-ratio: 1;
+        border: 0;
+        padding: 0;
+        background: none;
+        cursor: pointer;
+        color: var(--ink);
+      }
+
+      .badge__ring {
+        position: absolute;
+        inset: 0;
+      }
+
+      .badge__disc {
+        position: absolute;
+        inset: 16%;
+        display: grid;
+        place-items: center;
+        border: 2px solid var(--ink);
+        border-radius: 50%;
+        background: var(--hot);
+        color: var(--paper);
+        font: 400 clamp(1.5rem, 3vw, 2.4rem) / 1 var(--display);
+        box-shadow: 0.3rem 0.3rem 0 var(--ink);
+      }
+
+      .badge__spinner {
+        transform-origin: 50% 50%;
+      }
+
+      .badge__text {
+        font: 500 0.62rem var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        fill: var(--ink);
+      }
+
+      .badge__ticks line {
+        stroke: var(--ink);
+        stroke-width: 2;
+      }
+
+      /* ── telemetry ─────────────────────────────────────────────────────────────────────────── */
+      .panel {
+        position: absolute;
+        right: clamp(0.9rem, 3vw, 2.4rem);
+        bottom: calc(clamp(0.9rem, 3vw, 2.4rem) + 4.6rem);
+        z-index: 4;
+        width: min(21rem, calc(100vw - 2rem));
+        padding: 0.85rem 0.95rem;
+        border: 2px solid var(--ink);
+        background: rgba(243, 239, 228, 0.92);
+        backdrop-filter: blur(10px);
+        font-family: var(--mono);
+        box-shadow: 0.3rem 0.3rem 0 rgba(14, 14, 16, 0.16);
+      }
+
+      .panel dl {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.7rem 0.6rem;
+        margin: 0;
+      }
+
+      .panel dt {
+        font-size: 0.56rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      .panel dd {
+        margin: 0.28rem 0 0;
+        font-size: 0.92rem;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
+      }
+
+      .panel p {
+        margin: 0.75rem 0 0;
+        padding-top: 0.65rem;
+        border-top: 1px solid var(--line);
+        font-size: 0.6rem;
+        line-height: 1.5;
+        letter-spacing: 0.06em;
+        color: var(--ink-soft);
+        text-transform: uppercase;
+      }
+
+      /* ── marquee bands: the kinetic bridge between hero and blueprint ──────────────────────── */
+      .bands {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(0.6rem, 1.6vh, 1.4rem) 0;
+        background: var(--paper-2);
+        border-top: 2px solid var(--ink);
+        border-bottom: 2px solid var(--ink);
+      }
+
+      .band {
+        position: relative;
+        width: 112%;
+        margin-left: -6%;
+        overflow: hidden;
+        border-top: 2px solid var(--ink);
+        border-bottom: 2px solid var(--ink);
+      }
+
+      .band + .band {
+        margin-top: 0.5rem;
+      }
+
+      .band--ink {
+        background: var(--ink);
+        color: var(--paper);
+        transform: rotate(-1.1deg);
+      }
+
+      .band--acid {
+        background: var(--acid);
+        color: var(--ink);
+        transform: rotate(0.7deg);
+      }
+
+      .band__track {
+        display: flex;
+        width: max-content;
+        will-change: transform;
+      }
+
+      .band__half {
+        display: flex;
+        align-items: center;
+        gap: clamp(1.2rem, 3vw, 2.6rem);
+        padding-right: clamp(1.2rem, 3vw, 2.6rem);
+        font: 400 clamp(1.1rem, 2.6vw, 2.1rem) / 1 var(--display);
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        white-space: nowrap;
+      }
+
+      .band__half i {
+        font-style: normal;
+        color: var(--hot);
+      }
+
+      .band--acid .band__half i {
+        color: var(--ink);
+      }
+
+      .band__half em {
+        font-family: var(--mono);
+        font-style: normal;
+        font-size: 0.66rem;
+        letter-spacing: 0.2em;
+        opacity: 0.7;
+      }
+
+      /* ── blueprint ─────────────────────────────────────────────────────────────────────────── */
+      .notes {
+        background: var(--ink);
+        color: var(--paper);
+        padding: clamp(3rem, 9vh, 7rem) clamp(1.25rem, 6vw, 6rem);
+        display: grid;
+        gap: clamp(1.6rem, 4vh, 2.6rem);
+      }
+
+      .notes__eyebrow {
+        font: 500 0.66rem/1 var(--mono);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--acid);
+      }
+
+      .notes h2 {
+        margin: 0;
+        max-width: 46rem;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: clamp(1.7rem, 4vw, 3.2rem);
+        line-height: 1.02;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+      }
+
+      .notes h2 span {
+        color: var(--acid);
+      }
+
+      .notes__grid {
+        display: grid;
+        gap: clamp(0.8rem, 1.6vw, 1.1rem);
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+      }
+
+      .card {
+        display: grid;
+        gap: 0.55rem;
+        align-content: start;
+        padding: 1.15rem;
+        background: var(--paper);
+        color: var(--ink);
+        border: 2px solid var(--paper);
+        box-shadow: 0.34rem 0.34rem 0 var(--hot);
+        will-change: transform, opacity;
+      }
+
+      .card:nth-child(2n) {
+        box-shadow: 0.34rem 0.34rem 0 var(--acid);
+      }
+
+      .card h3 {
+        margin: 0;
+        font: 500 0.66rem/1 var(--mono);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      .card p {
+        margin: 0;
+        font: 400 0.88rem/1.66 var(--sans);
+        color: var(--ink-2);
+      }
+
+      .card code {
+        font-family: var(--mono);
+        font-size: 0.82em;
+        background: rgba(14, 14, 16, 0.07);
+        padding: 0.05em 0.28em;
+      }
+
+      .spec {
+        display: grid;
+        gap: 0.9rem 1.6rem;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+        margin: 0;
+        padding-top: 1.4rem;
+        border-top: 1px solid rgba(243, 239, 228, 0.22);
+      }
+
+      .spec dt {
+        font: 500 0.6rem/1 var(--mono);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(243, 239, 228, 0.5);
+      }
+
+      .spec dd {
+        margin: 0.35rem 0 0;
+        font-size: 0.9rem;
+      }
+
+      .spec dd em {
+        font-style: normal;
+        color: var(--acid);
+      }
+
+      /* ── foot ─────────────────────────────────────────────────────────────────────────────── */
+      .foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1.2rem;
+        padding: clamp(1.6rem, 5vh, 3rem) clamp(1.25rem, 6vw, 6rem);
+        border-top: 2px solid var(--ink);
+        font: 500 0.66rem/1 var(--mono);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+
+      .foot a {
+        border-bottom: 2px solid transparent;
+      }
+
+      .foot a:hover,
+      .foot a:focus-visible {
+        border-bottom-color: var(--ink);
+        color: var(--ink);
+      }
+
+      .foot span:last-child {
+        margin-left: auto;
+      }
+
+      /* ── metadata HUD (same DOM contract as the framework tracks) ─────────────────────────── */
+      .hud {
+        position: fixed;
+        left: clamp(0.75rem, 2.5vw, 1.6rem);
+        bottom: clamp(0.75rem, 2.5vw, 1.6rem);
+        z-index: 9500;
+        width: min(30rem, calc(100vw - 1.5rem));
+        border: 2px solid var(--ink);
+        background: rgba(243, 239, 228, 0.94);
+        backdrop-filter: blur(18px) saturate(140%);
+        box-shadow: 0.6rem 0.6rem 0 rgba(14, 14, 16, 0.5);
+        overflow: hidden;
+        font-family: var(--mono);
+        color: var(--ink);
+      }
+
+      .hud__tab {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.7rem 0.85rem;
+      }
+
+      .hud__dot {
+        width: 0.5rem;
+        height: 0.5rem;
+        border: 1.5px solid var(--ink);
+        border-radius: 50%;
+        background: var(--accent);
+        flex: none;
+      }
+
+      .hud__id {
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .hud__toggle {
+        margin-left: auto;
+        padding: 0.32rem 0.5rem;
+        border: 1.5px solid var(--ink);
+        background: transparent;
+        cursor: pointer;
+        font: 500 0.62rem/1 var(--mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+        white-space: nowrap;
+      }
+
+      .hud__toggle:hover,
+      .hud__toggle:focus-visible {
+        background: var(--ink);
+        color: var(--paper);
+      }
+
+      .hud__body {
+        display: grid;
+        gap: 0.7rem;
+        padding: 0 0.85rem 0.85rem;
+      }
+
+      .hud__head {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding-bottom: 0.6rem;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.58rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      .hud__badge {
+        padding: 0.22rem 0.4rem;
+        background: var(--ink);
+        color: var(--paper);
+        font-weight: 600;
+      }
+
+      .hud__status {
+        padding: 0.22rem 0.4rem;
+        border: 1px solid var(--line-2);
+        color: var(--ink-soft);
+      }
+
+      .hud__name {
+        margin: 0;
+        font-family: var(--display);
+        font-weight: 400;
+        font-size: 1.02rem;
+        letter-spacing: -0.01em;
+        text-transform: none;
+      }
+
+      .hud__title {
+        margin: 0;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        color: var(--ink-soft);
+      }
+
+      .hud__meta {
+        display: grid;
+        gap: 0.55rem;
+        margin: 0;
+      }
+
+      .hud__row {
+        display: grid;
+        grid-template-columns: 7.4rem 1fr;
+        gap: 0.6rem;
+        align-items: start;
+      }
+
+      .hud__row dt {
+        font-size: 0.56rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+      }
+
+      .hud__row dd {
+        margin: 0;
+      }
+
+      .hud__chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.32rem;
+      }
+
+      .hud__chip {
+        padding: 0.2rem 0.42rem;
+        border: 1px solid var(--line-2);
+        font-size: 0.58rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .hud__vibe {
+        font-size: 0.68rem;
+        line-height: 1.5;
+      }
+
+      .hud__note {
+        font-size: 0.68rem;
+        line-height: 1.55;
+        color: var(--ink-soft);
+      }
+
+      .hud__actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        padding-top: 0.65rem;
+        border-top: 1px solid var(--line);
+      }
+
+      .hud__action {
+        padding: 0.4rem 0.58rem;
+        border: 1.5px solid var(--line-2);
+        background: transparent;
+        cursor: pointer;
+        font: 500 0.58rem/1 var(--mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-soft);
+      }
+
+      .hud__action:hover,
+      .hud__action:focus-visible {
+        background: var(--ink);
+        color: var(--paper);
+        border-color: var(--ink);
+      }
+
+      /* ── responsive ───────────────────────────────────────────────────────────────────────── */
+      @media (max-width: 1100px) {
+        .stage__inner {
+          grid-template-columns: 1fr;
+          max-width: 100%;
+        }
+
+        .col--type {
+          align-self: start;
+        }
+
+        .badge {
+          justify-self: start;
+          width: clamp(7rem, 17vw, 9rem);
+        }
+      }
+
+      @media (max-width: 860px) {
+        .stage {
+          padding-bottom: 1.4rem;
+        }
+
+        .stage__inner {
+          min-height: auto;
+        }
+
+        .badge {
+          width: 7.5rem;
+        }
+
+        .panel {
+          position: static;
+          width: auto;
+          margin: 1.4rem clamp(1.1rem, 6vw, 6rem) 0;
+        }
+
+        .hud__row {
+          grid-template-columns: 1fr;
+          gap: 0.25rem;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .panel dl {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .band {
+          width: 124%;
+          margin-left: -12%;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .stamp-btn,
+        .card,
+        .plate,
+        .fade {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <a class="skip" href="#stage">Skip to the artwork</a>
+
+    <header class="chrome">
+      <a class="chrome__mark" href="../../index.html"
+        ><span class="chrome__dot" aria-hidden="true"></span>THE CATALOG</a
+      >
+      <span class="chrome__counter"><span id="chrome-count">10 / 10</span> · Hero</span>
+    </header>
+
+    <main>
+      <section class="stage" id="stage">
+        <div class="stage__grid" aria-hidden="true"></div>
+        <canvas id="ink" aria-hidden="true"></canvas>
+        <div class="stage__flash" id="flash" aria-hidden="true"></div>
+
+        <div class="stage__inner">
+          <div class="col col--type">
+          <p class="notice" id="poster" hidden>
+            <strong id="poster-strong">Reduced motion</strong>
+            <span id="poster-copy"
+              >The press holds still: one halftone frame, no marquee, no springs. Every word still
+              lands.</span
+            >
+          </p>
+
+          <h1 class="title" id="title">
+            <span class="plate plate--1"><span class="word word--solid">Set</span></span>
+            <span class="plate plate--2"><span class="word word--outline">Type</span></span>
+            <span class="plate plate--3"
+              ><span class="word word--block">Loud<small>PRESS NO.10</small></span></span
+            >
+          </h1>
+
+          </div>
+
+          <div class="col col--aside">
+          <p class="eyebrow fade">
+            V10 · Vanilla track · <b>Motion One × Canvas2D</b> · zero CDNs
+          </p>
+
+          <button type="button" class="badge fade" id="badge" aria-label="Strike the press (S)">
+            <svg class="badge__ring" viewBox="0 0 200 200" aria-hidden="true">
+              <g class="badge__spinner" id="badge-spinner">
+                <defs>
+                  <path id="badge-path" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" fill="none" />
+                </defs>
+                <text class="badge__text">
+                  <textPath href="#badge-path" startOffset="0%">
+                    STRIKE · THE · PRESS · SET · TYPE · LOUD · STRIKE · THE · PRESS ·
+                  </textPath>
+                </text>
+                <g class="badge__ticks" id="badge-ticks"></g>
+              </g>
+            </svg>
+            <span class="badge__disc" id="badge-disc" aria-hidden="true">V10</span>
+          </button>
+
+          <p class="lede fade">
+            A letterpress poster built from three springs, a marquee that reads your scroll speed,
+            and a halftone <b>drawn square by square</b> on a 2D canvas. Move the pointer to load the
+            ink, click to strike the press.
+          </p>
+
+          <div class="cta-row fade">
+            <button type="button" class="stamp-btn" id="strike" aria-describedby="strike-hint">
+              Strike the press <span class="k">S</span>
+            </button>
+            <a class="ghost" href="#blueprint" id="jump">Read the blueprint ↓</a>
+            <span id="strike-hint" class="eyebrow" role="status"
+              ><b id="strike-count">00</b> impressions</span
+            >
+          </div>
+          </div>
+        </div>
+
+          <aside class="panel fade" aria-label="Press telemetry">
+          <dl>
+            <div>
+              <dt>Tier</dt>
+              <dd id="t-tier">high</dd>
+            </div>
+            <div>
+              <dt>Cell</dt>
+              <dd id="t-cell">15px</dd>
+            </div>
+            <div>
+              <dt>Ink</dt>
+              <dd id="t-ink">0%</dd>
+            </div>
+            <div>
+              <dt>Fps</dt>
+              <dd id="t-fps">—</dd>
+            </div>
+            <div>
+              <dt>Press</dt>
+              <dd id="t-press">00</dd>
+            </div>
+            <div>
+              <dt>Scroll</dt>
+              <dd id="t-scroll">0%</dd>
+            </div>
+          </dl>
+          <p>
+            Pointer loads the type · spring stiffness falls with tier · one-shot degrade under 20 fps
+          </p>
+        </aside>
+      </section>
+
+      <section class="bands" aria-hidden="true">
+        <div class="band band--ink">
+          <div class="band__track" id="band-ink">
+            <span class="band__half"
+              ><span>Kinetic Type</span><i>×</i><em>motion one springs</em><i>×</i
+              ><span>Halftone Ink</span><i>×</i><em>canvas2d, square by square</em><i>×</i
+              ><span>No Bundler</span><i>×</i><em>one html file</em><i>×</i></span
+            ><span class="band__half"
+              ><span>Kinetic Type</span><i>×</i><em>motion one springs</em><i>×</i
+              ><span>Halftone Ink</span><i>×</i><em>canvas2d, square by square</em><i>×</i
+              ><span>No Bundler</span><i>×</i><em>one html file</em><i>×</i></span
+            >
+          </div>
+        </div>
+        <div class="band band--acid">
+          <div class="band__track" id="band-acid">
+            <span class="band__half"
+              ><span>Hold The Press</span><i>→</i><em>velocity comes from your scroll</em><i>→</i
+              ><span>Strike Again</span><i>→</i><em>every click is an impression</em><i>→</i></span
+            ><span class="band__half"
+              ><span>Hold The Press</span><i>→</i><em>velocity comes from your scroll</em><i>→</i
+              ><span>Strike Again</span><i>→</i><em>every click is an impression</em><i>→</i></span
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="notes" id="blueprint">
+        <p class="notes__eyebrow">Batch 02 · Vanilla track · Hero V10</p>
+        <h2>Four moving parts. <span>No framework</span>, no bundler, one vendored library.</h2>
+
+        <div class="notes__grid">
+          <article class="card">
+            <h3>01 · The press</h3>
+            <p>
+              Each headline plate is a real DOM element animated by <code>motion.animate()</code>
+              with a spring transition and <code>motion.stagger()</code> as the delay. Overlap is
+              the whole effect: the second plate is still travelling when the third starts, so the
+              type reads as a mechanical press rather than a fade.
+            </p>
+          </article>
+          <article class="card">
+            <h3>02 · The ink</h3>
+            <p>
+              The halftone is not an image. A cell grid is measured to the viewport, each cell gets a
+              density from animated value noise plus a lobe around the pointer, and the squares are
+              batched into three alpha groups before a single <code>fill()</code> per group. The
+              canvas multiplies onto the paper, so paper texture survives.
+            </p>
+          </article>
+          <article class="card">
+            <h3>03 · The binding</h3>
+            <p>
+              <code>motion.scroll()</code> reports page progress; the marquee integrator turns its
+              derivative into band velocity, the plates take a skew, and the stamp badge spins
+              harder the faster you move. Scroll is the only source of truth — the bands never
+              animate on their own timer.
+            </p>
+          </article>
+          <article class="card">
+            <h3>04 · The contract</h3>
+            <p>
+              Without JavaScript the type is simply set. With reduced motion the press holds: one
+              halftone frame, static bands, no springs. Tiers scale the cell size and the spring
+              stiffness, and a one-shot degrade coarsens the grid if the frame rate collapses.
+            </p>
+          </article>
+        </div>
+
+        <dl class="spec">
+          <div>
+            <dt>Runtime requests</dt>
+            <dd>1 local script · 1 local font · <em>no CDN</em></dd>
+          </div>
+          <div>
+            <dt>Vendored</dt>
+            <dd>Motion One 13.4.0 (UMD, MIT)</dd>
+          </div>
+          <div>
+            <dt>Canvas</dt>
+            <dd><span id="s-cells">—</span> cells per frame</dd>
+          </div>
+          <div>
+            <dt>Keyboard</dt>
+            <dd><em>S</em> strike · <em>H</em> HUD</dd>
+          </div>
+        </dl>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <a href="../../index.html">← The Catalog hub</a>
+      <a href="../raymarch-nebula/index.html">← V09 Volumetric Nebula</a>
+      <span>Hero_V10_BrutalStampPress · Vanilla HTML5 · Canvas2D · Motion One</span>
+    </footer>
+
+    <!-- The metadata HUD mirrors the framework tracks' DOM contract (`data-catalog-hud`) -------- -->
+    <aside
+      class="hud"
+      data-catalog-hud
+      aria-label="Metadata for Hero_V10_BrutalStampPress"
+      style="--accent: #d8ff36"
+    >
+      <div class="hud__tab">
+        <span class="hud__dot" aria-hidden="true"></span>
+        <span class="hud__id" id="hud-id">Hero_V10_BrutalStampPress</span>
+        <button
+          type="button"
+          class="hud__toggle"
+          id="hud-toggle"
+          aria-expanded="true"
+          aria-controls="hud-body"
+        >
+          Hide HUD (H)
+        </button>
+      </div>
+
+      <div class="hud__body" id="hud-body">
+        <header class="hud__head">
+          <span class="hud__badge">BATCH 02</span>
+          <span>Hero</span>
+          <span class="hud__status">stable</span>
+          <span id="hud-count" style="margin-left: auto">10 / 10</span>
+        </header>
+
+        <h2 class="hud__name" id="hud-name">Hero_V10_BrutalStampPress</h2>
+        <p class="hud__title" id="hud-title">Letterpress Riot</p>
+
+        <dl class="hud__meta">
+          <div class="hud__row">
+            <dt>Stack</dt>
+            <dd class="hud__chips" id="hud-stack">
+              <span class="hud__chip">Vanilla HTML5</span>
+              <span class="hud__chip">Canvas2D</span>
+              <span class="hud__chip">Motion One</span>
+              <span class="hud__chip">CSS</span>
+            </dd>
+          </div>
+          <div class="hud__row">
+            <dt>Aesthetic vibe</dt>
+            <dd class="hud__vibe" id="hud-vibe">
+              Kinetic Typography · Neo-Brutalism · Print-shop
+            </dd>
+          </div>
+          <div class="hud__row">
+            <dt>Interaction</dt>
+            <dd class="hud__note" id="hud-interaction">
+              The pointer presses ink into a square halftone while scrolling spins the marquee bands
+              and skews the type; every click strikes the press and leaves an impression.
+            </dd>
+          </div>
+        </dl>
+
+        <div class="hud__actions">
+          <button type="button" class="hud__action" id="hud-copy-id">Copy ID</button>
+          <button type="button" class="hud__action" id="hud-copy-link">Copy link</button>
+          <button type="button" class="hud__action" id="hud-expand">Expand</button>
+          <a
+            class="hud__action"
+            href="https://github.com/h4z4rd95/template_components_catalog/blob/main/docs/vanilla/brutal-stamp-press/index.html"
+            target="_blank"
+            rel="noreferrer noopener"
+            >Source ↗</a
+          >
+          <a class="hud__action" href="../../index.html">Hub ↩</a>
+          <a class="hud__action" href="./index.html" id="hud-raw" target="_blank" rel="noreferrer noopener" hidden
+            >Raw ↗</a
+          >
+        </div>
+      </div>
+    </aside>
+
+    <!-- The one dependency: vendored by `npm run catalog:sync` out of node_modules. No CDN. -->
+    <script src="../shared/vendor/motion.min.js"></script>
+    <script>
+      /* ==========================================================================================
+         Hero_V10_BrutalStampPress — hand-written vanilla JavaScript, no framework, no build step.
+         Structure:
+           1. capability + quality tier     2. metadata HUD (manifest-aware)
+           3. the halftone press (Canvas2D)  4. Motion One choreography + marquee integrator
+         ========================================================================================== */
+      (function () {
+        "use strict";
+
+        var VARIATION_ID = "Hero_V10_BrutalStampPress";
+        var reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        var M = window.Motion && typeof window.Motion.animate === "function" ? window.Motion : null;
+        var reduced = reduceQuery.matches;
+        // Motion One is a progressive enhancement: without it (or with reduced motion) this page
+        // still renders every word, because the hidden states live behind `.has-motion`.
+        var canAnimate = !!M && !reduced;
+        if (canAnimate) document.documentElement.classList.add("has-motion");
+
+        var $ = function (id) {
+          return document.getElementById(id);
+        };
+
+        /* ------------------------------------------------- 1. capability + quality tier */
+        function tier() {
+          var memory = navigator.deviceMemory || 4;
+          var cores = navigator.hardwareConcurrency || 4;
+          var dpr = window.devicePixelRatio || 1;
+          if (memory <= 2 || cores <= 2) return "low";
+          if (memory >= 8 && cores >= 8 && dpr >= 2) return "ultra";
+          if (memory >= 4 && cores >= 4) return "high";
+          return "medium";
+        }
+
+        // `cell` is the halftone pitch in CSS pixels, `fps` the canvas budget, `spring` the
+        // stiffness of the plate landing. Coarser cells keep cheap machines honest.
+        var TIERS = {
+          low: { cell: 24, fps: 20, dpr: 1, spring: 180 },
+          medium: { cell: 19, fps: 26, dpr: 1, spring: 240 },
+          high: { cell: 15, fps: 34, dpr: Math.min(window.devicePixelRatio || 1, 1.5), spring: 300 },
+          ultra: { cell: 12, fps: 45, dpr: Math.min(window.devicePixelRatio || 1, 2), spring: 340 },
+        };
+
+        var QUALITY = TIERS[tier()];
+        var state = {
+          px: 0.62,
+          py: 0.45,
+          tx: 0.62,
+          ty: 0.45,
+          time: 0,
+          scroll: 0,
+          lastScroll: 0,
+          scrollSpeed: 0,
+          splats: [],
+          presses: 0,
+          manualScroll: false,
+          rot: 0,
+          cells: 0,
+          ink: 0,
+          fps: 0,
+        };
+
+        /* ---------------------------------------------------------- 2. metadata HUD */
+        var hud = {
+          body: $("hud-body"),
+          toggle: $("hud-toggle"),
+          expanded: true,
+        };
+
+        function setExpanded(next) {
+          hud.expanded = next;
+          hud.body.hidden = !next;
+          hud.toggle.setAttribute("aria-expanded", String(next));
+          hud.toggle.textContent = next ? "Hide HUD (H)" : "Show HUD (H)";
+          try {
+            window.localStorage.setItem("catalog:hud:collapsed", next ? "0" : "1");
+          } catch (err) {
+            /* private mode: the default state is fine */
+          }
+        }
+
+        hud.toggle.addEventListener("click", function () {
+          setExpanded(!hud.expanded);
+        });
+
+        window.addEventListener("keydown", function (event) {
+          var target = event.target;
+          if (target && /input|textarea|select/i.test(target.tagName || "")) return;
+          if (event.key === "h" || event.key === "H") setExpanded(!hud.expanded);
+          if (event.key === "s" || event.key === "S") strike(0.5, 0.42);
+        });
+
+        try {
+          var stored = window.localStorage.getItem("catalog:hud:collapsed");
+          if (stored === "1") setExpanded(false);
+          else if (stored === "0") setExpanded(true);
+          else if (window.innerWidth < 900 || window.innerHeight < 720) setExpanded(false);
+        } catch (err) {
+          /* ignore */
+        }
+
+        function copy(value, button, label) {
+          var done = function () {
+            button.textContent = label + " ✓";
+            window.setTimeout(function () {
+              button.textContent = label;
+            }, 1600);
+          };
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(value).then(done, function () {
+              done();
+            });
+            return;
+          }
+          var helper = document.createElement("textarea");
+          helper.value = value;
+          helper.setAttribute("readonly", "");
+          helper.style.position = "fixed";
+          helper.style.opacity = "0";
+          document.body.appendChild(helper);
+          helper.select();
+          try {
+            document.execCommand("copy");
+          } catch (err) {
+            /* the button still reports the attempt */
+          }
+          helper.remove();
+          done();
+        }
+
+        var copyId = $("hud-copy-id");
+        var copyLink = $("hud-copy-link");
+        copyId.addEventListener("click", function () {
+          copy(VARIATION_ID, copyId, "Copy ID");
+        });
+        copyLink.addEventListener("click", function () {
+          copy(window.location.href, copyLink, "Copy link");
+        });
+
+        var inIframe = false;
+        try {
+          inIframe = window.self !== window.top;
+        } catch (err) {
+          inIframe = true;
+        }
+        if (inIframe) $("hud-raw").hidden = false;
+
+        $("hud-expand").addEventListener("click", function () {
+          if (inIframe) {
+            window.parent.postMessage({ type: "catalog:expand", id: VARIATION_ID }, "*");
+            return;
+          }
+          if (document.fullscreenElement) document.exitFullscreen();
+          else if (document.documentElement.requestFullscreen)
+            document.documentElement.requestFullscreen();
+        });
+
+        // The shared manifest is the single source of truth; the inline record above is the fallback
+        // for `file://`, where fetch() is not allowed to read local files.
+        fetch("../../data/catalog.json")
+          .then(function (response) {
+            return response.ok ? response.json() : null;
+          })
+          .then(function (manifest) {
+            if (!manifest || !manifest.variations) return;
+            var record = null;
+            for (var i = 0; i < manifest.variations.length; i += 1) {
+              if (manifest.variations[i].id === VARIATION_ID) record = manifest.variations[i];
+            }
+            if (!record) return;
+            $("hud-name").textContent = record.id;
+            $("hud-id").textContent = record.id;
+            $("hud-title").textContent = record.title;
+            $("hud-vibe").textContent = record.vibe;
+            $("hud-interaction").textContent = record.interaction;
+            $("hud-stack").innerHTML = record.stack
+              .map(function () {
+                return '<span class="hud__chip"></span>';
+              })
+              .join("");
+            var chips = $("hud-stack").children;
+            record.stack.forEach(function (tech, index) {
+              if (chips[index]) chips[index].textContent = tech;
+            });
+            if (record.accent) document.querySelector(".hud").style.setProperty("--accent", record.accent);
+            var position = manifest.variations.indexOf(record) + 1;
+            var total = String(manifest.variations.length).padStart(2, "0");
+            var label = String(position).padStart(2, "0") + " / " + total;
+            $("hud-count").textContent = label;
+            $("chrome-count").textContent = label;
+          })
+          .catch(function () {
+            /* offline or file:// — the inline record is already on screen */
+          });
+
+        /* ------------------------------------------------------------------- 3. the press */
+        var canvas = $("ink");
+        var ctx = canvas.getContext("2d", { alpha: true });
+        var flash = $("flash");
+        var badgeSpinner = $("badge-spinner");
+        var badgeDisc = $("badge-disc");
+        var badges = $("badge");
+        var strikeBtn = $("strike");
+        var tTier = $("t-tier");
+        var tCell = $("t-cell");
+        var tInk = $("t-ink");
+        var tFps = $("t-fps");
+        var tPress = $("t-press");
+        var tScroll = $("t-scroll");
+        var sCells = $("s-cells");
+        var strikeCount = $("strike-count");
+        var accentBlock = document.querySelector(".word--block");
+        var titleEl = $("title");
+
+        tTier.textContent = tier();
+        tCell.textContent = QUALITY.cell + "px";
+
+        // Badge tick marks give the rotary stamp something to rotate against.
+        (function ticks() {
+          var group = $("badge-ticks");
+          var svg = "";
+          for (var i = 0; i < 60; i += 1) {
+            var angle = (i / 60) * Math.PI * 2;
+            var inner = i % 5 === 0 ? 66 : 71;
+            var x1 = (100 + Math.cos(angle) * inner).toFixed(1);
+            var y1 = (100 + Math.sin(angle) * inner).toFixed(1);
+            var x2 = (100 + Math.cos(angle) * 74).toFixed(1);
+            var y2 = (100 + Math.sin(angle) * 74).toFixed(1);
+            svg += '<line x1="' + x1 + '" y1="' + y1 + '" x2="' + x2 + '" y2="' + y2 + '"/>';
+          }
+          group.innerHTML = svg;
+        })();
+
+        /* ---- the halftone grid --------------------------------------------------------------
+           Rebuilt on resize only: `base` holds the static noise field, so each frame is one
+           multiply-add per cell plus the splat rings. Squares are batched per alpha group, which
+           is what keeps thousands of cells inside a 30 fps budget on software rasterizers. */
+        var grid = { cell: QUALITY.cell, cols: 0, rows: 0, w: 0, h: 0, base: null };
+        // A halftone only reads as print when most of the paper stays clean: `INK_FLOOR` throws away
+        // the low half of the noise field, so ink arrives in peaks rather than as a grey flood.
+        var INK_FLOOR = 0.24;
+
+        function hash2(x, y) {
+          var n = Math.sin(x * 127.1 + y * 311.7) * 43758.5453;
+          return n - Math.floor(n);
+        }
+
+        function smooth(t) {
+          return t * t * (3 - 2 * t);
+        }
+
+        function vnoise(x, y) {
+          var ix = Math.floor(x);
+          var iy = Math.floor(y);
+          var fx = smooth(x - ix);
+          var fy = smooth(y - iy);
+          var a = hash2(ix, iy);
+          var b = hash2(ix + 1, iy);
+          var c = hash2(ix, iy + 1);
+          var d = hash2(ix + 1, iy + 1);
+          return (a * (1 - fx) + b * fx) * (1 - fy) + (c * (1 - fx) + d * fx) * fy;
+        }
+
+        function fbm(x, y) {
+          var value = 0;
+          var amplitude = 0.5;
+          var px = x;
+          var py = y;
+          for (var i = 0; i < 4; i += 1) {
+            value += amplitude * vnoise(px, py);
+            px = px * 2.07 + 3.1;
+            py = py * 2.03 - 1.7;
+            amplitude *= 0.5;
+          }
+          return value;
+        }
+
+        function buildGrid() {
+          var cell = grid.cell;
+          var w = canvas.clientWidth || window.innerWidth;
+          var h = canvas.clientHeight || window.innerHeight;
+          var cols = Math.max(8, Math.ceil(w / cell));
+          var rows = Math.max(8, Math.ceil(h / cell));
+          var base = new Float32Array(cols * rows);
+          for (var j = 0; j < rows; j += 1) {
+            for (var i = 0; i < cols; i += 1) {
+              var nx = i / cols;
+              var ny = j / rows;
+              // Two scales of noise plus a paper grain term: big fields, fine speckle. The result
+              // is deliberately biased negative — only the peaks of the field carry ink, and the
+              // pointer and the strike rings are what push a cell over the line.
+              var coarse = fbm(nx * 2.6, ny * 2.6);
+              var fine = fbm(nx * 7.4 + 11.2, ny * 7.4 - 4.6);
+              var grain = hash2(i * 12.9898, j * 78.233) * 0.22;
+              // A diagonal wash keeps the lower-right corner lighter, like an under-inked press.
+              var wash = (nx * 0.42 + (1 - ny) * 0.2) * 0.3;
+              base[j * cols + i] = coarse * 0.9 + fine * 0.45 + grain - wash - 0.44;
+            }
+          }
+          grid.cols = cols;
+          grid.rows = rows;
+          grid.w = w;
+          grid.h = h;
+          grid.base = base;
+          state.cells = cols * rows;
+          sCells.textContent = state.cells.toLocaleString("en-US");
+
+          var dpr = QUALITY.dpr;
+          canvas.width = Math.round(w * dpr);
+          canvas.height = Math.round(h * dpr);
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function drawPress() {
+          if (!grid.base) return;
+          var cell = grid.cell;
+          var cols = grid.cols;
+          var rows = grid.rows;
+          var base = grid.base;
+          var t = state.time;
+          var pxc = state.px;
+          var pyc = state.py;
+          var aspect = grid.w / Math.max(1, grid.h);
+
+          ctx.clearRect(0, 0, grid.w, grid.h);
+
+          // Three alpha groups: dense ink, mid tone, light tone. One path each, one fill each.
+          ctx.fillStyle = "rgba(14, 14, 16, 0.74)";
+          ctx.beginPath();
+          var midRects = [];
+          var lightRects = [];
+          var hotRects = [];
+          var total = 0;
+          var counted = 0;
+
+          for (var j = 0; j < rows; j += 1) {
+            for (var i = 0; i < cols; i += 1) {
+              var nx = (i + 0.5) / cols;
+              var ny = (j + 0.5) / rows;
+              var d = base[j * cols + i];
+
+              // Breathing noise: a cheap travelling wave on top of the static field.
+              d += 0.09 * Math.sin(nx * 7.3 + t * 0.19) * Math.sin(ny * 6.1 - t * 0.15);
+
+              // Pointer lobe — this is the "loading the ink" gesture.
+              var dx = (nx - pxc) * aspect;
+              var dy = ny - pyc;
+              var pd = dx * dx + dy * dy;
+              if (pd < 0.2) d += 0.5 * Math.exp(-pd / 0.04);
+
+              // Strike rings: density pushed along an expanding circle.
+              for (var s = 0; s < state.splats.length; s += 1) {
+                var splat = state.splats[s];
+                var sx = (nx - splat.x) * aspect;
+                var sy = ny - splat.y;
+                var sd = Math.sqrt(sx * sx + sy * sy) - splat.r;
+                d += splat.power * Math.exp(-(sd * sd) / 0.0045);
+              }
+
+              if (d <= INK_FLOOR) continue;
+              d = (d - INK_FLOOR) / (1 - INK_FLOOR);
+              if (d > 1) d = 1;
+              total += d;
+              counted += 1;
+
+              var size = cell * (0.16 + 0.82 * d);
+              var half = size / 2;
+              var x = nx * grid.w - half;
+              var y = ny * grid.h - half;
+
+              if (d > 0.9) hotRects.push(x, y, size);
+              else if (d > 0.62) ctx.rect(x, y, size, size);
+              else if (d > 0.34) midRects.push(x, y, size);
+              else lightRects.push(x, y, size);
+            }
+          }
+
+          ctx.fill();
+
+          ctx.fillStyle = "rgba(14, 14, 16, 0.32)";
+          ctx.beginPath();
+          for (var m = 0; m < midRects.length; m += 3) {
+            ctx.rect(midRects[m], midRects[m + 1], midRects[m + 2], midRects[m + 2]);
+          }
+          ctx.fill();
+
+          ctx.fillStyle = "rgba(14, 14, 16, 0.14)";
+          ctx.beginPath();
+          for (var l = 0; l < lightRects.length; l += 3) {
+            ctx.rect(lightRects[l], lightRects[l + 1], lightRects[l + 2], lightRects[l + 2]);
+          }
+          ctx.fill();
+
+          // The risograph overprint: the few densest cells go hot magenta.
+          ctx.fillStyle = "rgba(255, 45, 85, 0.5)";
+          ctx.beginPath();
+          for (var k = 0; k < hotRects.length; k += 3) {
+            ctx.rect(hotRects[k], hotRects[k + 1], hotRects[k + 2], hotRects[k + 2]);
+          }
+          ctx.fill();
+
+          state.ink = counted ? total / counted : 0;
+        }
+
+        function addSplat(x, y, power) {
+          state.splats.push({ x: x, y: y, r: 0.02, power: power, life: 1 });
+          if (state.splats.length > 6) state.splats.shift();
+        }
+
+        /* ---- the strike --------------------------------------------------------------------- */
+        function safe(fn) {
+          try {
+            fn();
+          } catch (err) {
+            /* a vendored dependency must never take the page down with it */
+          }
+        }
+
+        function strike(nx, ny) {
+          var x = typeof nx === "number" ? nx : state.px;
+          var y = typeof ny === "number" ? ny : state.py;
+          state.presses += 1;
+          var label = String(state.presses).padStart(2, "0");
+          tPress.textContent = label;
+          strikeCount.textContent = label;
+          addSplat(x, y, 1.35);
+          addSplat(0.5 - (x - 0.5) * 0.4, y, 0.6);
+
+          if (M) {
+            // Each call stands alone: one unsupported keyframe must not cancel the rest.
+            tryAnimate(
+              badges,
+              { scale: [1, 1.14, 1], rotate: ["-4deg", "3deg", "0deg"] },
+              { duration: 0.5, easing: [0.16, 1, 0.3, 1] },
+            );
+            tryAnimate(
+              badgeDisc,
+              { backgroundColor: ["#ff2d55", "#0e0e10", "#ff2d55"] },
+              { duration: 0.62, easing: "ease-out" },
+            );
+            // Transform only — animating letter-spacing would relayout the headline every frame.
+            tryAnimate(
+              accentBlock,
+              { scaleX: [1, 1.06, 1], y: [0, -5, 0] },
+              { duration: 0.5, easing: [0.16, 1, 0.3, 1] },
+            );
+            tryAnimate(flash, { opacity: [0, 0.34, 0] }, { duration: 0.42, easing: "ease-out" });
+          }
+        }
+
+        strikeBtn.addEventListener("click", function () {
+          strike(0.42, 0.4);
+          strikeBtn.setAttribute("data-struck", "");
+          window.setTimeout(function () {
+            strikeBtn.removeAttribute("data-struck");
+          }, 260);
+        });
+        badges.addEventListener("click", function () {
+          strike(0.78, 0.3);
+        });
+        $("stage").addEventListener("pointerdown", function (event) {
+          if (event.target.closest && event.target.closest("a, button, .panel, .notice")) return;
+          var rect = canvas.getBoundingClientRect();
+          strike((event.clientX - rect.left) / Math.max(1, rect.width), (event.clientY - rect.top) / Math.max(1, rect.height));
+        });
+
+        window.addEventListener(
+          "pointermove",
+          function (event) {
+            state.tx = event.clientX / Math.max(1, window.innerWidth);
+            state.ty = event.clientY / Math.max(1, window.innerHeight);
+          },
+          { passive: true },
+        );
+
+        /* ------------------------------------------- 4. Motion One choreography + the marquee */
+        var bands = [
+          { el: $("band-ink"), x: 0, dir: 1, base: 26 },
+          { el: $("band-acid"), x: 0, dir: -1, base: 32 },
+        ];
+        var cards = Array.prototype.slice.call(document.querySelectorAll(".card"));
+
+        /* A tiny Motion One playground with an honest fallback: try the spring transition first and
+           only reach for the cubic-bezier if the vendored build rejects it. Running both would
+           mean the second tween silently overwrites the first. */
+        function tryAnimate(target, keys, options) {
+          if (!M) return false;
+          try {
+            M.animate(target, keys, options);
+            return true;
+          } catch (err) {
+            return false;
+          }
+        }
+
+        function spring(keys, delay, target) {
+          if (!M) return;
+          if (
+            tryAnimate(target, keys, {
+              delay: delay || 0,
+              type: "spring",
+              stiffness: QUALITY.spring,
+              damping: 26,
+              mass: 1,
+            })
+          ) {
+            return;
+          }
+          tryAnimate(target, keys, { delay: delay || 0, duration: 0.92, easing: [0.16, 1, 0.3, 1] });
+        }
+
+        function choreograph() {
+          if (!canAnimate) return;
+
+          // The press: three plates, one stagger, springs all the way.
+          var plateKeys = { y: [130, 0], opacity: [0, 1], rotate: [2.4, 0] };
+          var stagger = M.stagger(0.09, { startDelay: 0.12 });
+          var sprung = tryAnimate(
+            ".plate",
+            { y: [130, 0], opacity: [0, 1], rotate: [2.4, 0], scaleY: [0.84, 1] },
+            {
+              delay: stagger,
+              type: "spring",
+              stiffness: QUALITY.spring,
+              damping: 24,
+              mass: 1,
+            },
+          );
+          if (!sprung) {
+            tryAnimate(".plate", plateKeys, {
+              delay: stagger,
+              duration: 0.95,
+              easing: [0.16, 1, 0.3, 1],
+            });
+          }
+
+          spring({ y: [26, 0], opacity: [0, 1] }, 0.34, ".eyebrow");
+          spring({ y: [26, 0], opacity: [0, 1] }, 0.42, ".lede");
+          spring({ y: [26, 0], opacity: [0, 1] }, 0.5, ".cta-row");
+          spring({ y: [18, 0], opacity: [0, 1] }, 0.58, ".panel");
+          spring({ y: [18, 0], opacity: [0, 1], rotate: [-8, 0] }, 0.62, ".badge");
+
+          // Pointer magnetism on the stamp — Motion One's `hover`, not a CSS :hover, because it
+          // needs to move in two axes.
+          safe(function () {
+            M.hover(badges, function () {
+              M.animate(badges, { scale: 1.04, y: -4 }, { duration: 0.3, easing: "ease-out" });
+            });
+          });
+          safe(function () {
+            M.hover(strikeBtn, function () {
+              M.animate(strikeBtn, { y: -3, scale: 1.02 }, { duration: 0.26, easing: "ease-out" });
+            });
+          });
+          safe(function () {
+            M.press(strikeBtn, function (element) {
+              M.animate(element, { y: [0, 3, 0], scale: [1, 0.97, 1] }, { duration: 0.34, easing: "ease-out" });
+            });
+          });
+
+          // Scroll → band velocity, plate skew, badge rotation. One source of truth.
+          var scrollBound = false;
+          safe(function () {
+            M.scroll(
+              function (progress) {
+                scrollBound = true;
+                state.scroll = progress;
+              },
+              { offset: ["start start", "end end"] },
+            );
+          });
+          if (!scrollBound) state.manualScroll = true;
+
+          /* Blueprint cards: an IntersectionObserver decides *when*, CSS decides *how*. A library
+             tween would leave a card blank if the frame it landed on was missed — a print poster
+             may not have holes in it. */
+          if ("IntersectionObserver" in window) {
+            var io = new IntersectionObserver(
+              function (entries) {
+                for (var i = 0; i < entries.length; i += 1) {
+                  if (!entries[i].isIntersecting) continue;
+                  entries[i].target.classList.add("is-in");
+                  io.unobserve(entries[i].target);
+                }
+              },
+              { threshold: 0.2, rootMargin: "0px 0px -6% 0px" },
+            );
+            for (var c = 0; c < cards.length; c += 1) io.observe(cards[c]);
+          }
+        }
+
+        /* Watchdog: whatever the dependency does, the copy ends up on screen. */
+        function guaranteeVisible() {
+          var all = document.querySelectorAll(".plate, .fade, .card");
+          for (var i = 0; i < all.length; i += 1) {
+            var el = all[i];
+            var rect = el.getBoundingClientRect();
+            if (rect.top > window.innerHeight || rect.bottom < 0) continue;
+            var opacity = parseFloat(window.getComputedStyle(el).opacity);
+            if (!(opacity > 0.5)) el.classList.add("is-in");
+          }
+        }
+
+        /* ---- the rAF loop: one integrator, one throttled draw --------------------------------- */
+        var last = 0;
+        var acc = 0;
+        var frameAcc = 0;
+        var frames = 0;
+        var startedAt = 0;
+        var degradedAt = 0;
+        var degrades = 0;
+
+        function loop(now) {
+          var dt = last ? Math.min(0.05, (now - last) / 1000) : 0.016;
+          last = now;
+          state.time += dt;
+
+          // Pointer inertia — the ink lags the cursor by design.
+          state.px += (state.tx - state.px) * Math.min(1, dt * 7);
+          state.py += (state.ty - state.py) * Math.min(1, dt * 7);
+
+          // Scroll progress: Motion One's `scroll()` when it is available, arithmetic otherwise.
+          if (state.manualScroll) {
+            var max = document.documentElement.scrollHeight - window.innerHeight;
+            state.scroll = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+          }
+          var delta = state.scroll - state.lastScroll;
+          state.lastScroll = state.scroll;
+          state.scrollSpeed += (Math.abs(delta) / Math.max(dt, 0.001) - state.scrollSpeed) * Math.min(1, dt * 6);
+
+          // Marquee: velocity, not a fixed tween — that is why the bands are integrated here.
+          for (var b = 0; b < bands.length; b += 1) {
+            var band = bands[b];
+            var v = band.base + state.scrollSpeed * 1400;
+            band.x += band.dir * v * dt;
+            var half = band.el.scrollWidth / 2 || 1;
+            if (band.x <= -half) band.x += half;
+            if (band.x > 0) band.x -= half;
+            band.el.style.transform = "translate3d(" + band.x.toFixed(2) + "px, 0, 0)";
+          }
+
+          // Scroll skews the whole headline — the press twisting under its own momentum.
+          var skew = Math.min(3.4, state.scroll * 1.5 + state.scrollSpeed * 1.1);
+          titleEl.style.transform = skew > 0.02 ? "skewY(" + (-skew).toFixed(2) + "deg)" : "";
+
+          // Stamp badge: always turning, turning faster when you scroll.
+          state.rot += (12 + state.scrollSpeed * 2200) * dt;
+          badgeSpinner.style.transform = "rotate(" + (state.rot % 360).toFixed(2) + "deg)";
+
+          // Splat rings expand and fade.
+          for (var s = state.splats.length - 1; s >= 0; s -= 1) {
+            var splat = state.splats[s];
+            splat.r += dt * 1.35;
+            splat.power *= Math.pow(0.06, dt);
+            if (splat.power < 0.02) state.splats.splice(s, 1);
+          }
+
+          // Throttled draw: the canvas runs on a budget, the integrator on every frame — and when
+          // the stage has scrolled away entirely, the halftone stops costing anything at all.
+          acc += dt;
+          var interval = 1 / QUALITY.fps;
+          if (acc >= interval) {
+            acc = 0;
+            if (stageVisible) drawPress();
+          }
+
+          // FPS meter + one-shot degrade. `startedAt` keeps the first two seconds — when the
+          // entrance is still running — out of the verdict.
+          if (!startedAt) startedAt = now;
+          frames += 1;
+          frameAcc += dt;
+          if (frameAcc >= 0.5) {
+            state.fps = Math.round(frames / frameAcc);
+            tFps.textContent = String(state.fps);
+            tInk.textContent = Math.round(state.ink * 100) + "%";
+            tScroll.textContent = Math.round(state.scroll * 100) + "%";
+            // Two-step degrade, each step needing its own window of bad frames. Coarsening the
+            // grid is the cheapest lever there is: half the cells, half the work.
+            if (degrades < 2 && now - Math.max(startedAt, degradedAt) > 2600 && state.fps < 22 && grid.cell < 34) {
+              degrades += 1;
+              degradedAt = now;
+              grid.cell += 6;
+              tCell.textContent = grid.cell + "px · step " + degrades;
+              buildGrid();
+            }
+            frames = 0;
+            frameAcc = 0;
+          }
+
+          requestAnimationFrame(loop);
+        }
+
+        /* Is the stage on screen? An observer, not a layout read: the loop must never force reflow. */
+        var stageVisible = true;
+        if ("IntersectionObserver" in window) {
+          new IntersectionObserver(
+            function (entries) {
+              stageVisible = entries[0].isIntersecting;
+            },
+            { threshold: 0 },
+          ).observe($("stage"));
+        }
+
+        /* ---- boot ---------------------------------------------------------------------------- */
+        buildGrid();
+        if (canAnimate) choreograph();
+
+        if (reduced) {
+          // The press holds: one frame, static bands, static badge, and an honest notice.
+          $("poster").hidden = false;
+          drawPress();
+          bands.forEach(function (band, index) {
+            if (index === 1) band.el.style.transform = "translate3d(-6%, 0, 0)";
+          });
+          state.fps = 0;
+          tFps.textContent = "static";
+          $("t-scroll").textContent = "static";
+        } else {
+          requestAnimationFrame(loop);
+        }
+
+        window.setTimeout(guaranteeVisible, 2200);
+
+        var resizeTimer = 0;
+        window.addEventListener("resize", function () {
+          window.clearTimeout(resizeTimer);
+          resizeTimer = window.setTimeout(function () {
+            buildGrid();
+            if (reduced) drawPress();
+          }, 180);
+        });
+
+        reduceQuery.addEventListener("change", function (event) {
+          reduced = event.matches;
+          if (reduced) {
+            $("poster").hidden = false;
+            guaranteeVisible();
+          } else {
+            $("poster").hidden = true;
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

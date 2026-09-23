@@ -302,3 +302,117 @@ derived slug, e.g. `vanilla-raymarch`, `tres-instanced-shards`.)
 
 **NEXT:** Batch 2 part 2 finishes with `Hero_V10` — a Canvas2D + Motion One kinetic-brutal hero on the
 same vanilla track (vendored Motion One, no bundler) — then the reel is re-verified end to end.
+
+---
+
+## [2026-09-22 15:15 UTC] · Verification — the reel, the vanilla hero, and one honest open item
+
+**The reel (10 targets: hub + 9 variations).** `docs/vision/report.json` is complete, `gpuProfile:
+swangle`, and includes the animated GIFs and stills for every variation it could run:
+
+| Target | Verdict | Evidence |
+| --- | --- | --- |
+| hub | ✔ clean | 84 frames, 1051 KB |
+| kinetic-brutal-grid | ✔ clean | 84 frames |
+| editorial-scroll-lock | ✔ clean | 65 frames |
+| **particle-morph-field** | ✔ clean · `webgl 2.0` 3 fps | 59 frames — **the R3F scene renders for the first time** (it was 4 console errors over a blank canvas before the GPU fix) |
+| cyber-scanner-hud | ✔ clean | 29 frames |
+| **liquid-chroma-glass** | ✔ clean · `webgl 2.0` 2 fps | 57 frames — real fBm chroma art, verified by eye |
+| editorial-chapter-rail | ✔ clean | 31 frames |
+| **vanilla-raymarch** | ✔ clean · 1 fps | 41 frames — verified by eye: nebula, `09 / 09` chrome counter, fully populated HUD, telemetry showing the software tier (STEPS 48 · SCALE 62%) |
+| tres-instanced-shards | ✖ capture blocked | `Runtime.callFunctionOn timed out` |
+| tres-liquid-terrain | ✖ capture blocked | `Runtime.callFunctionOn timed out` |
+
+**The open item, stated precisely.** Both TresJS scenes hang the *audit's* evaluate call to the point of
+the protocol timeout, and the cause is **not "heavy WebGL"**: the vanilla raymarch (the heaviest shader in
+the catalogue) captured cleanly, as did R3F's 12k-particle field and the raw-WebGL2 chroma shader. It is
+also **not tier size**: it reproduces after `softwareRenderer()` drops both scenes to `low`
+(1,800 shards / 56² mesh). What has been ruled out, by measurement: shader complexity (V09 is heavier),
+context exhaustion (a fresh browser is launched per run), and missing GPU support (WebGL 2.0 is
+available and used). What remains is the TresJS render path itself — its continuous `requestAnimationFrame`
+loop plus Vue's per-frame event/render cycle — starving the JS task queue when SwiftShader can only
+produce ~1–2 fps. **Next diagnostic (do not guess):** capture one TresJS scene with `render-mode`
+default vs. a manual rAF loop, and with the Vue `@loop` handler removed, on an otherwise idle machine.
+
+**Fixes that came out of this round (all committed):**
+- `softwareRenderer()` in `packages/shared/src/quality.ts` — detects emulated WebGL (SwiftShader,
+  llvmpipe, swangle) *before* a scene is built; both TresJS heroes now start one tier lower, which is
+  honest engineering rather than tuning for a benchmark.
+- `protocolTimeout` 240s → 480s in the harness: a heavy shader scene under software rasterization is
+  slow, not hung.
+- Targeted re-captures (`--only`) merge into the reel, so refreshing one variation costs one capture.
+
+**NEXT:** finish `Hero_V10` (Canvas2D + Motion One kinetic-brutal, Motion One vendored into
+`docs/vanilla/shared/vendor/` by the sync step — no bundler, no CDN), then resolve the TresJS capture
+stall above so Batch 2 closes with a GIF for every variation.
+
+---
+
+## [2026-09-22 16:05 UTC] · Batch 2 part 2, second variation — `Hero_V10_BrutalStampPress` (vanilla track closed)
+
+**Shipped:** `docs/vanilla/brutal-stamp-press/index.html` — a letterpress/kinetic-brutal hero in
+Canvas2D + Motion One. One HTML file, one vendored library, one vendored font, **no bundler and no
+CDN**; it works from `file://` as well as from Pages.
+
+**The buildless problem, solved once for the whole vanilla track.** A page with no bundler cannot
+`import "motion"`. Rather than reaching for a CDN, `scripts/sync-catalog.mjs` grew a **vendoring
+step**: it copies `node_modules/motion/dist/motion.js` (UMD, MIT, v13.4.0) to
+`docs/vanilla/shared/vendor/motion.min.js` and the Archivo Black latin subset to
+`docs/vanilla/shared/fonts/` — same bytes the React/Nuxt apps get, same version pinned by
+`package.json`, banner-stamped "do not edit, re-run `catalog:sync`". A fresh clone that syncs before
+`npm install` keeps the committed copy instead of breaking.
+
+**What the hero actually does**
+- Three headline plates land on **springs with one stagger** (`motion.stagger`), so the second plate is
+  still travelling when the third starts — the press reads as mechanical, not as a fade.
+- The halftone is *drawn*, not an image: a cell grid measured to the viewport, a static noise field
+  built once per resize, then per frame just density + pointer lobe + strike rings, batched into
+  **three alpha groups with one `fill()` each**. Cells below `INK_FLOOR` stay paper — that single
+  constant is the difference between print and a grey flood (see the defect log below).
+- The marquee bands are **velocity-integrated**, not tweened: `motion.scroll()` reports progress, the
+  loop's derivative of that progress becomes band velocity, and the same number skews the headline and
+  spins the stamp badge. With Motion One absent, the same integrator falls back to `window.scrollY`
+  arithmetic.
+- `S` or a click **strikes the press**: splat rings on the canvas, a spring kick on the badge, a flash
+  layer, and an impression counter.
+- Honest fallbacks, all of them real: no JS → the type is simply set; reduced motion → one halftone
+  frame, static bands, telemetry reading `static`; no Motion One → choreography skipped and the
+  watchdog puts the copy on screen anyway; a `watchdog` timer after 2.2 s does the same if anything
+  else goes wrong.
+
+**Defects the reel and targeted probes caught (and the fixes)**
+1. **Over-inked field** — the first capture was a full-bleed grey checkerboard that buried the lede.
+   Fix: `INK_FLOOR` (low half of the noise discarded) + a negative bias in the base field, softer
+   tone alphas, and a **paper knock-out behind the outlined word** so the ink can never eat it.
+2. **Composition** — type and copy piled into one column while the right half stayed empty. Fix: a
+   two-column poster grid, kicker and stamp moved into the right column.
+3. **The headline hid behind the metadata HUD** — the third plate sat under the HUD's corner. Fix:
+   type sized to finish above it (the HUD owns the bottom-left corner in every variation — design
+   around it, do not fight it).
+4. **Blueprint cards never appeared** — a library `inView` tween leaves a blank card if the frame it
+   lands on is missed, which a 900 px/step scroll absolutely does. Fix: **IntersectionObserver decides
+   *when*, CSS decides *how*** — deterministic at any scroll speed. (Same class of bug the framework
+   tracks fixed with `{ once: true }`.)
+5. **Classic double-fire**: the spring/fallback helper ran *both* tweens, so the fallback silently
+   overwrote the spring. Fix: run one, and only fall back if the first **throws**.
+6. **Degrade gate**: the "is this machine fast enough" test measured from the previous frame instead
+   of page start, and could fire during the entrance. Fix: a `startedAt` baseline, a 2.6 s window
+   between steps, and a two-step coarsening (24 → 30 → 36 px cells).
+7. **Off-screen cost**: the halftone kept redrawing after the stage scrolled away. Fix: an
+   IntersectionObserver flag stops the draw entirely while off screen (the integrator keeps running
+   for the bands).
+
+**Verification (not a green exit code — the actual pixels)**
+- `docs/vision/shots/brutal-stamp-press-hero.png` — the poster as designed: SET / TYPE / LOUD, stamp,
+  copy, calls to action, telemetry `INK 20%`, zero horizontal overflow.
+- `…-deep.png` — four blueprint cards fully revealed, the spec strip, the footer.
+- `…-reduced-motion.png` — the notice, one static frame, `FPS static`, `SCROLL static`.
+- A targeted probe (since removed) walked the page: 4 cards at opacity 1.00, both bands integrated
+  (`translate3d(-1693.9px…)` / `(-625.79px…)`), headline skew `skewY(-1.5deg)`, `docOverflow: 0`,
+  **zero page errors, zero failed requests** at 60 fps with the hardware renderer.
+- Harness: `✔ brutal-stamp-press — clean`, fresh 22-frame GIF + 4 stills, `reducedMotion.headingVisible: true`.
+
+**Reel now:** 11 targets (hub + 10 variations), 9 with GIFs, `gpuProfile: swangle`.
+
+**NEXT:** the two TresJS capture stalls (the diagnostic is written up in the previous entry), then
+Batch 3 (navigation systems and interactive mega-menus) on the user's "Continue".

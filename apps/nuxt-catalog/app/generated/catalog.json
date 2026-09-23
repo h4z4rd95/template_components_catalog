@@ -344,13 +344,43 @@
       "slug": "vanilla-raymarch",
       "route": "hero/vanilla-raymarch/",
       "url": "vanilla/raymarch-nebula/"
+    },
+    {
+      "id": "Hero_V10_BrutalStampPress",
+      "discipline": "Hero",
+      "batch": 2,
+      "title": "Letterpress Riot",
+      "stack": [
+        "Vanilla HTML5",
+        "Canvas2D",
+        "Motion One",
+        "CSS"
+      ],
+      "vibe": "Kinetic Typography · Neo-Brutalism · Print-shop",
+      "interaction": "The pointer presses ink into a square halftone while scrolling skews the headline and spins the marquee bands; every click strikes the press and leaves an impression.",
+      "href": "vanilla/brutal-stamp-press/",
+      "source": "docs/vanilla/brutal-stamp-press/index.html",
+      "status": "stable",
+      "accent": "#D8FF36",
+      "tags": [
+        "vanilla",
+        "canvas2d",
+        "motion-one",
+        "kinetic-typography",
+        "neo-brutalism",
+        "halftone",
+        "no-bundler"
+      ],
+      "slug": "brutal-stamp-press",
+      "route": "hero/brutal-stamp-press/",
+      "url": "vanilla/brutal-stamp-press/"
     }
   ],
   "counts": {
-    "total": 9,
-    "stable": 9,
+    "total": 10,
+    "stable": 10,
     "beta": 0,
     "planned": 0
   },
-  "generatedAt": "2026-09-22T13:44:31.690Z"
+  "generatedAt": "2026-09-23T01:36:54.207Z"
 }

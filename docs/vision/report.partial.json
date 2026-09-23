@@ -1,0 +1,139 @@
+{
+  "capturedAt": "2026-09-22T15:31:15.873Z",
+  "complete": false,
+  "reports": [
+    {
+      "key": "brutal-stamp-press",
+      "path": "/vanilla/brutal-stamp-press/",
+      "title": "Hero_V10_BrutalStampPress — Letterpress Riot | The Catalog",
+      "hud": true,
+      "h1": {
+        "text": "Set Type LoudPRESS NO.10",
+        "opacity": 1,
+        "height": 311,
+        "visible": true
+      },
+      "webgl": {
+        "version": null,
+        "note": "canvas present but no context"
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": true,
+        "display": true
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": true,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [
+        "a.skip (182px, right=-9817/1280, display=block, overflowX=visible)"
+      ],
+      "docHeight": 1867,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [
+            "a.skip (182px, right=-9817/360, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [
+            "a.skip (182px, right=-9817/768, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [
+            "a.skip (182px, right=-9817/1440, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [
+            "a.skip (182px, right=-9817/2560, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 34,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "Set Type LoudPRESS NO.10",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/brutal-stamp-press-hero.png",
+        "vision/shots/brutal-stamp-press-mid.png",
+        "vision/shots/brutal-stamp-press-deep.png"
+      ],
+      "gif": {
+        "file": "vision/brutal-stamp-press.gif",
+        "bytes": 1528487,
+        "kb": 1493,
+        "frames": 22,
+        "capturedFrames": 22,
+        "width": 660,
+        "height": 413,
+        "delayMs": 345,
+        "effectiveFps": 2.9,
+        "choreographyMs": 7579,
+        "colors": 128
+      },
+      "frameCount": 22,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    }
+  ]
+}

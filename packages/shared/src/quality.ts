@@ -45,6 +45,29 @@ export const supportsWebGL2 = (): boolean => {
   }
 };
 
+/**
+ * Is WebGL being emulated (SwiftShader, llvmpipe, headless software rasterizers)?
+ *
+ * These renderers are 10–50× slower than any real GPU, and treating them as merely "a slow device"
+ * makes a shader hero unusable: the frame watcher degrades once, and once is not enough. Knowing the
+ * renderer *before* building a scene lets a catalogue choose its starting tier honestly.
+ */
+export function softwareRenderer(): boolean {
+  if (!isBrowser) return false;
+  try {
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
+    if (!gl) return false;
+    const info = gl.getExtension("WEBGL_debug_renderer_info");
+    const renderer = String(
+      info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER),
+    );
+    return /swiftshader|llvmpipe|softpipe|software|swangle/i.test(renderer);
+  } catch {
+    return false;
+  }
+}
+
 export function qualityTier(): QualityTier {
   if (!isBrowser) return "high";
   const cores = navigator.hardwareConcurrency ?? 4;

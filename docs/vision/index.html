@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Vision reel — The Catalog</title>
+<meta name="description" content="Real-browser captures of every Catalog variation, beside the audit that produced them." />
+<link rel="stylesheet" href="../assets/hub.css" />
+<style>
+  body { background: #050506; }
+  .vision-head { padding: clamp(3rem, 9vh, 6rem) var(--gutter) clamp(1.5rem, 4vh, 2.5rem); border-bottom: 1px solid rgba(255,255,255,.08); }
+  .vision-head h1 { font-size: clamp(2rem, 5vw, 4rem); color: #fff; letter-spacing: -.04em; }
+  .vision-head p { max-width: 70ch; color: rgba(255,255,255,.62); margin-top: 1rem; line-height: 1.6; }
+  .vision-head .meta { font-family: var(--font-mono); font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 1.4rem; display: flex; gap: 1.4rem; flex-wrap: wrap; }
+  .vision-summary { margin: 0 var(--gutter) clamp(1.5rem,4vh,2.5rem); border: 1px solid rgba(255,59,31,.5); background: rgba(255,59,31,.08); padding: 1rem 1.2rem; font-family: var(--font-mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: #ff8a76; }
+  .vision-grid { display: grid; gap: clamp(1.4rem, 3vw, 2.6rem); grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr)); padding: 0 var(--gutter) clamp(3rem, 9vh, 6rem); }
+  .vision-card { border: 1px solid rgba(255,255,255,.1); border-top: 2px solid var(--accent); background: rgba(255,255,255,.02); padding: 1rem 1rem 1.2rem; display: grid; gap: .8rem; }
+  .vision-card header { display: flex; align-items: center; gap: .5rem; font-family: var(--font-mono); font-size: .52rem; letter-spacing: .18em; text-transform: uppercase; }
+  .vision-card .badge { background: var(--accent); color: #05050a; padding: .14rem .34rem; font-weight: 700; }
+  .vision-card .discipline { color: rgba(255,255,255,.45); }
+  .vision-card .verdict { margin-left: auto; }
+  .vision-card .verdict.ok { color: #6ef0b0; }
+  .vision-card .verdict.warn { color: #ff8a76; }
+  .vision-card h3 { font-family: var(--font-mono); font-size: .88rem; color: #fff; letter-spacing: .01em; word-break: break-word; }
+  .vision-card .vibe { font-family: var(--font-mono); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; color: color-mix(in oklab, var(--accent) 76%, #fff 24%); }
+  .vision-card img { width: 100%; height: auto; border: 1px solid rgba(255,255,255,.08); background: #050506; }
+  .vision-card .nogif { font-family: var(--font-mono); font-size: .6rem; color: rgba(255,255,255,.4); border: 1px dashed rgba(255,255,255,.15); padding: 2rem; text-align: center; }
+  .vision-card dl { display: grid; gap: .35rem; margin: 0; font-size: .72rem; }
+  .vision-card dl > div { display: grid; grid-template-columns: 7.5rem minmax(0,1fr); gap: .5rem; }
+  .vision-card dt { font-family: var(--font-mono); font-size: .5rem; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.34); padding-top: .15rem; }
+  .vision-card dd { margin: 0; color: rgba(255,255,255,.72); overflow-wrap: anywhere; }
+  .stills { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: .35rem; }
+  .stills img { aspect-ratio: 4/3; object-fit: cover; object-position: top; }
+  .vision-foot { padding: 1.6rem var(--gutter) 2.4rem; border-top: 1px solid rgba(255,255,255,.08); font-family: var(--font-mono); font-size: .56rem; letter-spacing: .16em; text-transform: uppercase; color: rgba(255,255,255,.34); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .vision-foot a { color: var(--accent); }
+  @media (max-width: 620px) { .stills { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+</style>
+</head>
+<body>
+<header class="vision-head">
+  <p class="meta" style="margin-top:0"><a href="../index.html" style="color:var(--accent)">← back to the hub</a></p>
+  <h1>Vision reel</h1>
+  <p>
+    Every variation below was driven by a real Chromium — screenshotted, screencast, encoded and audited
+    in the same pass. The animated frames are the actual render loop, not a mockup: the pointer arcs, the
+    scroll trajectories and the clicks all happened. Audit results sit beside each capture, so the
+    visuals and the evidence come from one source of truth.
+  </p>
+  <p class="meta">
+    <span>captured 2026-09-22 15:31 UTC</span>
+    <span>11 targets</span>
+    <span>9 captures · 10.5 MB</span>
+    <span>renderer: software rasterizer</span>
+  </p>
+</header>
+<section class="vision-summary">
+  2 finding(s) — inspect the report beside each capture
+</section>
+<main class="vision-grid">
+      <article class="vision-card" style="--accent: #FF3B1F">
+        <header>
+          <span class="badge">BATCH 01</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict ok">verified</span>
+        </header>
+        <h3>Hero_V01_KineticBrutalGrid</h3>
+        <p class="vibe">Kinetic Typography · Neo-Brutalism</p>
+        <img src="kinetic-brutal-grid.gif" alt="Animated capture of Hero_V01_KineticBrutalGrid" loading="lazy" width="420" height="263" />
+        <dl>
+          <div><dt>Captured</dt><dd>84 frames · 420×263 · 48 colours · 1106 KB</dd></div>
+          <div><dt>Playback</dt><dd>6.1 fps real-time (165 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
+        </dl>
+        <div class="stills">
+          <a href="shots/kinetic-brutal-grid-hero.png" target="_blank" rel="noreferrer"><img src="shots/kinetic-brutal-grid-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/kinetic-brutal-grid-mid.png" target="_blank" rel="noreferrer"><img src="shots/kinetic-brutal-grid-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/kinetic-brutal-grid-deep.png" target="_blank" rel="noreferrer"><img src="shots/kinetic-brutal-grid-deep.png" alt="Still frame" loading="lazy" /></a>
+        </div>
+      </article>
+      <article class="vision-card" style="--accent: #C6A15B">
+        <header>
+          <span class="badge">BATCH 01</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict ok">verified</span>
+        </header>
+        <h3>Hero_V02_EditorialScrollLock</h3>
+        <p class="vibe">Luxury Minimalism · Editorial</p>
+        <img src="editorial-scroll-lock.gif" alt="Animated capture of Hero_V02_EditorialScrollLock" loading="lazy" width="580" height="363" />
+        <dl>
+          <div><dt>Captured</dt><dd>65 frames · 580×363 · 96 colours · 966 KB</dd></div>
+          <div><dt>Playback</dt><dd>7.8 fps real-time (129 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
+        </dl>
+        <div class="stills">
+          <a href="shots/editorial-scroll-lock-hero.png" target="_blank" rel="noreferrer"><img src="shots/editorial-scroll-lock-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/editorial-scroll-lock-mid.png" target="_blank" rel="noreferrer"><img src="shots/editorial-scroll-lock-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/editorial-scroll-lock-deep.png" target="_blank" rel="noreferrer"><img src="shots/editorial-scroll-lock-deep.png" alt="Still frame" loading="lazy" /></a>
+        </div>
+      </article>
+      <article class="vision-card" style="--accent: #5B8CFF">
+        <header>
+          <span class="badge">BATCH 01</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict ok">verified</span>
+        </header>
+        <h3>Hero_V03_ParticleMorphField</h3>
+        <p class="vibe">Immersive WebGL-First</p>
+        <img src="particle-morph-field.gif" alt="Animated capture of Hero_V03_ParticleMorphField" loading="lazy" width="500" height="313" />
+        <dl>
+          <div><dt>Captured</dt><dd>59 frames · 500×313 · 64 colours · 1076 KB</dd></div>
+          <div><dt>Playback</dt><dd>1.7 fps real-time (600 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>WebGL 2.0 (OpenGL ES 3.0 Chromium) — ANGLE (Google, Vulkan 1.3.0 (SwiftShader Devic</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
+        </dl>
+        <div class="stills">
+          <a href="shots/particle-morph-field-hero.png" target="_blank" rel="noreferrer"><img src="shots/particle-morph-field-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/particle-morph-field-mid.png" target="_blank" rel="noreferrer"><img src="shots/particle-morph-field-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/particle-morph-field-deep.png" target="_blank" rel="noreferrer"><img src="shots/particle-morph-field-deep.png" alt="Still frame" loading="lazy" /></a>
+        </div>
+      </article>
+      <article class="vision-card" style="--accent: #00F0A8">
+        <header>
+          <span class="badge">BATCH 01</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict ok">verified</span>
+        </header>
+        <h3>Hero_V04_CyberScannerHUD</h3>
+        <p class="vibe">Cyberpunk · High-Density UI</p>
+        <img src="cyber-scanner-hud.gif" alt="Animated capture of Hero_V04_CyberScannerHUD" loading="lazy" width="580" height="363" />
+        <dl>
+          <div><dt>Captured</dt><dd>29 frames · 580×363 · 96 colours · 909 KB</dd></div>
+          <div><dt>Playback</dt><dd>1.7 fps real-time (600 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
+        </dl>
+        <div class="stills">
+          <a href="shots/cyber-scanner-hud-hero.png" target="_blank" rel="noreferrer"><img src="shots/cyber-scanner-hud-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/cyber-scanner-hud-mid.png" target="_blank" rel="noreferrer"><img src="shots/cyber-scanner-hud-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/cyber-scanner-hud-deep.png" target="_blank" rel="noreferrer"><img src="shots/cyber-scanner-hud-deep.png" alt="Still frame" loading="lazy" /></a>
+        </div>
+      </article>
+      <article class="vision-card" style="--accent: #FF4FD8">
+        <header>
+          <span class="badge">BATCH 01</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict ok">verified</span>
+        </header>
+        <h3>Hero_V05_LiquidChromaGlass</h3>
+        <p class="vibe">Chromatic Liquid Gradient · Glassmorphism</p>
+        <img src="liquid-chroma-glass.gif" alt="Animated capture of Hero_V05_LiquidChromaGlass" loading="lazy" width="420" height="263" />
+        <dl>
+          <div><dt>Captured</dt><dd>57 frames · 420×263 · 48 colours · 1263 KB</dd></div>
+          <div><dt>Playback</dt><dd>1.7 fps real-time (600 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>WebGL 2.0 (OpenGL ES 3.0 Chromium) — ANGLE (Google, Vulkan 1.3.0 (SwiftShader Devic</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
+        </dl>
+        <div class="stills">
+          <a href="shots/liquid-chroma-glass-hero.png" target="_blank" rel="noreferrer"><img src="shots/liquid-chroma-glass-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/liquid-chroma-glass-mid.png" target="_blank" rel="noreferrer"><img src="shots/liquid-chroma-glass-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/liquid-chroma-glass-deep.png" target="_blank" rel="noreferrer"><img src="shots/liquid-chroma-glass-deep.png" alt="Still frame" loading="lazy" /></a>
+        </div>
+      </article>
+      <article class="vision-card" style="--accent: #6EE7FF">
+        <header>
+          <span class="badge">BATCH 02</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict warn">see report</span>
+        </header>
+        <h3>Hero_V06_TresInstancedShards</h3>
+        <p class="vibe">Immersive WebGL-First · Volumetric</p>
+        <p class="nogif">no capture in this run (audit only)</p>
+        <dl>
+          <div><dt>Captured</dt><dd>—</dd></div>
+          <div><dt>Playback</dt><dd>—</dd></div>
+          <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
+          <div><dt>HUD</dt><dd>MISSING</dd></div>
+          <div><dt>Overflow</dt><dd></dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>✗ empty</dd></div>
+          <div><dt>Console</dt><dd>1 error(s)</dd></div>
+        </dl>
+        <div class="stills">
+          
+        </div>
+      </article>
+      <article class="vision-card" style="--accent: #D8B472">
+        <header>
+          <span class="badge">BATCH 02</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict ok">verified</span>
+        </header>
+        <h3>Hero_V07_EditorialChapterRail</h3>
+        <p class="vibe">Luxury Minimalism · Editorial</p>
+        <img src="editorial-chapter-rail.gif" alt="Animated capture of Hero_V07_EditorialChapterRail" loading="lazy" width="740" height="463" />
+        <dl>
+          <div><dt>Captured</dt><dd>31 frames · 740×463 · 160 colours · 1484 KB</dd></div>
+          <div><dt>Playback</dt><dd>4.3 fps real-time (232 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
+        </dl>
+        <div class="stills">
+          <a href="shots/editorial-chapter-rail-hero.png" target="_blank" rel="noreferrer"><img src="shots/editorial-chapter-rail-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/editorial-chapter-rail-mid.png" target="_blank" rel="noreferrer"><img src="shots/editorial-chapter-rail-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/editorial-chapter-rail-deep.png" target="_blank" rel="noreferrer"><img src="shots/editorial-chapter-rail-deep.png" alt="Still frame" loading="lazy" /></a>
+        </div>
+      </article>
+      <article class="vision-card" style="--accent: #9D7BFF">
+        <header>
+          <span class="badge">BATCH 02</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict warn">see report</span>
+        </header>
+        <h3>Hero_V08_TresLiquidTerrain</h3>
+        <p class="vibe">Chromatic Liquid Gradient · Shader Terrain</p>
+        <p class="nogif">no capture in this run (audit only)</p>
+        <dl>
+          <div><dt>Captured</dt><dd>—</dd></div>
+          <div><dt>Playback</dt><dd>—</dd></div>
+          <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
+          <div><dt>HUD</dt><dd>MISSING</dd></div>
+          <div><dt>Overflow</dt><dd></dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>✗ empty</dd></div>
+          <div><dt>Console</dt><dd>1 error(s)</dd></div>
+        </dl>
+        <div class="stills">
+          
+        </div>
+      </article>
+      <article class="vision-card" style="--accent: #7CF0D0">
+        <header>
+          <span class="badge">BATCH 02</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict ok">verified</span>
+        </header>
+        <h3>Hero_V09_VanillaRaymarch</h3>
+        <p class="vibe">Immersive WebGL-First · Volumetric</p>
+        <img src="vanilla-raymarch.gif" alt="Animated capture of Hero_V09_VanillaRaymarch" loading="lazy" width="580" height="363" />
+        <dl>
+          <div><dt>Captured</dt><dd>41 frames · 580×363 · 96 colours · 1375 KB</dd></div>
+          <div><dt>Playback</dt><dd>1.7 fps real-time (600 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>WebGL 2.0 (OpenGL ES 3.0 Chromium) — ANGLE (Google, Vulkan 1.3.0 (SwiftShader Devic</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
+        </dl>
+        <div class="stills">
+          <a href="shots/vanilla-raymarch-hero.png" target="_blank" rel="noreferrer"><img src="shots/vanilla-raymarch-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/vanilla-raymarch-mid.png" target="_blank" rel="noreferrer"><img src="shots/vanilla-raymarch-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/vanilla-raymarch-deep.png" target="_blank" rel="noreferrer"><img src="shots/vanilla-raymarch-deep.png" alt="Still frame" loading="lazy" /></a>
+        </div>
+      </article>
+      <article class="vision-card" style="--accent: #D8FF36">
+        <header>
+          <span class="badge">BATCH 02</span>
+          <span class="discipline">Hero</span>
+          <span class="verdict ok">verified</span>
+        </header>
+        <h3>Hero_V10_BrutalStampPress</h3>
+        <p class="vibe">Kinetic Typography · Neo-Brutalism · Print-shop</p>
+        <img src="brutal-stamp-press.gif" alt="Animated capture of Hero_V10_BrutalStampPress" loading="lazy" width="660" height="413" />
+        <dl>
+          <div><dt>Captured</dt><dd>22 frames · 660×413 · 128 colours · 1493 KB</dd></div>
+          <div><dt>Playback</dt><dd>2.9 fps real-time (345 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
+          <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
+        </dl>
+        <div class="stills">
+          <a href="shots/brutal-stamp-press-hero.png" target="_blank" rel="noreferrer"><img src="shots/brutal-stamp-press-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/brutal-stamp-press-mid.png" target="_blank" rel="noreferrer"><img src="shots/brutal-stamp-press-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/brutal-stamp-press-deep.png" target="_blank" rel="noreferrer"><img src="shots/brutal-stamp-press-deep.png" alt="Still frame" loading="lazy" /></a>
+        </div>
+      </article></main>
+<footer class="vision-foot">
+  <span>generated by scripts/vision.mjs · npm run verify:browser</span>
+  <span><a href="report.json">machine-readable report.json</a></span>
+</footer>
+</body>
+</html>

@@ -128,12 +128,12 @@ Legend: `[x]` shipped · `[~]` in progress · `[ ]` queued · *(counts = variati
 
 | Metric | Value |
 |---|---|
-| Variations shipped (`stable`) | **9** |
+| Variations shipped (`stable`) | **10** |
 | Variations implemented but unpolished (`beta`) | 0 |
-| Batches complete | 0 foundation + 1 content + Batch 2 part 1 = **3 / 10** |
+| Batches complete | foundation + **Batch 1** + **Batch 2** = **3 / 10** |
 | Verification gates green | manifest ✔ · CSS modules ✔ · types ✔ · hub runtime (23 assertions) ✔ · production build ✔ · **real-browser audit + vision reel ✔** |
-| Stack coverage | Next.js ✅ · Nuxt ✅ (TresJS + GSAP) · **standalone vanilla ✅** (zero deps, one file) |
-| Motion engines live | GSAP Timeline ✅ · ScrollTrigger ✅ · SplitText ✅ · Observer ✅ · quickTo ✅ · Motion ✅ · Lenis ✅ |
+| Stack coverage | Next.js ✅ · Nuxt ✅ (TresJS + GSAP) · **standalone vanilla ✅** (zero deps, one file — V09 has *no* dependencies, V10 vendors one) |
+| Motion engines live | GSAP Timeline ✅ · ScrollTrigger ✅ · SplitText ✅ · Observer ✅ · quickTo ✅ · Motion ✅ · **Motion One ✅ (vendored, buildless)** · Lenis ✅ |
 | GPU techniques live | Raw WebGL2 fragment shader ✅ · R3F particle shader ✅ · **TresJS instanced shader ✅** · **shader-derived normals + displaced terrain ✅** · Canvas2D ✅ |
 | Aesthetic schools live | Kinetic-Brutal ✅ · Editorial Luxury ✅ · WebGL-First ✅ · Cyberpunk ✅ · Chromatic Liquid ✅ |
 
@@ -150,11 +150,20 @@ screenshot verification; the vision reel is the evidence).
 shader-derived normals). The track derives its prerender routes from the manifest, mirrors the React
 HUD's DOM contract, and degrades honestly without WebGL2. `npm test` now type-checks both tracks.
 
-**Part 2 (in progress):** the standalone vanilla track (`docs/vanilla/**`, no build step, no deps).
-`Hero_V09_VanillaRaymarch` (raw WebGL2 raymarch, one HTML file, zero network requests) is shipped and
-registered. **Remaining:** `Hero_V10` — a Canvas2D + Motion One kinetic-brutal hero with Motion One
-vendored into `docs/vanilla/shared/vendor/` by the sync step (no bundler, no CDN). Batch 2 closes only
-when the reel contains a GIF for every variation, including both of these.
+**Part 2 (complete):** the standalone vanilla track (`docs/vanilla/**`, no build step).
+`Hero_V09_VanillaRaymarch` (raw WebGL2 raymarch, one HTML file, zero network requests) and
+`Hero_V10_BrutalStampPress` (Canvas2D halftone press + Motion One springs, one vendored asset pair:
+`docs/vanilla/shared/vendor/motion.min.js` and one woff2) are shipped and registered. Both were
+verified by eye from the reel, not from a passing exit code.
+
+**Batch 2 is content-complete: 5 variations.** The only thing standing between it and "closed" is the
+GIF capture for the two TresJS variations (next section).
+
+**Known open item (Batch 2):** the two TresJS variations capture-blocked — and only them. Not shader
+weight (the vanilla raymarch is heavier and captures fine), not tier size (reproduces at `low`), not GPU
+availability (WebGL 2.0 is live). Suspect: TresJS's continuous loop + Vue's per-frame render cycle
+starving the JS task queue at ~1–2 fps under software rasterization. Evidence and the next diagnostic
+step are recorded in `PROGRESS.md`; **do not tune the scenes for it without running that diagnostic.**
 
 ### When Batch 2 starts (Nuxt 4 + TresJS + vanilla WebGL)
 1. `npx nuxi init apps/nuxt-catalog` — or hand-scaffold Nuxt 4 + TS. Keep `ssr: false` for WebGL routes;
@@ -166,6 +175,7 @@ when the reel contains a GIF for every variation, including both of these.
 3. Five new heroes with **no repeated `(framework, motion engine, aesthetic)` triple** from Batch 1:
    · TresJS instanced-points hero (WebGL-first)        · Nuxt + GSAP ScrollTrigger editorial hero
    · TresJS shader-terrain hero (chromatic liquid)     · vanilla WebGL2 raymarch hero (no framework)
+   · vanilla Canvas2D + Motion One letterpress hero (no bundler)
    · vanilla Canvas2D + Motion One kinetic-brutal hero
 4. Register each in `catalog/catalog.json`, wire the Nuxt route table, then run the full gate:
    `npm test && npm run build && npm run verify:browser` — **the reel is part of the definition of done

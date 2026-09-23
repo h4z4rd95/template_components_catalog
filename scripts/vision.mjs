@@ -108,7 +108,7 @@ const launchWith = (chromePath, args) =>
     executablePath: chromePath,
     headless: true,
     defaultViewport: CAPTURE_VIEWPORT,
-    protocolTimeout: 240_000,
+    protocolTimeout: 480_000, // a heavy shader scene under software rasterization is slow, not hung
     env: browserEnv(chromePath),
     args,
   });

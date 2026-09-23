@@ -14,6 +14,7 @@ import {
   clampDpr,
   prefersReducedMotion,
   qualityTier,
+  softwareRenderer,
   supportsWebGL2,
   watchPerformance,
   type QualityTier,
@@ -235,7 +236,9 @@ onMounted(() => {
   reduced.value = prefersReducedMotion();
   // Pre-flight before a renderer exists: a blank frame must never be presented as artwork.
   supported.value = supportsWebGL2();
-  tier.value = qualityTier();
+  // Emulated WebGL (SwiftShader/llvmpipe) is one more tier down than a slow GPU: a 3fps hero is
+  // not a premium hero, and the visitor paid nothing for the extra shards.
+  tier.value = softwareRenderer() ? "low" : qualityTier();
   dpr.value = clampDpr(window.devicePixelRatio, tier.value);
   const amount = COUNT_BY_TIER[tier.value];
   count.value = amount;
@@ -304,7 +307,10 @@ onUnmounted(() => {
         @loop="onLoop"
       >
         <TresPerspectiveCamera :args="[38, 1.6, 0.1, 80]" :position="cameraPosition" :fov="38" />
-        <TresPrimitive :key="count" :object="shards" />
+        <!-- `primitive`, lowercase: TresJS resolves `TresPrimitive` to a bare `Primitive` on the
+             THREE namespace, which does not exist — the render then throws on every update and the
+             page spins. This is the documented wrapper for an object we built by hand. -->
+        <primitive :key="count" :object="shards" />
       </TresCanvas>
 
       <div v-else class="shards__poster">

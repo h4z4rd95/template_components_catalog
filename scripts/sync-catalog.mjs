@@ -5,6 +5,8 @@
  *   1. validates catalog/catalog.json (ids, enums, required fields, on-disk sources)
  *   2. emits docs/data/catalog.json  → for fetch()
  *   3. emits docs/data/catalog.js    → window.__CATALOG__ fallback so the hub also works from file://
+ *   4. vendors the vanilla track's assets out of node_modules (docs/vanilla/shared/**) so the
+ *      buildless pages stay offline and CDN-free while still using the same versions as the apps
  *
  * Run: npm run catalog:sync
  */
@@ -39,6 +41,79 @@ function deriveSlugs(raw) {
     const base = v.discipline.toLowerCase();
     return { ...v, slug, route: `${base}/${slug}/`, url: v.href ?? `framework/next/${base}/${slug}/` };
   });
+}
+
+/* ---------------------------------------------------------------------------- 4. vendoring ---
+ * The vanilla track is deliberately buildless, so it cannot `import "motion"`. It gets the same
+ * bytes the apps get, copied out of node_modules at sync time: a plain <script src> and a plain
+ * @font-face, both same-origin, both working from file:// as well as from Pages. Nothing is
+ * fetched from a CDN at runtime, which is what keeps a single HTML file self-sufficient.
+ */
+const VENDOR = [
+  {
+    label: "Motion One",
+    from: join(ROOT, "node_modules", "motion", "dist", "motion.js"),
+    meta: join(ROOT, "node_modules", "motion", "package.json"),
+    to: join(ROOT, "docs", "vanilla", "shared", "vendor", "motion.min.js"),
+    text: true,
+    note: "UMD build, MIT — loaded with a plain <script src>",
+  },
+  {
+    label: "Archivo Black",
+    from: join(ROOT, "node_modules", "@fontsource", "archivo-black", "files", "archivo-black-latin-400-normal.woff2"),
+    meta: join(ROOT, "node_modules", "@fontsource", "archivo-black", "package.json"),
+    to: join(ROOT, "docs", "vanilla", "shared", "fonts", "archivo-black-latin-400-normal.woff2"),
+    text: false,
+    note: "latin subset, OFL — display face of the catalogue",
+  },
+];
+
+async function vendorAssets() {
+  const results = [];
+  for (const asset of VENDOR) {
+    const rel = asset.to.replace(ROOT + "/", "");
+    let version = "unknown";
+    try {
+      version = JSON.parse(await readFile(asset.meta, "utf8")).version;
+    } catch {
+      /* version is cosmetic; the bytes below are what matter */
+    }
+
+    let bytes = null;
+    try {
+      bytes = await readFile(asset.from, asset.text ? "utf8" : undefined);
+    } catch {
+      bytes = null;
+    }
+
+    if (bytes === null) {
+      // A fresh clone that runs the sync before `npm install` keeps the committed copy.
+      let kept = false;
+      try {
+        await access(asset.to);
+        kept = true;
+      } catch {
+        kept = false;
+      }
+      if (kept) results.push(`  ~ ${asset.label.padEnd(14)} kept the committed copy (node_modules absent)`);
+      else warn(`vanilla vendor: ${rel} missing and node_modules/${asset.label} is not installed — run \`npm install\``);
+      continue;
+    }
+
+    await mkdir(dirname(asset.to), { recursive: true });
+    if (asset.text) {
+      const banner =
+        `/*! ${asset.label} v${version} — ${asset.note}.\n` +
+        ` *  Vendored by scripts/sync-catalog.mjs from node_modules/${asset.label === "Motion One" ? "motion/dist/motion.js" : "@fontsource/archivo-black/files"}.\n` +
+        ` *  Do not edit by hand: re-run \`npm run catalog:sync\` after a dependency bump. */\n`;
+      await writeFile(asset.to, banner + bytes, "utf8");
+      results.push(`  ✔ ${asset.label.padEnd(14)} v${version} → ${rel}`);
+    } else {
+      await writeFile(asset.to, bytes);
+      results.push(`  ✔ ${asset.label.padEnd(14)} v${version} → ${rel} (${Math.round(bytes.length / 1024)} KB)`);
+    }
+  }
+  return results;
 }
 
 async function main() {
@@ -133,6 +208,7 @@ async function main() {
   }
 
   // ---- report -------------------------------------------------------------
+  const vendored = await vendorAssets();
   const line = "─".repeat(64);
   console.log(line);
   console.log(`  CATALOG SYNC  ·  ${counts.total} variations  (stable ${counts.stable} / beta ${counts.beta} / planned ${counts.planned})`);
@@ -141,6 +217,9 @@ async function main() {
     const badge = v.status === "stable" ? "✔" : v.status === "beta" ? "~" : "○";
     console.log(`  ${badge} ${v.id.padEnd(32)} → ${v.url}`);
   }
+  console.log(line);
+  console.log(`  vanilla track (buildless: no bundler, no CDN)`);
+  for (const r of vendored) console.log(r);
   console.log(line);
   for (const w of warnings) console.log(`  ! warning: ${w}`);
   if (errors.length) {
