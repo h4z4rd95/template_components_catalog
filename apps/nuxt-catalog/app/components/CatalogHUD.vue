@@ -91,8 +91,11 @@ onMounted(() => {
     if (stored === "1") open.value = false;
     else if (stored === "0") open.value = true;
     // No stored preference: a wide panel would eat most of a phone in a catalogue where the
-    // artwork *is* the content, so start collapsed there.
-    else if (window.innerWidth < 900 || window.innerHeight < 720) open.value = false;
+    // No stored preference: a wide panel would eat most of a phone in a catalogue where the
+    // artwork *is* the content, so start collapsed there. The height threshold is 860px on
+    // purpose: the open panel is ~20rem tall, and on anything shorter it would sit on top of
+    // the hero copy rather than beside it. A visitor who wants the metadata can still open it.
+    else if (window.innerWidth < 900 || window.innerHeight < 860) open.value = false;
   } catch {
     /* ignore */
   }

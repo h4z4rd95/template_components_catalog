@@ -629,3 +629,13 @@ onUnmounted(() => {
   }
 }
 </style>
+
+/* The metadata HUD is fixed to the bottom-left corner in every variation, and it is ~15rem
+   tall when open. On shorter viewports a vertically centred block would run underneath it
+   — the artwork may be layered, the copy may not. Give the type block a lane above it. */
+@media (max-height: 900px) {
+  .shards__type {
+    align-content: start;
+    padding-bottom: max(clamp(3rem, 10vh, 7rem), 17rem);
+  }
+}

@@ -44,8 +44,10 @@ export default function CatalogHUD({ variation, defaultOpen = true }: CatalogHUD
       else if (stored === "0") setOpen(true);
       else {
         // No stored preference: a 480px-wide panel would eat most of a phone (or a small laptop
-        // window) in a catalogue where the artwork *is* the content, so start collapsed there.
-        if (window.innerWidth < 900 || window.innerHeight < 720) setOpen(false);
+        // artwork *is* the content, so start collapsed there. The height threshold is 860px on
+    // purpose: the open panel is ~20rem tall, and on anything shorter it would sit on top of
+    // the hero copy rather than beside it. A visitor who wants the metadata can still open it.
+        if (window.innerWidth < 900 || window.innerHeight < 860) setOpen(false);
       }
     } catch {
       /* private mode — default state is fine */

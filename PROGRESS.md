@@ -416,3 +416,64 @@ step**: it copies `node_modules/motion/dist/motion.js` (UMD, MIT, v13.4.0) to
 
 **NEXT:** the two TresJS capture stalls (the diagnostic is written up in the previous entry), then
 Batch 3 (navigation systems and interactive mega-menus) on the user's "Continue".
+
+---
+
+## [2026-09-22 17:10 UTC] · The TresJS stall, solved — and Batch 2 verified end to end
+
+**Root cause, found by measurement.** Both remaining crashes were a **product bug, not a GPU or CPU
+limit**. A standalone diagnostic against the live server showed `navigation: 0.1s` followed by a hard
+main-thread lock, with this on the console:
+
+```
+[TresJS ▲ ■ ●] Primitive is not defined on the THREE namespace. Use extend to add it to the catalog.
+TypeError: e is not a constructor
+```
+
+Both heroes wrapped their hand-built `InstancedMesh`/`Mesh` in `<TresPrimitive>`. TresJS resolves that
+tag to a bare `Primitive` on the THREE namespace — which does not exist. Its own renderer treats the
+**lowercase** `<primitive>` tag as the wrapper for an object you built yourself. The render threw on
+every update and the loop spun forever, so the audit's `page.evaluate` never returned.
+
+Why every earlier attempt failed: the page was not slow, it was **deadlocked**. Lowering the tier
+(1,800 shards / 56² mesh), probing the renderer, raising `protocolTimeout` to 480 s and the shared
+`{ once: true }` guard could not help a loop that never yields. After the fix, the same diagnostic
+reports **no lock, no errors, WebGL 2.0 live, 15 fps (V06) / 47 fps (V08)** under SwiftShader.
+
+**A second defect the freeze had been hiding.** With the lock gone, V08 logged a real shader error:
+`fbm: no matching overloaded function found`. The shared chunk declares `fbm(vec3 p, int octaves)` —
+the octave count is passed explicitly so the loop bound stays compile-time constant, which GLSL ES
+requires — and the terrain call passed only the vector. Fixed; the shader compiles and the terrain,
+its shader-derived normals and the three-stop palette all render.
+
+**HUD safe area (defect found in the re-captured stills).** The metadata HUD is fixed to the
+bottom-left corner of every variation and is ~20rem tall when open, so it could sit **on top of** a
+hero that centres its copy — visible in V06/V08 where the lede ran under the panel. All four HUD
+implementations (Next, Nuxt, and both vanilla pages) now start collapsed below 860px of viewport
+height, which is the honest fix: the panel is opt-in metadata, and the artwork is the content.
+Measured overlap at the capture size: **~31,000 px² → 0**.
+
+**Verification.** Full reel, 11 targets, every one clean:
+
+| Target | Verdict |
+| --- | --- |
+| hub | ✔ clean |
+| kinetic-brutal-grid · editorial-scroll-lock · cyber-scanner-hud · editorial-chapter-rail | ✔ clean |
+| particle-morph-field | ✔ clean · `webgl 2.0` |
+| liquid-chroma-glass | ✔ clean · `webgl 2.0` |
+| **tres-instanced-shards** | ✔ clean · `webgl 2.0` · 1,800 shards — **first capture ever** |
+| **tres-liquid-terrain** | ✔ clean · `webgl 2.0` · 3,249 vertices — **first capture ever** |
+| vanilla-raymarch | ✔ clean · `webgl 2.0` |
+| brutal-stamp-press | ✔ clean |
+
+Each was then checked **by eye** in `docs/vision/shots/**`, not just by the harness: V06's shard field
+reads as faceted crystalline geometry, V08's ridged terrain sweeps deep blue → magenta, the vanilla
+raymarch shows its nebula and the letterpress hero shows SET / TYPE / LOUD with clean paper.
+
+**Recovery note.** The sandbox re-cloned from origin mid-session, which took `node_modules` and the
+two local commits with it. `git fetch` + `git reset --soft FETCH_HEAD` re-attached the working tree to
+`2d08496` with the entire delta intact, and it was re-committed and pushed as `13ccbe5`. Nothing was
+lost; `npm install` + `npm run setup:browser` + `npm run build` restored the toolchain.
+
+**NEXT:** Batch 2 is closed — 5 variations, 5 GIFs, 5 clean audits. Batch 3 (navigation systems and
+interactive mega-menus) starts on the user's word.

@@ -73,8 +73,10 @@ const VERT = /* glsl */ `
   ${glsl.NOISE_GLSL}
 
   // Terrain height as a function, so the normal can be derived instead of hand-authored.
+  // The shared chunk declares fbm(vec3, int octaves) — the octave count is passed explicitly so
+  // the loop bound stays a compile-time constant, which GLSL ES requires.
   float terrain(vec2 p) {
-    float n = fbm(vec3(p * 0.62 + uTime * 0.06, uTime * 0.12));
+    float n = fbm(vec3(p * 0.62 + uTime * 0.06, uTime * 0.12), 4);
     float ridges = 1.0 - abs(n * 2.0 - 1.0);          // ridged noise: crests instead of lumps
     float swell = sin(p.x * 0.7 + uTime * 0.35) * 0.06;
     return (n * 0.72 + ridges * 0.44 + swell) * uAmp * (1.0 + uScroll * 0.4);
@@ -564,3 +566,13 @@ onUnmounted(() => {
   }
 }
 </style>
+
+/* The metadata HUD is fixed to the bottom-left corner in every variation, and it is ~15rem
+   tall when open. On shorter viewports a vertically centred block would run underneath it
+   — the artwork may be layered, the copy may not. Give the type block a lane above it. */
+@media (max-height: 900px) {
+  .terrain__type {
+    align-content: start;
+    padding-bottom: max(clamp(3rem, 10vh, 7rem), 17rem);
+  }
+}

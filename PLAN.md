@@ -131,7 +131,7 @@ Legend: `[x]` shipped · `[~]` in progress · `[ ]` queued · *(counts = variati
 | Variations shipped (`stable`) | **10** |
 | Variations implemented but unpolished (`beta`) | 0 |
 | Batches complete | foundation + **Batch 1** + **Batch 2** = **3 / 10** |
-| Verification gates green | manifest ✔ · CSS modules ✔ · types ✔ · hub runtime (23 assertions) ✔ · production build ✔ · **real-browser audit + vision reel ✔** |
+| Verification gates green | manifest ✔ · CSS modules ✔ · types ✔ · hub runtime (23 assertions) ✔ · production build ✔ · **real-browser audit + vision reel: 11/11 targets clean, GIF for every variation ✔** |
 | Stack coverage | Next.js ✅ · Nuxt ✅ (TresJS + GSAP) · **standalone vanilla ✅** (zero deps, one file — V09 has *no* dependencies, V10 vendors one) |
 | Motion engines live | GSAP Timeline ✅ · ScrollTrigger ✅ · SplitText ✅ · Observer ✅ · quickTo ✅ · Motion ✅ · **Motion One ✅ (vendored, buildless)** · Lenis ✅ |
 | GPU techniques live | Raw WebGL2 fragment shader ✅ · R3F particle shader ✅ · **TresJS instanced shader ✅** · **shader-derived normals + displaced terrain ✅** · Canvas2D ✅ |
@@ -159,11 +159,20 @@ verified by eye from the reel, not from a passing exit code.
 **Batch 2 is content-complete: 5 variations.** The only thing standing between it and "closed" is the
 GIF capture for the two TresJS variations (next section).
 
-**Known open item (Batch 2):** the two TresJS variations capture-blocked — and only them. Not shader
-weight (the vanilla raymarch is heavier and captures fine), not tier size (reproduces at `low`), not GPU
-availability (WebGL 2.0 is live). Suspect: TresJS's continuous loop + Vue's per-frame render cycle
-starving the JS task queue at ~1–2 fps under software rasterization. Evidence and the next diagnostic
-step are recorded in `PROGRESS.md`; **do not tune the scenes for it without running that diagnostic.**
+**RESOLVED — the TresJS stall was never a GPU or CPU problem.** `Hero_V06` and `Hero_V08` used
+`<TresPrimitive>`, which TresJS resolves to a non-existent `Primitive` on the THREE namespace; the
+documented wrapper for a hand-built object is the lowercase `<primitive>`. The render threw on every
+update (`Primitive is not defined on the THREE namespace`, `TypeError: e is not a constructor`) and
+the main thread never came back — which is why lowering the tier, probing the renderer and raising
+`protocolTimeout` all failed to help: the page was not slow, it was deadlocked. Fixed in both heroes.
+While unfixed, a second, quieter defect was hidden behind the freeze: V08's terrain vertex shader
+called the shared `fbm()` with one argument where the chunk declares `fbm(vec3, int octaves)`, so the
+shader failed to compile. Both are fixed and both variations now audit clean with real WebGL.
+
+**HUD safe area.** The metadata HUD is fixed to the bottom-left corner of every variation and is
+~20rem tall when open, so it can sit *on top of* a hero that centres its copy. All four HUD
+implementations (Next, Nuxt, and both vanilla pages) now start collapsed below 860px of viewport
+height; measured overlap at the capture size went from ~31,000 px² to **0**.
 
 ### When Batch 2 starts (Nuxt 4 + TresJS + vanilla WebGL)
 1. `npx nuxi init apps/nuxt-catalog` — or hand-scaffold Nuxt 4 + TS. Keep `ssr: false` for WebGL routes;
