@@ -217,3 +217,82 @@ height; measured overlap at the capture size went from ~31,000 px² to **0**.
   both profiles and records the winner (`gpuProfile` in `report.json`); `npm run setup:browser` proves
   graphics at provisioning time. **Never "fix" shader code for this class of failure.**
 - GSAP 3.13+ ships SplitText/Observer free in the public npm package — no club membership needed.
+
+---
+
+## 8. Phase 3 — Bilingual · dual-direction · dual-theme · the commerce track
+
+### خلاصهٔ پلن (فارسی)
+
+**هدف:** کاتالوگ تبدیل شود به یک شوروم دوزبانه (فارسی/انگلیسی) با پشتیبانی کامل راست‌چین و
+چپ‌چین، استایل شب و روز، ناوبری درست روی دسکتاپ و موبایل، و یک مسیر فروشگاهی کامل.
+
+**ترتیب کار:**
+1. **زیرساخت (Batch 3a):** فونت‌های فارسی اوپن‌سورس + سیستم زبان/جهت/تم + بازسازی ساختار دسته‌بندی‌ها
+   (موضوع‌ها) + صفحهٔ اختصاصی برای هر کامپوننت.
+2. **ناوبری (Batch 3b):** کامپوننت‌های منو و مگا‌منو، دوزبانه و در هر دو تم، با تست موبایل.
+3. **فروشگاه (Batch 4):** دو صفحهٔ اصلی فروشگاه (محصول فیزیکی و محصول دیجیتال) + دو صفحهٔ جزئیات
+   محصول خلاقانه.
+4. **سبد و پرداخت (Batch 5):** انیمیشن افزودن به سبد و حذف از سبد + پرداخت تک‌مرحله‌ای و چندمرحله‌ای.
+
+**معیار پذیرش:** هر مورد باید در مرورگر واقعی و با اسکرین‌شات اثبات شود؛ در دو تم، دو جهت و
+چهار بریک‌پوینت، بدون متن پنهان یا ناخوانا.
+
+### The brief (as received)
+
+> a two-language version with open-source Persian fonts matched to the section each one belongs to;
+> both RTL and LTR layouts; day and night styles with every element validated for correct display;
+> correct responsive behaviour for the whole list; menus and the navigation bar correct on desktop
+> and mobile; the structure fixed so the categories cover the topics and every selected component
+> opens its own page — plus storefront homepages for physical and virtual products, product detail
+> pages that are *not* like ordinary shops, multi-step and single-step checkout, and add-to-cart /
+> remove-from-cart effects.
+
+### Acceptance criteria (each is a gate, not a vibe)
+
+| # | Criterion | How it is proven |
+| --- | --- | --- |
+| 1 | Two languages, one manifest | `catalog:sync` **fails** if any stable variation or UI string lacks its Persian counterpart |
+| 2 | Persian fonts matched to the section | Three OFL families vendored with a documented role map (display / UI / editorial); every track loads them from the same files |
+| 3 | RTL **and** LTR | `dir` is a runtime state, not a second stylesheet: logical properties throughout, mirrored rails and drawers; audited in both directions |
+| 4 | Day and night styles | `data-theme` tokens + `prefers-color-scheme` default + persistence; the harness asserts text/background contrast in **both** themes and flags invisible or low-contrast copy |
+| 5 | Responsive list | 360 / 768 / 1440 / 2560 sweep on every variation *and* on every generated page |
+| 6 | Menus correct on desktop and mobile | Desktop mega-menu with keyboard + pointer intent; mobile drawer with accordions, focus trap and Escape; both live in the reel |
+| 7 | Correct categories incl. topics | `discipline → topic → variation` in the manifest, rendered as real generated pages under `docs/browse/**` |
+| 8 | Every component opens its own page | generated `docs/component/<slug>/` with live preview, full HUD metadata, source link and related variations |
+| 9 | Storefronts (physical + virtual) | two hero-scale homepages, deliberately unlike a default template |
+| 10 | Product detail, memorably | two detail pages where the product *is* the motion |
+| 11 | Cart + checkout | add-to-cart flight, removal that reflows and counts, one-step and multi-step checkout |
+
+### Work packages
+
+**Batch 3a — foundation (this deliverable)**
+- `catalog/catalog.json` grows `locales`, bilingual `disciplines` (label/blurb + `fa`), a `topics`
+  registry, a `ui` dictionary, and per-variation `titleFa` / `vibeFa` / `interactionFa` / `topic`.
+- Fonts: `@fontsource-variable/vazirmatn` (UI/body), `@fontsource/lalezar` (display, kinetic),
+  `@fontsource-variable/readex-pro` (geometric/editorial + Latin). Vendored by `catalog:sync` into
+  `docs/fonts/**` and imported from the packages by the framework apps — one set of bytes, one version.
+- `docs/assets/theme.css` + `docs/assets/chrome.js`: locale/direction/theme runtime, toggles,
+  persistence, `?lang=&theme=` deep links, `hreflang`-style alternates.
+- Hub masthead: discipline menus (desktop) and a full-height drawer with accordions (mobile),
+  search that matches both languages, topic facets, and a `Commerce` discipline that exists from the
+  start so the structure is real before the pages are.
+- Generated pages: `docs/browse/<discipline>/`, `docs/browse/<discipline>/<topic>/`,
+  `docs/component/<slug>/` — emitted by the sync step from the same manifest.
+
+**Batch 3b — navigation variations** · `Nav_V01_MegaMenuCommand` (Next.js + Motion) and a
+buildless vanilla drawer/orbital nav. Both bilingual, both theme-aware, both tested on mobile.
+
+**Batch 4 — commerce** · `Shop_V01_…` physical storefront, `Shop_V02_…` digital storefront,
+`Product_V01_…` / `Product_V02_…` detail pages.
+
+**Batch 5 — cart & checkout** · `Cart_V01_…` add/remove choreography, `Checkout_V01_…` one-step,
+`Checkout_V02_…` multi-step ritual. Registered under the `Commerce` discipline with topics
+`storefront`, `product`, `cart`, `checkout`.
+
+### Harness additions
+- theme sweep: every target is probed in light **and** dark; contrast is computed for the headline,
+  the lede and the HUD, and a target that renders invisible copy fails the run.
+- direction sweep: every target is probed in `ltr` and `rtl`; horizontal overflow and clipped
+  controls are reported per direction.
+- nav test: the drawer is opened, its links counted, Escape is pressed, and focus return is asserted.

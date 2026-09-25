@@ -1,0 +1,212 @@
+/* ============================================================================
+   The Catalog — theme layer (day / night) and direction layer (LTR / RTL).
+
+   Two rules keep this file small and honest:
+
+   1. The dark ramp in `hub.css` is the *authored* one — this catalogue was drawn
+      dark and every variation inherits that. So light mode is expressed as an
+      inversion of the ramp rather than as a second stylesheet: index 000 is the
+      page, 700 is the body text, and flipping those two ends of the scale flips
+      the whole shell consistently because every component already agreed on it.
+   2. Direction is a property of the document, not a second layout. Anything that
+      must mirror uses logical properties (`inset-inline-start`, `margin-inline`,
+      `text-align: start`); the handful of genuinely directional flourishes are
+      handled with `[dir="rtl"]` overrides further down, and each one is annotated.
+   ========================================================================= */
+
+/* ------------------------------------------------------------------ day ---- */
+
+[data-theme="light"] {
+  --ink-000: #f7f4ec; /* page */
+  --ink-050: #f2eee3;
+  --ink-100: #ffffff; /* raised surfaces, cards, the stage frame */
+  --ink-200: #fbf9f4;
+  --ink-300: #e6e1d3; /* hairlines and rails */
+  --ink-400: #c7c1b0; /* disabled strokes */
+  --ink-500: #8b8574; /* muted labels */
+  --ink-600: #56503f; /* secondary text */
+  --ink-700: #191712; /* body text */
+  --paper: #14130f; /* the "paper" accent inverts with the ramp */
+
+  /* Accents keep their hue and lose their glow: on paper they read as ink. */
+  --accent: #d81f9f;
+  --accent-2: #2f5cf0;
+  --accent-3: #008f66;
+  --accent-4: #d02a10;
+  --accent-5: #8a6a24;
+
+  /* Chartreuse is unreadable as text on paper, so it becomes a deep olive and the
+     pale wash it used to provide is carried by the paper tone itself. */
+  --glow-alpha: 0.1;
+  --aurora-alpha: 0.28;
+
+  color-scheme: light;
+}
+
+/* The animated aurora is the hub's atmosphere; on paper it must not turn to sludge. */
+[data-theme="light"] .aurora__blob {
+  opacity: var(--aurora-alpha);
+  filter: blur(70px) saturate(150%);
+}
+
+[data-theme="light"] .aurora__grain {
+  opacity: 0.25;
+  mix-blend-mode: multiply;
+}
+
+/* Cards in daylight: a real edge and a soft shadow instead of a glow. */
+[data-theme="light"] .card,
+[data-theme="light"] .panel,
+[data-theme="light"] .stage__frame {
+  box-shadow: 0 1px 0 rgba(20, 19, 15, 0.06), 0 18px 40px -28px rgba(20, 19, 15, 0.35);
+}
+
+/* ----------------------------------------------------------------- rtl ----- */
+
+/* The masthead's stat block is the one place where a raw right margin is used to
+   push a group to the trailing edge; make it logical so it mirrors. */
+[dir="rtl"] .masthead__meta {
+  margin-inline-start: 0;
+}
+
+/* Numbers keep their Western shape but read right-to-left inside Persian copy:
+   `plaintext` lets the bidi algorithm place them without reordering the string. */
+[dir="rtl"] .counter,
+[dir="rtl"] .card__id,
+[dir="rtl"] .hud__id,
+[dir="rtl"] code,
+[dir="rtl"] .hud__chip {
+  unicode-bidi: plaintext;
+}
+
+/* The language switch is a two-part control; in RTL the active half moves. */
+[dir="rtl"] .chrome__link--ext::after {
+  content: "↖";
+}
+
+/* Latin-only furniture reads badly when mirrored, so it opts out explicitly. */
+[dir="rtl"] .force-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+/* Persian needs more leading and a touch less tracking than the Latin ramp, and the
+   display face is shorter — so the headline scale is nudged, not reinterpreted. */
+[lang="fa"] body,
+[dir="rtl"] body {
+  line-height: var(--leading-body, 1.75);
+}
+
+[lang="fa"] .masthead__title,
+[dir="rtl"] .masthead__title {
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+}
+
+[lang="fa"] .kicker,
+[dir="rtl"] .kicker {
+  letter-spacing: 0.12em;
+}
+
+/* --------------------------------------------------------- theme switch ---- */
+
+.theme-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0.15rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+}
+
+.theme-switch__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-600);
+  font: inherit;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.theme-switch__button[aria-pressed="true"] {
+  background: var(--ink-700);
+  color: var(--ink-000);
+}
+
+.theme-switch__glyph {
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+/* ------------------------------------------------- light-mode masthead ---- */
+
+/* The masthead is the one block drawn as a dark poster: a white-to-grey gradient headline, a
+   glow behind it, and light-on-dark counters. In daylight those become invisible, so the
+   headline takes an ink gradient and the glow becomes a tinted wash. */
+[data-theme="light"] .masthead__title .line {
+  background: linear-gradient(100deg, #1a1815 8%, #3b3630 55%, #6d6455 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .masthead__title .line--accent {
+  background: linear-gradient(100deg, var(--accent-2), var(--accent-3));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Both the kicker and the lede are authored as translucent white — the two elements on the page
+   that a light theme cannot rescue with the ink ramp, because their colour is literal. */
+[data-theme="light"] .masthead__lede {
+  color: var(--ink-600);
+}
+
+[data-theme="light"] .kicker {
+  color: var(--accent-2);
+}
+
+[data-theme="light"] .masthead__meta,
+[data-theme="light"] .masthead__facts li {
+  color: var(--ink-600);
+}
+
+[data-theme="light"] .masthead__facts b {
+  color: var(--ink-700);
+}
+
+[data-theme="light"] .brand__name,
+[data-theme="light"] .masthead__cta {
+  color: var(--ink-700);
+}
+
+/* The dark masthead draws a hairline of white; on paper that is a stray bright line. */
+[data-theme="light"] .masthead {
+  border-bottom-color: var(--ink-300);
+}
+
+/* Colour transitions on a theme flip are a courtesy, not a light show. */
+@media (prefers-reduced-motion: no-preference) {
+  html.theme-transition,
+  html.theme-transition body,
+  html.theme-transition .card,
+  html.theme-transition .panel,
+  html.theme-transition .masthead {
+    transition: background-color 320ms var(--ease-editorial), color 320ms var(--ease-editorial),
+      border-color 320ms var(--ease-editorial);
+  }
+}
+
+/* The view-transition API gives the flip a cross-fade for free where supported. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 320ms;
+}

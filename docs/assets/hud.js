@@ -30,33 +30,38 @@
    * @param {object} variation a manifest record
    * @param {{ onOpen: Function, onCopy: Function }} handlers
    */
+  /* Shell strings follow the active language; the record itself follows `pick()`. */
+  const t = (key) => (window.CatalogChrome ? window.CatalogChrome.t(key) : key);
+  const pick = (record, field) =>
+    window.CatalogChrome ? window.CatalogChrome.pick(record, field) : record[field];
+
   function renderCardHUD(variation, handlers) {
     const hud = el("div", "card__hud");
 
     const head = el("div", "card__head");
     head.appendChild(el("span", "card__badge", "BATCH " + String(variation.batch).padStart(2, "0")));
     head.appendChild(el("span", "card__discipline", variation.discipline));
-    const status = el("span", "card__status", variation.status);
+    const status = el("span", "card__status force-ltr", variation.status);
     status.dataset.status = variation.status;
     head.appendChild(status);
     hud.appendChild(head);
 
-    hud.appendChild(el("h3", "card__id", variation.id));
-    hud.appendChild(el("p", "card__title", variation.title));
+    hud.appendChild(el("h3", "card__id force-ltr", variation.id));
+    hud.appendChild(el("p", "card__title", pick(variation, "title")));
 
     const meta = el("dl", "card__meta");
 
-    const stackDt = el("dt", null, "Stack");
+    const stackDt = el("dt", null, t("stack"));
     const stackDd = el("dd", null);
     stackDd.appendChild(chipRow(variation.stack, "card__stack"));
     meta.appendChild(stackDt);
     meta.appendChild(stackDd);
 
-    meta.appendChild(el("dt", null, "Vibe"));
-    meta.appendChild(el("dd", "card__vibe", variation.vibe));
+    meta.appendChild(el("dt", null, t("vibe")));
+    meta.appendChild(el("dd", "card__vibe", pick(variation, "vibe")));
 
-    meta.appendChild(el("dt", null, "Interaction"));
-    meta.appendChild(el("dd", null, variation.interaction));
+    meta.appendChild(el("dt", null, t("interaction")));
+    meta.appendChild(el("dd", null, pick(variation, "interaction")));
 
     if (variation.perf && variation.perf.assetWeight) {
       meta.appendChild(el("dt", null, "Weight"));
@@ -69,27 +74,41 @@
 
     const actions = el("div", "card__actions");
 
-    const open = el("button", "card__action card__action--primary", "Open full");
-    open.type = "button";
-    open.addEventListener("click", function () {
-      handlers.onOpen(variation);
-    });
-    actions.appendChild(open);
+    if (variation.status === "planned") {
+      // The page is scheduled, not shipped. Say so, keep the source link, and offer the route
+      // that will exist rather than a button that would open a 404.
+      const soon = el("span", "card__action card__action--soon", t("comingSoon"));
+      soon.setAttribute("role", "note");
+      actions.appendChild(soon);
+      const route = el("a", "card__action", t("openPreview") + " ↗");
+      route.href = window.CatalogChrome
+        ? window.CatalogChrome.componentHref(variation.slug)
+        : variation.href;
+      route.rel = "noreferrer noopener";
+      actions.appendChild(route);
+    } else {
+      const open = el("button", "card__action card__action--primary", t("openPreview"));
+      open.type = "button";
+      open.addEventListener("click", function () {
+        handlers.onOpen(variation);
+      });
+      actions.appendChild(open);
+    }
 
-    const copy = el("button", "card__action", "Copy ID");
+    const copy = el("button", "card__action", t("copyId"));
     copy.type = "button";
     copy.addEventListener("click", function () {
       handlers.onCopy(variation.id, copy);
     });
     actions.appendChild(copy);
 
-    const raw = el("a", "card__action", "Raw ↗");
+    const raw = el("a", "card__action", t("raw") + " ↗");
     raw.href = variation.href + "index.html";
     raw.target = "_blank";
     raw.rel = "noreferrer noopener";
     actions.appendChild(raw);
 
-    const source = el("a", "card__action", "Source ↗");
+    const source = el("a", "card__action", t("source") + " ↗");
     source.href = GITHUB + "/tree/main/" + variation.source;
     source.target = "_blank";
     source.rel = "noreferrer noopener";

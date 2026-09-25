@@ -37,6 +37,7 @@
     manifest: null,
     variations: [],
     discipline: "all",
+    topic: "all",
     tag: "all",
     query: "",
     webglOnly: false,
@@ -108,6 +109,28 @@
       helper.remove();
       resolve();
     });
+  }
+
+  /* ------------------------------------------------------------------ shell */
+
+  /* The hub is one page in two languages and two themes. Everything user-facing goes through
+     `t()` / `pick()` so a language flip is a re-render, not a reload. */
+  function t(key) {
+    return window.CatalogChrome ? window.CatalogChrome.t(key) : key;
+  }
+
+  function pick(record, field) {
+    return window.CatalogChrome ? window.CatalogChrome.pick(record, field) : record[field];
+  }
+
+  function label(record) {
+    return window.CatalogChrome ? window.CatalogChrome.label(record) : record.label;
+  }
+
+  function topicById(id) {
+    var topics = state.manifest.topics || [];
+    for (var i = 0; i < topics.length; i += 1) if (topics[i].id === id) return topics[i];
+    return null;
   }
 
   /* ------------------------------------------------------------------ manifest */
@@ -187,9 +210,9 @@
 
   function renderDisciplineRail() {
     dom.disciplineRail.innerHTML = "";
-    dom.disciplineRail.dataset.label = "Discipline";
+    dom.disciplineRail.dataset.label = t("disciplines");
 
-    var all = el("button", "chip is-active", "All (" + state.variations.length + ")");
+    var all = el("button", "chip is-active", t("all") + " (" + state.variations.length + ")");
     all.type = "button";
     all.dataset.discipline = "all";
     all.setAttribute("aria-pressed", "true");
@@ -197,10 +220,11 @@
 
     (state.manifest.disciplines || []).forEach(function (discipline) {
       var count = state.variations.filter(function (v) { return v.discipline === discipline.id; }).length;
-      var button = el("button", "chip", discipline.label.replace(/ &.*/, "") + " (" + count + ")");
+      var button = el("button", "chip", label(discipline).replace(/ &.*/, "") + " (" + count + ")");
       button.type = "button";
       button.dataset.discipline = discipline.id;
-      button.title = discipline.blurb || "";
+      button.title = window.CatalogChrome ? window.CatalogChrome.blurb(discipline) : discipline.blurb || "";
+      button.setAttribute("lang", state.manifest.defaultLocale || "en");
       button.setAttribute("aria-pressed", "false");
       button.disabled = count === 0;
       button.style.opacity = count === 0 ? "0.38" : "";
@@ -208,12 +232,54 @@
     });
   }
 
+  /**
+   * The topic rail is the middle rung of the structure the catalogue promised:
+   * discipline → topic → variation. It narrows to the topics that the currently
+   * selected discipline actually owns, so the rail never offers a dead end.
+   */
+  function renderTopicRail() {
+    if (!dom.topicRail) return;
+    dom.topicRail.innerHTML = "";
+    dom.topicRail.dataset.label = t("topics");
+
+    var inScope = state.variations.filter(function (v) {
+      return state.discipline === "all" || v.discipline === state.discipline;
+    });
+    var present = {};
+    inScope.forEach(function (v) {
+      if (v.topic) present[v.topic] = (present[v.topic] || 0) + 1;
+    });
+
+    if (!Object.keys(present).length) {
+      dom.topicRail.hidden = true;
+      return;
+    }
+    dom.topicRail.hidden = false;
+
+    var all = el("button", "chip is-active", t("all") + " (" + inScope.length + ")");
+    all.type = "button";
+    all.dataset.topic = "all";
+    all.setAttribute("aria-pressed", "true");
+    dom.topicRail.appendChild(all);
+
+    Object.keys(present).forEach(function (id) {
+      var topic = topicById(id);
+      if (!topic) return;
+      var button = el("button", "chip", label(topic) + " (" + present[id] + ")");
+      button.type = "button";
+      button.dataset.topic = id;
+      button.title = window.CatalogChrome ? window.CatalogChrome.blurb(topic) : topic.blurb || "";
+      button.setAttribute("aria-pressed", "false");
+      dom.topicRail.appendChild(button);
+    });
+  }
+
   function renderTagRail() {
     dom.tagRail.innerHTML = "";
-    dom.tagRail.dataset.label = "Tags";
+    dom.tagRail.dataset.label = t("topics");
 
     var tally = counts().tags.slice(0, 18);
-    var all = el("button", "chip is-active", "Any");
+    var all = el("button", "chip is-active", t("all"));
     all.type = "button";
     all.dataset.tag = "all";
     all.setAttribute("aria-pressed", "true");
@@ -234,14 +300,22 @@
     card.dataset.discipline = variation.discipline;
     card.dataset.tags = variation.tags.join(",");
     card.dataset.webgl = variation.perf && variation.perf.webgl ? "1" : "0";
+    if (variation.status === "planned") {
+      card.dataset.planned = "1";
+      frame_prepare(card);
+    }
     card.id = "card-" + variation.slug;
     card.dataset.haystack = [
       variation.id,
       variation.title,
+      variation.titleFa,
       variation.vibe,
+      variation.vibeFa,
       variation.stack.join(" "),
       variation.tags.join(" "),
       variation.interaction,
+      variation.interactionFa,
+      variation.topic,
       variation.discipline,
     ]
       .join(" ")
@@ -283,10 +357,19 @@
     return card;
   }
 
+  /** Give the frame its "planned" caption in the active language (CSS prints it). */
+  function frame_prepare(card) {
+    var frame = card.querySelector(".card__frame");
+    if (!frame) return;
+    var note = t("comingSoon") + "\n" + t("openPreview");
+    frame.dataset.plannedNote = note;
+  }
+
   /* ------------------------------------------------------------------ filtering */
 
   function isVisible(variation, needle) {
     if (state.discipline !== "all" && variation.discipline !== state.discipline) return false;
+    if (state.topic !== "all" && variation.topic !== state.topic) return false;
     if (state.tag !== "all" && variation.tags.indexOf(state.tag) === -1) return false;
     if (state.webglOnly && !(variation.perf && variation.perf.webgl)) return false;
     if (needle) {
@@ -318,10 +401,23 @@
     });
 
     dom.empty.hidden = visible > 0;
+    dom.empty.querySelector("[data-i18n]") &&
+      (dom.empty.querySelector("[data-i18n]").textContent = t("noResults"));
+    var scope = [];
+    if (state.discipline !== "all") {
+      var discipline = (state.manifest.disciplines || []).filter(function (d) {
+        return d.id === state.discipline;
+      })[0];
+      if (discipline) scope.push(label(discipline));
+    }
+    if (state.topic !== "all") {
+      var topic = topicById(state.topic);
+      if (topic) scope.push(label(topic));
+    }
+    if (state.tag !== "all") scope.push("#" + state.tag);
     dom.results.textContent =
-      visible + " of " + state.variations.length + " variations" +
-      (state.discipline !== "all" ? " · " + state.discipline : "") +
-      (state.tag !== "all" ? " · #" + state.tag : "") +
+      t("showing") + " " + visible + " " + t("of") + " " + state.variations.length + " " + t("variations") +
+      (scope.length ? " · " + scope.join(" · ") : "") +
       (needle ? ' · "' + state.query.trim() + '"' : "");
   }
 
@@ -401,6 +497,8 @@
   function mountFrame(card) {
     var variation = cards.get(card);
     if (!variation || live.has(card)) return;
+    // A planned variation has no page yet: mounting it would put a 404 inside the card.
+    if (variation.status === "planned") return;
     var frame = card.querySelector(".card__frame");
     if (!frame || frame.querySelector("iframe")) return;
     // Claim the slot synchronously: availability probing is async, so two pumps could otherwise
@@ -547,6 +645,17 @@
 
   /* ------------------------------------------------------------------ wiring */
 
+  function wireTopicRail() {
+    if (!dom.topicRail) return;
+    dom.topicRail.addEventListener("click", function (event) {
+      var chip = event.target.closest("[data-topic]");
+      if (!chip) return;
+      state.topic = chip.dataset.topic;
+      syncRailActive();
+      applyFilters();
+    });
+  }
+
   function wire() {
     dom.search.addEventListener(
       "input",
@@ -560,6 +669,8 @@
       var chip = event.target.closest(".chip");
       if (!chip || chip.disabled) return;
       state.discipline = chip.dataset.discipline;
+      state.topic = "all";
+      renderTopicRail();
       syncRailActive();
       applyFilters();
     });
@@ -651,6 +762,7 @@
       search: document.getElementById("search"),
       webglOnly: document.getElementById("webgl-only"),
       disciplineRail: document.getElementById("discipline-rail"),
+      topicRail: document.getElementById("topic-rail"),
       tagRail: document.getElementById("tag-rail"),
       footerMeta: document.getElementById("footer-meta"),
       stage: document.getElementById("stage"),
@@ -672,8 +784,12 @@
       state.manifest = manifest;
       state.variations = manifest.variations || [];
 
+      // The shell owns language, direction and theme for the whole catalogue.
+      if (window.CatalogChrome) window.CatalogChrome.init(manifest);
+
       renderCounters();
       renderDisciplineRail();
+      renderTopicRail();
       renderTagRail();
 
       var fragment = document.createDocumentFragment();
@@ -685,8 +801,35 @@
 
       applyFilters();
       wire();
+      wireTopicRail();
       observeFrames();
       openFromHash();
+
+      // A language flip re-renders every part of the grid that carries copy. Rebuilding the cards
+      // is deliberate: each one holds a HUD, a tag rail and a preview frame, and patching those in
+      // place would leave a dozen half-translated strings behind.
+      if (window.CatalogChrome) {
+        window.CatalogChrome.on(function () {
+          renderDisciplineRail();
+          renderTopicRail();
+          renderTagRail();
+          var bySlug = {};
+          state.variations.forEach(function (v) { bySlug[v.slug] = v; });
+          var fresh = document.createDocumentFragment();
+          state.variations.forEach(function (variation) {
+            fresh.appendChild(buildCard(variation));
+          });
+          dom.cards.innerHTML = "";
+          dom.cards.appendChild(fresh);
+          cards.clear();
+          Array.prototype.forEach.call(dom.cards.children, function (card) {
+            var slug = card.id.replace(/^card-/, "");
+            if (bySlug[slug]) cards.set(card, bySlug[slug]);
+          });
+          observeFrames();
+          applyFilters();
+        });
+      }
 
       if (!state.variations.length) {
         dom.results.textContent = "manifest empty — run npm run catalog:sync";

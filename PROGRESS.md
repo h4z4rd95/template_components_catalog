@@ -477,3 +477,80 @@ lost; `npm install` + `npm run setup:browser` + `npm run build` restored the too
 
 **NEXT:** Batch 2 is closed — 5 variations, 5 GIFs, 5 clean audits. Batch 3 (navigation systems and
 interactive mega-menus) starts on the user's word.
+
+---
+
+## [2026-09-22 19:40 UTC] · Phase 3 begins — bilingual, dual-direction, dual-theme shell + the commerce track
+
+**The plan came first, as asked.** `PLAN.md` §8 now carries the full brief in Persian, the ten
+acceptance criteria, the work packages (3a foundation → 3b navigation → 4 commerce → 5 cart &
+checkout) and the harness additions. Everything below is work package 3a.
+
+### What shipped
+
+**1. Bilingual manifest with real gates.** `catalog/catalog.json` grew `locales` (en/fa with
+direction), a 9-entry `topics` registry, a 75-key `ui` dictionary in both languages, Persian
+`labelFa`/`blurbFa` on every discipline, and `titleFa`/`vibeFa`/`interactionFa`/`topic` on every
+shipped variation. `scripts/sync-catalog.mjs` now **fails the build** if:
+- a stable variation is missing any Persian field,
+- a topic id is unknown or is not listed under its discipline,
+- the two `ui` dictionaries disagree by even one key.
+
+That last gate is the one that keeps a "bilingual" catalogue from rotting into a monolingual one.
+
+**2. Persian fonts, chosen by role, vendored from npm (OFL, no CDN).** Six woff2 faces land in
+`docs/assets/fonts/` and `fonts.css` is *generated* from the same list that copies the bytes:
+`Catalog Sans` (Vazirmatn, body/UI), `Catalog Display` (Lalezar, kinetic headlines),
+`Catalog Editorial` (Readex Pro, editorial headings). Each family carries a Latin *and* a Persian
+face split by `unicode-range`, so one stack renders both scripts and a Persian headline never
+falls back to tofu or to a Latin face.
+
+**3. The shell: language, direction, theme — one module.** `docs/assets/chrome.js` owns all four
+states (including navigation), persists them, deep-links them (`?lang=fa&theme=light`), follows the
+system theme until the visitor chooses, cross-fades the flip with the View Transitions API where
+available, and posts the skin into every live iframe. A tiny inline bootstrap in the page head sets
+`lang`/`dir`/`data-theme` before first paint, so there is no flash of the wrong theme or a
+right-to-left page rendering left-to-right for a frame.
+
+**4. Day and night, done as inversion rather than a second stylesheet.** The catalogue was authored
+dark, so `theme.css` maps the ink ramp's two ends and every component follows — plus explicit fixes
+for the pieces that carry literal colours: the masthead's white gradient headline, the translucent
+kicker and lede, the aurora's alpha, and card shadows (glow on black → edge and shade on paper).
+
+**5. Navigation that exists on both screens.** Desktop: one menu per discipline, each opening a
+mega-panel with its topics (leading column) and up to six components (trailing column), closed by
+Escape, by an outside click, or by opening a sibling. Mobile (≤1080px): a full-height drawer with
+per-discipline accordions built from the same data, a focus-returning close, `aria-modal`, and
+body-scroll locking. Both call the same builders in `chrome.js`.
+
+**6. Structure: discipline → topic → variation.** A topic rail now sits beside the discipline rail
+and narrows to the topics the selected discipline actually owns. Search matches Persian text too
+(`titleFa`, `vibeFa`, `interactionFa` are all in the card haystack).
+
+**7. The commerce track exists in the structure before its pages do.** Seven planned variations —
+`Commerce_V01_HoloStorefront` … `Commerce_V07_RitualCheckout` — with full bilingual metadata,
+topics (`storefront` / `product` / `cart`) and a new `Commerce` discipline. Their hub cards show
+their HUD and tags, **do not** mount a preview iframe (a 404 in a frame reads as broken) and carry
+a dashed "planned" note with the latent route, instead of a button that would open nothing.
+
+### Defects found by looking at the pixels (and fixed)
+
+| # | Symptom | Cause | Fix |
+| --- | --- | --- | --- |
+| 1 | 9999px of horizontal scroll in every RTL view | the skip link's `left: -9999px (an LTR-only trick — a negative *left* is scrollable in RTL) | clip-path hiding, direction-neutral |
+| 2 | Persian text rendered in Inter | the hub's `--font-sans` still led with Inter | stacks now lead with the bilingual `Catalog *` families |
+| 3 | White gradient headline invisible in light mode | literal white gradient on paper | ink gradient + accent gradient under `[data-theme="light"]` |
+| 4 | Kicker and lede nearly invisible in light mode | authored as translucent white | explicit light-theme colours (accent / ink-600) |
+| 5 | Hub's own hero headline stuck in English | it was three literal spans with no i18n hook | wired to `heroTitle1..3`, and the lede to `heroLede` |
+| 6 | Planned cards would iframe a 404 | no status handling in the frame pump | `mountFrame` skips planned; `data-live="0"` styling |
+
+### Verification
+`shots-tmp.mjs` (temporary) drove five cases — desktop/mobile × en/fa × dark/light, plus the drawer
+open and expanded — and asserted: correct `lang`/`dir`/`data-theme`, 2 nav menus with Persian
+labels, 9 discipline chips, 9 topic chips, 17 cards, **zero** nodes below 0.15 opacity, **zero**
+horizontal overflow, **zero** console/page errors, and 7 planned cards with **0** mounted frames
+for them. `npm test` (hub runtime, 23 assertions) is green.
+
+**Still open from the brief:** generated browse/component pages (`docs/browse/**`,
+`docs/component/**` — work package 3a's last item), the navigation *variations* (3b), and the
+commerce batches (4 and 5). The structure they need now exists.

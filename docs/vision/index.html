@@ -12,7 +12,7 @@
   .vision-head h1 { font-size: clamp(2rem, 5vw, 4rem); color: #fff; letter-spacing: -.04em; }
   .vision-head p { max-width: 70ch; color: rgba(255,255,255,.62); margin-top: 1rem; line-height: 1.6; }
   .vision-head .meta { font-family: var(--font-mono); font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); margin-top: 1.4rem; display: flex; gap: 1.4rem; flex-wrap: wrap; }
-  .vision-summary { margin: 0 var(--gutter) clamp(1.5rem,4vh,2.5rem); border: 1px solid rgba(255,59,31,.5); background: rgba(255,59,31,.08); padding: 1rem 1.2rem; font-family: var(--font-mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: #ff8a76; }
+  .vision-summary { margin: 0 var(--gutter) clamp(1.5rem,4vh,2.5rem); border: 1px solid rgba(0,240,168,.35); background: rgba(0,240,168,.06); padding: 1rem 1.2rem; font-family: var(--font-mono); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: #6ef0b0; }
   .vision-grid { display: grid; gap: clamp(1.4rem, 3vw, 2.6rem); grid-template-columns: repeat(auto-fit, minmax(min(100%, 30rem), 1fr)); padding: 0 var(--gutter) clamp(3rem, 9vh, 6rem); }
   .vision-card { border: 1px solid rgba(255,255,255,.1); border-top: 2px solid var(--accent); background: rgba(255,255,255,.02); padding: 1rem 1rem 1.2rem; display: grid; gap: .8rem; }
   .vision-card header { display: flex; align-items: center; gap: .5rem; font-family: var(--font-mono); font-size: .52rem; letter-spacing: .18em; text-transform: uppercase; }
@@ -47,14 +47,14 @@
     visuals and the evidence come from one source of truth.
   </p>
   <p class="meta">
-    <span>captured 2026-09-22 15:31 UTC</span>
+    <span>captured 2026-09-23 02:52 UTC</span>
     <span>11 targets</span>
-    <span>9 captures · 10.5 MB</span>
-    <span>renderer: software rasterizer</span>
+    <span>11 captures · 13.8 MB</span>
+    <span>renderer: ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0</span>
   </p>
 </header>
 <section class="vision-summary">
-  2 finding(s) — inspect the report beside each capture
+  ✓ all targets verified — no console errors, no horizontal overflow at 360/768/1440/2560, nothing hiding under the host chrome, HUD present, reduced-motion composition confirmed
 </section>
 <main class="vision-grid">
       <article class="vision-card" style="--accent: #FF3B1F">
@@ -65,9 +65,9 @@
         </header>
         <h3>Hero_V01_KineticBrutalGrid</h3>
         <p class="vibe">Kinetic Typography · Neo-Brutalism</p>
-        <img src="kinetic-brutal-grid.gif" alt="Animated capture of Hero_V01_KineticBrutalGrid" loading="lazy" width="420" height="263" />
+        <img src="kinetic-brutal-grid.gif" alt="Animated capture of Hero_V01_KineticBrutalGrid" loading="lazy" width="500" height="312" />
         <dl>
-          <div><dt>Captured</dt><dd>84 frames · 420×263 · 48 colours · 1106 KB</dd></div>
+          <div><dt>Captured</dt><dd>84 frames · 500×312 · 64 colours · 1285 KB</dd></div>
           <div><dt>Playback</dt><dd>6.1 fps real-time (165 ms/frame) — software rasterizer, no GPU</dd></div>
           <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
           <div><dt>HUD</dt><dd>present</dd></div>
@@ -88,10 +88,10 @@
         </header>
         <h3>Hero_V02_EditorialScrollLock</h3>
         <p class="vibe">Luxury Minimalism · Editorial</p>
-        <img src="editorial-scroll-lock.gif" alt="Animated capture of Hero_V02_EditorialScrollLock" loading="lazy" width="580" height="363" />
+        <img src="editorial-scroll-lock.gif" alt="Animated capture of Hero_V02_EditorialScrollLock" loading="lazy" width="660" height="413" />
         <dl>
-          <div><dt>Captured</dt><dd>65 frames · 580×363 · 96 colours · 966 KB</dd></div>
-          <div><dt>Playback</dt><dd>7.8 fps real-time (129 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>Captured</dt><dd>70 frames · 660×413 · 128 colours · 1468 KB</dd></div>
+          <div><dt>Playback</dt><dd>8.4 fps real-time (119 ms/frame) — software rasterizer, no GPU</dd></div>
           <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
           <div><dt>HUD</dt><dd>present</dd></div>
           <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
@@ -113,7 +113,7 @@
         <p class="vibe">Immersive WebGL-First</p>
         <img src="particle-morph-field.gif" alt="Animated capture of Hero_V03_ParticleMorphField" loading="lazy" width="500" height="313" />
         <dl>
-          <div><dt>Captured</dt><dd>59 frames · 500×313 · 64 colours · 1076 KB</dd></div>
+          <div><dt>Captured</dt><dd>58 frames · 500×313 · 64 colours · 1106 KB</dd></div>
           <div><dt>Playback</dt><dd>1.7 fps real-time (600 ms/frame) — software rasterizer, no GPU</dd></div>
           <div><dt>WebGL</dt><dd>WebGL 2.0 (OpenGL ES 3.0 Chromium) — ANGLE (Google, Vulkan 1.3.0 (SwiftShader Devic</dd></div>
           <div><dt>HUD</dt><dd>present</dd></div>
@@ -136,7 +136,7 @@
         <p class="vibe">Cyberpunk · High-Density UI</p>
         <img src="cyber-scanner-hud.gif" alt="Animated capture of Hero_V04_CyberScannerHUD" loading="lazy" width="580" height="363" />
         <dl>
-          <div><dt>Captured</dt><dd>29 frames · 580×363 · 96 colours · 909 KB</dd></div>
+          <div><dt>Captured</dt><dd>30 frames · 580×363 · 96 colours · 877 KB</dd></div>
           <div><dt>Playback</dt><dd>1.7 fps real-time (600 ms/frame) — software rasterizer, no GPU</dd></div>
           <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
           <div><dt>HUD</dt><dd>present</dd></div>
@@ -159,7 +159,7 @@
         <p class="vibe">Chromatic Liquid Gradient · Glassmorphism</p>
         <img src="liquid-chroma-glass.gif" alt="Animated capture of Hero_V05_LiquidChromaGlass" loading="lazy" width="420" height="263" />
         <dl>
-          <div><dt>Captured</dt><dd>57 frames · 420×263 · 48 colours · 1263 KB</dd></div>
+          <div><dt>Captured</dt><dd>56 frames · 420×263 · 48 colours · 1241 KB</dd></div>
           <div><dt>Playback</dt><dd>1.7 fps real-time (600 ms/frame) — software rasterizer, no GPU</dd></div>
           <div><dt>WebGL</dt><dd>WebGL 2.0 (OpenGL ES 3.0 Chromium) — ANGLE (Google, Vulkan 1.3.0 (SwiftShader Devic</dd></div>
           <div><dt>HUD</dt><dd>present</dd></div>
@@ -176,23 +176,23 @@
         <header>
           <span class="badge">BATCH 02</span>
           <span class="discipline">Hero</span>
-          <span class="verdict warn">see report</span>
+          <span class="verdict ok">verified</span>
         </header>
         <h3>Hero_V06_TresInstancedShards</h3>
         <p class="vibe">Immersive WebGL-First · Volumetric</p>
-        <p class="nogif">no capture in this run (audit only)</p>
+        <img src="tres-instanced-shards.gif" alt="Animated capture of Hero_V06_TresInstancedShards" loading="lazy" width="420" height="263" />
         <dl>
-          <div><dt>Captured</dt><dd>—</dd></div>
-          <div><dt>Playback</dt><dd>—</dd></div>
-          <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
-          <div><dt>HUD</dt><dd>MISSING</dd></div>
-          <div><dt>Overflow</dt><dd></dd></div>
+          <div><dt>Captured</dt><dd>62 frames · 420×263 · 48 colours · 2212 KB</dd></div>
+          <div><dt>Playback</dt><dd>6.1 fps real-time (165 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>WebGL 2.0 (OpenGL ES 3.0 Chromium) — ANGLE (Google, Vulkan 1.3.0 (SwiftShader Devic</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
           <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
-          <div><dt>Reduced motion</dt><dd>✗ empty</dd></div>
-          <div><dt>Console</dt><dd>1 error(s)</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
         </dl>
         <div class="stills">
-          
+          <a href="shots/tres-instanced-shards-hero.png" target="_blank" rel="noreferrer"><img src="shots/tres-instanced-shards-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/tres-instanced-shards-mid.png" target="_blank" rel="noreferrer"><img src="shots/tres-instanced-shards-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/tres-instanced-shards-deep.png" target="_blank" rel="noreferrer"><img src="shots/tres-instanced-shards-deep.png" alt="Still frame" loading="lazy" /></a>
         </div>
       </article>
       <article class="vision-card" style="--accent: #D8B472">
@@ -203,10 +203,10 @@
         </header>
         <h3>Hero_V07_EditorialChapterRail</h3>
         <p class="vibe">Luxury Minimalism · Editorial</p>
-        <img src="editorial-chapter-rail.gif" alt="Animated capture of Hero_V07_EditorialChapterRail" loading="lazy" width="740" height="463" />
+        <img src="editorial-chapter-rail.gif" alt="Animated capture of Hero_V07_EditorialChapterRail" loading="lazy" width="580" height="363" />
         <dl>
-          <div><dt>Captured</dt><dd>31 frames · 740×463 · 160 colours · 1484 KB</dd></div>
-          <div><dt>Playback</dt><dd>4.3 fps real-time (232 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>Captured</dt><dd>78 frames · 580×363 · 96 colours · 1053 KB</dd></div>
+          <div><dt>Playback</dt><dd>10.8 fps real-time (93 ms/frame) — software rasterizer, no GPU</dd></div>
           <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
           <div><dt>HUD</dt><dd>present</dd></div>
           <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
@@ -222,23 +222,23 @@
         <header>
           <span class="badge">BATCH 02</span>
           <span class="discipline">Hero</span>
-          <span class="verdict warn">see report</span>
+          <span class="verdict ok">verified</span>
         </header>
         <h3>Hero_V08_TresLiquidTerrain</h3>
         <p class="vibe">Chromatic Liquid Gradient · Shader Terrain</p>
-        <p class="nogif">no capture in this run (audit only)</p>
+        <img src="tres-liquid-terrain.gif" alt="Animated capture of Hero_V08_TresLiquidTerrain" loading="lazy" width="500" height="312" />
         <dl>
-          <div><dt>Captured</dt><dd>—</dd></div>
-          <div><dt>Playback</dt><dd>—</dd></div>
-          <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
-          <div><dt>HUD</dt><dd>MISSING</dd></div>
-          <div><dt>Overflow</dt><dd></dd></div>
+          <div><dt>Captured</dt><dd>78 frames · 500×312 · 64 colours · 1449 KB</dd></div>
+          <div><dt>Playback</dt><dd>8.9 fps real-time (112 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>WebGL</dt><dd>WebGL 2.0 (OpenGL ES 3.0 Chromium) — ANGLE (Google, Vulkan 1.3.0 (SwiftShader Devic</dd></div>
+          <div><dt>HUD</dt><dd>present</dd></div>
+          <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>
           <div><dt>hidden leaks</dt><dd>none ✓</dd></div>
-          <div><dt>Reduced motion</dt><dd>✗ empty</dd></div>
-          <div><dt>Console</dt><dd>1 error(s)</dd></div>
+          <div><dt>Reduced motion</dt><dd>composed static frame ✓</dd></div>
+          <div><dt>Console</dt><dd>clean ✓</dd></div>
         </dl>
         <div class="stills">
-          
+          <a href="shots/tres-liquid-terrain-hero.png" target="_blank" rel="noreferrer"><img src="shots/tres-liquid-terrain-hero.png" alt="Still frame" loading="lazy" /></a><a href="shots/tres-liquid-terrain-mid.png" target="_blank" rel="noreferrer"><img src="shots/tres-liquid-terrain-mid.png" alt="Still frame" loading="lazy" /></a><a href="shots/tres-liquid-terrain-deep.png" target="_blank" rel="noreferrer"><img src="shots/tres-liquid-terrain-deep.png" alt="Still frame" loading="lazy" /></a>
         </div>
       </article>
       <article class="vision-card" style="--accent: #7CF0D0">
@@ -251,7 +251,7 @@
         <p class="vibe">Immersive WebGL-First · Volumetric</p>
         <img src="vanilla-raymarch.gif" alt="Animated capture of Hero_V09_VanillaRaymarch" loading="lazy" width="580" height="363" />
         <dl>
-          <div><dt>Captured</dt><dd>41 frames · 580×363 · 96 colours · 1375 KB</dd></div>
+          <div><dt>Captured</dt><dd>33 frames · 580×363 · 96 colours · 1062 KB</dd></div>
           <div><dt>Playback</dt><dd>1.7 fps real-time (600 ms/frame) — software rasterizer, no GPU</dd></div>
           <div><dt>WebGL</dt><dd>WebGL 2.0 (OpenGL ES 3.0 Chromium) — ANGLE (Google, Vulkan 1.3.0 (SwiftShader Devic</dd></div>
           <div><dt>HUD</dt><dd>present</dd></div>
@@ -274,8 +274,8 @@
         <p class="vibe">Kinetic Typography · Neo-Brutalism · Print-shop</p>
         <img src="brutal-stamp-press.gif" alt="Animated capture of Hero_V10_BrutalStampPress" loading="lazy" width="660" height="413" />
         <dl>
-          <div><dt>Captured</dt><dd>22 frames · 660×413 · 128 colours · 1493 KB</dd></div>
-          <div><dt>Playback</dt><dd>2.9 fps real-time (345 ms/frame) — software rasterizer, no GPU</dd></div>
+          <div><dt>Captured</dt><dd>21 frames · 660×413 · 128 colours · 1307 KB</dd></div>
+          <div><dt>Playback</dt><dd>2.8 fps real-time (359 ms/frame) — software rasterizer, no GPU</dd></div>
           <div><dt>WebGL</dt><dd>not used (by design)</dd></div>
           <div><dt>HUD</dt><dd>present</dd></div>
           <div><dt>Overflow</dt><dd>360px ✓ · 768px ✓ · 1440px ✓ · 2560px ✓</dd></div>

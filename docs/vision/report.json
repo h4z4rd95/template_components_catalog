@@ -1,6 +1,6 @@
 {
-  "capturedAt": "2026-09-22 15:31 UTC",
-  "renderer": "software rasterizer",
+  "capturedAt": "2026-09-23 02:52 UTC",
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0",
   "gpuProfile": "swangle",
   "complete": true,
   "reports": [
@@ -34,7 +34,7 @@
       "offenders": [
         "a.skip (160px, right=-9839/1280, display=block, overflowX=visible)"
       ],
-      "docHeight": 5056,
+      "docHeight": 5868,
       "iframes": 1,
       "canvases": 0,
       "errors": [],
@@ -102,7 +102,7 @@
           "underChrome": []
         }
       ],
-      "fpsSoftware": 60,
+      "fpsSoftware": 61,
       "reducedMotion": {
         "headingVisible": true,
         "headingOpacity": 1,
@@ -117,18 +117,18 @@
       ],
       "gif": {
         "file": "vision/hub.gif",
-        "bytes": 1075970,
-        "kb": 1051,
+        "bytes": 1118255,
+        "kb": 1092,
         "frames": 84,
-        "capturedFrames": 99,
+        "capturedFrames": 101,
         "width": 500,
         "height": 312,
         "delayMs": 600,
         "effectiveFps": 1.7,
-        "choreographyMs": 375962,
+        "choreographyMs": 231898,
         "colors": 64
       },
-      "frameCount": 99,
+      "frameCount": 101,
       "captureViewport": {
         "width": 1280,
         "height": 800
@@ -237,18 +237,18 @@
       ],
       "gif": {
         "file": "vision/kinetic-brutal-grid.gif",
-        "bytes": 1132822,
-        "kb": 1106,
+        "bytes": 1315882,
+        "kb": 1285,
         "frames": 84,
-        "capturedFrames": 104,
-        "width": 420,
-        "height": 263,
+        "capturedFrames": 157,
+        "width": 500,
+        "height": 312,
         "delayMs": 165,
         "effectiveFps": 6.1,
-        "choreographyMs": 13876,
-        "colors": 48
+        "choreographyMs": 13841,
+        "colors": 64
       },
-      "frameCount": 104,
+      "frameCount": 157,
       "captureViewport": {
         "width": 1280,
         "height": 800
@@ -357,18 +357,18 @@
       ],
       "gif": {
         "file": "vision/editorial-scroll-lock.gif",
-        "bytes": 989570,
-        "kb": 966,
-        "frames": 65,
-        "capturedFrames": 65,
-        "width": 580,
-        "height": 363,
-        "delayMs": 129,
-        "effectiveFps": 7.8,
-        "choreographyMs": 8417,
-        "colors": 96
+        "bytes": 1503587,
+        "kb": 1468,
+        "frames": 70,
+        "capturedFrames": 70,
+        "width": 660,
+        "height": 413,
+        "delayMs": 119,
+        "effectiveFps": 8.4,
+        "choreographyMs": 8350,
+        "colors": 128
       },
-      "frameCount": 65,
+      "frameCount": 70,
       "captureViewport": {
         "width": 1280,
         "height": 800
@@ -490,18 +490,18 @@
       ],
       "gif": {
         "file": "vision/particle-morph-field.gif",
-        "bytes": 1101985,
-        "kb": 1076,
-        "frames": 59,
-        "capturedFrames": 59,
+        "bytes": 1132573,
+        "kb": 1106,
+        "frames": 58,
+        "capturedFrames": 58,
         "width": 500,
         "height": 313,
         "delayMs": 600,
         "effectiveFps": 1.7,
-        "choreographyMs": 750315,
+        "choreographyMs": 742637,
         "colors": 64
       },
-      "frameCount": 59,
+      "frameCount": 58,
       "captureViewport": {
         "width": 1024,
         "height": 640
@@ -513,7 +513,7 @@
       "title": "Hero_V04_CyberScannerHUD · The Catalog",
       "hud": true,
       "h1": {
-        "text": "DEEP 7BF6 40 ZG8=Q>]O",
+        "text": "DEEP 8</2 B3 J6JFBG25",
         "opacity": 1,
         "height": 135,
         "visible": true
@@ -613,18 +613,18 @@
       ],
       "gif": {
         "file": "vision/cyber-scanner-hud.gif",
-        "bytes": 930523,
-        "kb": 909,
-        "frames": 29,
-        "capturedFrames": 29,
+        "bytes": 898042,
+        "kb": 877,
+        "frames": 30,
+        "capturedFrames": 30,
         "width": 580,
         "height": 363,
         "delayMs": 600,
         "effectiveFps": 1.7,
-        "choreographyMs": 36035,
+        "choreographyMs": 34163,
         "colors": 96
       },
-      "frameCount": 29,
+      "frameCount": 30,
       "captureViewport": {
         "width": 1280,
         "height": 800
@@ -726,7 +726,7 @@
           "underChrome": []
         }
       ],
-      "fpsSoftware": 2,
+      "fpsSoftware": 3,
       "reducedMotion": {
         "headingVisible": true,
         "headingOpacity": 1,
@@ -741,18 +741,18 @@
       ],
       "gif": {
         "file": "vision/liquid-chroma-glass.gif",
-        "bytes": 1292951,
-        "kb": 1263,
-        "frames": 57,
-        "capturedFrames": 57,
+        "bytes": 1270965,
+        "kb": 1241,
+        "frames": 56,
+        "capturedFrames": 56,
         "width": 420,
         "height": 263,
         "delayMs": 600,
         "effectiveFps": 1.7,
-        "choreographyMs": 133127,
+        "choreographyMs": 137175,
         "colors": 48
       },
-      "frameCount": 57,
+      "frameCount": 56,
       "captureViewport": {
         "width": 1024,
         "height": 640
@@ -761,11 +761,130 @@
     {
       "key": "tres-instanced-shards",
       "path": "/framework/nuxt/hero/tres-instanced-shards/",
-      "errors": [
-        "Runtime.callFunctionOn timed out. Increase the 'protocolTimeout' setting in launch/connect calls for a higher timeout if needed."
+      "title": "Hero_V06_TresInstancedShards — Volumetric Shard Field",
+      "hud": true,
+      "h1": {
+        "text": "VOLUMETRICshard field",
+        "opacity": 1,
+        "height": 226,
+        "visible": true
+      },
+      "webgl": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "buffer": [
+          1280,
+          800
+        ]
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": true,
+        "display": true
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": false,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [],
+      "docHeight": 1370,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
       ],
-      "responsive": [],
-      "crashed": true
+      "fpsSoftware": 10,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "VOLUMETRICshard field",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/tres-instanced-shards-hero.png",
+        "vision/shots/tres-instanced-shards-mid.png",
+        "vision/shots/tres-instanced-shards-deep.png"
+      ],
+      "gif": {
+        "file": "vision/tres-instanced-shards.gif",
+        "bytes": 2265599,
+        "kb": 2212,
+        "frames": 62,
+        "capturedFrames": 62,
+        "width": 420,
+        "height": 263,
+        "delayMs": 165,
+        "effectiveFps": 6.1,
+        "choreographyMs": 10209,
+        "colors": 48
+      },
+      "frameCount": 62,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
     },
     {
       "key": "editorial-chapter-rail",
@@ -870,18 +989,18 @@
       ],
       "gif": {
         "file": "vision/editorial-chapter-rail.gif",
-        "bytes": 1519616,
-        "kb": 1484,
-        "frames": 31,
-        "capturedFrames": 31,
-        "width": 740,
-        "height": 463,
-        "delayMs": 232,
-        "effectiveFps": 4.3,
-        "choreographyMs": 7197,
-        "colors": 160
+        "bytes": 1077934,
+        "kb": 1053,
+        "frames": 78,
+        "capturedFrames": 78,
+        "width": 580,
+        "height": 363,
+        "delayMs": 93,
+        "effectiveFps": 10.8,
+        "choreographyMs": 7246,
+        "colors": 96
       },
-      "frameCount": 31,
+      "frameCount": 78,
       "captureViewport": {
         "width": 1280,
         "height": 800
@@ -890,11 +1009,130 @@
     {
       "key": "tres-liquid-terrain",
       "path": "/framework/nuxt/hero/tres-liquid-terrain/",
-      "errors": [
-        "Runtime.callFunctionOn timed out. Increase the 'protocolTimeout' setting in launch/connect calls for a higher timeout if needed."
+      "title": "Hero_V08_TresLiquidTerrain — Liquid Terrain Sweep",
+      "hud": true,
+      "h1": {
+        "text": "LIQUIDterrain, in three stops",
+        "opacity": 1,
+        "height": 166,
+        "visible": true
+      },
+      "webgl": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "buffer": [
+          1280,
+          800
+        ]
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": true,
+        "display": true
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": false,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [],
+      "docHeight": 1264,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
       ],
-      "responsive": [],
-      "crashed": true
+      "fpsSoftware": 25,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "LIQUIDterrain, in three stops",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/tres-liquid-terrain-hero.png",
+        "vision/shots/tres-liquid-terrain-mid.png",
+        "vision/shots/tres-liquid-terrain-deep.png"
+      ],
+      "gif": {
+        "file": "vision/tres-liquid-terrain.gif",
+        "bytes": 1484179,
+        "kb": 1449,
+        "frames": 78,
+        "capturedFrames": 78,
+        "width": 500,
+        "height": 312,
+        "delayMs": 112,
+        "effectiveFps": 8.9,
+        "choreographyMs": 8727,
+        "colors": 64
+      },
+      "frameCount": 78,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
     },
     {
       "key": "vanilla-raymarch",
@@ -992,7 +1230,7 @@
           "underChrome": []
         }
       ],
-      "fpsSoftware": 1,
+      "fpsSoftware": 3,
       "reducedMotion": {
         "headingVisible": true,
         "headingOpacity": 1,
@@ -1007,18 +1245,18 @@
       ],
       "gif": {
         "file": "vision/vanilla-raymarch.gif",
-        "bytes": 1408022,
-        "kb": 1375,
-        "frames": 41,
-        "capturedFrames": 41,
+        "bytes": 1087336,
+        "kb": 1062,
+        "frames": 33,
+        "capturedFrames": 33,
         "width": 580,
         "height": 363,
         "delayMs": 600,
         "effectiveFps": 1.7,
-        "choreographyMs": 94638,
+        "choreographyMs": 96482,
         "colors": 96
       },
-      "frameCount": 41,
+      "frameCount": 33,
       "captureViewport": {
         "width": 1280,
         "height": 800
@@ -1125,7 +1363,7 @@
           "underChrome": []
         }
       ],
-      "fpsSoftware": 34,
+      "fpsSoftware": 38,
       "reducedMotion": {
         "headingVisible": true,
         "headingOpacity": 1,
@@ -1140,18 +1378,18 @@
       ],
       "gif": {
         "file": "vision/brutal-stamp-press.gif",
-        "bytes": 1528487,
-        "kb": 1493,
-        "frames": 22,
-        "capturedFrames": 22,
+        "bytes": 1338565,
+        "kb": 1307,
+        "frames": 21,
+        "capturedFrames": 21,
         "width": 660,
         "height": 413,
-        "delayMs": 345,
-        "effectiveFps": 2.9,
-        "choreographyMs": 7579,
+        "delayMs": 359,
+        "effectiveFps": 2.8,
+        "choreographyMs": 7541,
         "colors": 128
       },
-      "frameCount": 22,
+      "frameCount": 21,
       "captureViewport": {
         "width": 1280,
         "height": 800
