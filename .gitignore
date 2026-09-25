@@ -33,3 +33,6 @@ next-env.d.ts.bak
 .env
 .env.local
 .env.*.local
+
+# scratch capture output during development
+.shots/
