@@ -387,3 +387,213 @@ body.has-drawer {
     display: none !important;
   }
 }
+
+/* ------------------------------------------------------------------ download --
+   The catalogue is a static site, so it cannot zip on demand: the archive is built by
+   `npm run bundle` and committed beside the site. `<details>` keeps the control working
+   without JavaScript — the summary opens the panel, the links are ordinary anchors. */
+
+.download {
+  position: relative;
+}
+
+.download__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.download__button::-webkit-details-marker {
+  display: none;
+}
+
+.download__button:hover,
+.download__button:focus-visible,
+.download[open] .download__button {
+  border-color: var(--accent-2);
+  color: var(--ink-000);
+  background: var(--accent-2);
+}
+
+.download__glyph {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.download__panel {
+  position: absolute;
+  inset-block-start: calc(100% + 0.55rem);
+  /* The control sits at the trailing edge of the bar, so the panel is pinned to that edge —
+     physically on the right in LTR, physically on the left in RTL. `inset-inline-end` is the
+     logical way to say exactly that about a trailing anchor. */
+  inset-inline-end: 0;
+  z-index: 80;
+  display: grid;
+  gap: 0.5rem;
+  inline-size: min(23rem, calc(100vw - 2rem));
+  padding: 1rem 1.05rem 1.1rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--ink-100) 96%, transparent);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(18px) saturate(140%);
+  text-align: start;
+}
+
+.download__title {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.download__option {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.65rem 0.7rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 8px;
+  color: var(--ink-700);
+  text-decoration: none;
+}
+
+.download__option:hover,
+.download__option:focus-visible {
+  border-color: var(--accent-2);
+  background: var(--ink-200);
+}
+
+.download__option--primary {
+  border-color: color-mix(in oklab, var(--accent-2) 55%, var(--ink-300));
+  background: color-mix(in oklab, var(--accent-2) 12%, transparent);
+}
+
+.download__option-name {
+  font-size: 0.86rem;
+}
+
+.download__option-hint {
+  font-size: 0.74rem;
+  line-height: 1.6;
+  color: var(--ink-500);
+}
+
+.download__note {
+  margin: 0.15rem 0 0;
+  font-size: 0.7rem;
+  line-height: 1.65;
+  color: var(--ink-500);
+}
+
+@media (max-width: 720px) {
+  /* A 23rem panel cannot sit beside a 360px screen's edge, so it takes the width it needs and the
+     clamp keeps it inside the viewport. `position: fixed` is deliberately avoided: the masthead
+     bar carries `backdrop-filter`, which makes it the containing block for fixed descendants, and
+     the panel would then be positioned against the bar instead of the screen. */
+  .download__panel {
+    inline-size: min(23rem, calc(100vw - 2rem));
+    max-inline-size: calc(100vw - 2rem);
+  }
+}
+
+/* ------------------------------------------------------------- compact header --
+   Below 1080px the nav list gives way to the burger, so the variation counters — the least
+   important thing in the bar — go first. Below 720px the bar keeps the three controls that must
+   never be more than a tap away: the brand, the download, and the menu. The reel link and the
+   language / theme switches move into the drawer, which is already the phone's navigation. */
+
+@media (max-width: 1080px) {
+  .masthead__meta {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .masthead__bar {
+    gap: 0.6rem;
+    padding-inline: 0.9rem;
+  }
+
+  .masthead__bar .lang-switch,
+  .masthead__bar .theme-switch,
+  .masthead__bar .masthead__cta {
+    display: none;
+  }
+
+  .download__button {
+    padding: 0.45rem 0.7rem;
+  }
+
+  .brand__name {
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand__name {
+    display: none;
+  }
+}
+
+/* ----------------------------------------------------------------- drawer links */
+
+.drawer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  inline-size: 100%;
+}
+
+.drawer__cta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-700);
+  font-size: 0.76rem;
+  text-decoration: none;
+}
+
+.drawer__cta:hover,
+.drawer__cta:focus-visible {
+  border-color: var(--accent-2);
+  background: var(--ink-200);
+}
+
+.drawer__cta--primary {
+  border-color: color-mix(in oklab, var(--accent-2) 55%, var(--ink-300));
+  background: color-mix(in oklab, var(--accent-2) 14%, transparent);
+}
+
+.drawer__cta-facts {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-500);
+}
+
+.download__facts {
+  display: block;
+  margin-block-start: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-500);
+}

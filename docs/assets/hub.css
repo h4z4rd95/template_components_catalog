@@ -1015,9 +1015,6 @@ pre {
 /* ------------------------------------------------------------------ responsive */
 
 @media (max-width: 760px) {
-  .masthead__meta {
-    display: none;
-  }
   .masthead__facts {
     gap: 1.2rem;
   }

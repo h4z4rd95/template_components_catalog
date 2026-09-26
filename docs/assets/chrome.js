@@ -126,6 +126,7 @@ window.CatalogChrome = (function () {
 
     paintSwitches();
     translateTree(document);
+    localiseDrawer();
     syncUrl();
   }
 
@@ -422,6 +423,7 @@ window.CatalogChrome = (function () {
 
       var section = document.createElement("section");
       section.className = "drawer__section";
+      section.setAttribute("data-discipline", discipline.id);
 
       var summary = document.createElement("button");
       summary.type = "button";
@@ -479,11 +481,77 @@ window.CatalogChrome = (function () {
       '<button type="button" class="lang-switch__button" data-lang="en">EN</button>' +
       '<button type="button" class="lang-switch__button" data-lang="fa">فا</button>' +
       "</div>";
+
+    // On a phone the bar keeps only the brand, the download control and the menu button — the
+    // reel link and the language / theme switches move in here, so nothing becomes unreachable.
+    var links = document.createElement("div");
+    links.className = "drawer__links";
+    var reel = document.createElement("a");
+    reel.className = "drawer__cta drawer__cta--reel";
+    reel.href = href("vision/index.html");
+    var reelName = document.createElement("span");
+    reelName.className = "drawer__cta-name";
+    reelName.textContent = t("visionReel") + " ↗";
+    reel.appendChild(reelName);
+    var archive = document.createElement("a");
+    archive.className = "drawer__cta drawer__cta--primary";
+    archive.href = href("download/catalog-source.zip");
+    archive.setAttribute("download", "");
+    var archiveName = document.createElement("span");
+    archiveName.className = "drawer__cta-name";
+    archiveName.textContent = t("downloadSource");
+    archive.appendChild(archiveName);
+    var facts = document.createElement("span");
+    facts.className = "drawer__cta-facts";
+    facts.setAttribute("data-download-facts", "");
+    archive.appendChild(facts);
+    links.appendChild(archive);
+    links.appendChild(reel);
+    foot.appendChild(links);
     drawer.appendChild(foot);
     drawer.appendChild(body);
 
     close.addEventListener("click", closeDrawer);
     return drawer;
+  }
+
+  /**
+   * The drawer is assembled once, from `t()` at that moment, so its built-in text does not follow a
+   * locale change the way `[data-i18n]` nodes do. Re-label it whenever the skin changes — otherwise
+   * a Persian reader opens a menu whose headings, discipline names and blurbs are still English.
+   */
+  function localiseDrawer() {
+    var drawer = nav.drawer;
+    if (!drawer) return;
+    drawer.setAttribute("aria-label", t("menu"));
+
+    var title = drawer.querySelector(".drawer__title");
+    if (title) title.textContent = t("categories");
+    var close = drawer.querySelector(".drawer__close");
+    if (close) close.textContent = "✕ " + t("close");
+    var burger = document.querySelector("[data-burger]");
+    if (burger && burger.getAttribute("aria-expanded") === "true") burger.setAttribute("aria-label", t("close"));
+
+    var disciplines = (state.manifest && state.manifest.disciplines) || [];
+    Array.prototype.forEach.call(drawer.querySelectorAll(".drawer__section"), function (section) {
+      var id = section.getAttribute("data-discipline");
+      var discipline = null;
+      for (var i = 0; i < disciplines.length; i += 1) {
+        if (disciplines[i].id === id) discipline = disciplines[i];
+      }
+      if (!discipline) return;
+      var labelEl = section.querySelector(".drawer__summary-label");
+      var blurbEl = section.querySelector(".drawer__blurb");
+      if (labelEl) labelEl.textContent = label(discipline);
+      if (blurbEl) blurbEl.textContent = blurb(discipline);
+    });
+
+    var reelName = drawer.querySelector(".drawer__cta--reel .drawer__cta-name");
+    if (reelName) reelName.textContent = t("visionReel") + " ↗";
+    var archiveName = drawer.querySelector(".drawer__cta--primary .drawer__cta-name");
+    if (archiveName) archiveName.textContent = t("downloadSource");
+
+    loadDownloadFacts();
   }
 
   function openDrawer() {
@@ -524,6 +592,67 @@ window.CatalogChrome = (function () {
     if (open) open.focus();
   }
 
+  /* ----------------------------------------------------------------- download --- */
+
+  /**
+   * The archive's real size and file count come from `docs/data/download.json`, which
+   * `scripts/bundle.mjs` writes when it builds the ZIP — so the panel states a fact instead of a
+   * number typed into a translation string that goes stale on the next build. If the file cannot
+   * be read (file://, or a clone that has not run the bundler yet) the generic hint stays, which
+   * is still true.
+   */
+  function formatBytes(bytes) {
+    if (!bytes) return "";
+    const mb = bytes / (1024 * 1024);
+    const value = mb >= 1 ? mb.toFixed(1) + " MB" : Math.max(1, Math.round(bytes / 1024)) + " KB";
+    return value;
+  }
+
+  function loadDownloadFacts() {
+    if (typeof fetch !== "function" || location.protocol === "file:") return;
+    fetch(href("data/download.json"), { cache: "no-cache" })
+      .then(function (response) {
+        return response.ok ? response.json() : null;
+      })
+      .then(function (payload) {
+        var facts = payload && payload.source;
+        if (!facts) return;
+        var length = window.navigator.language && window.navigator.language.indexOf("fa") === 0 ? "fa-IR" : "en-US";
+        var parts = [];
+        var size = formatBytes(facts.bytes);
+        if (size) parts.push(size);
+        if (facts.files) parts.push(facts.files.toLocaleString(length) + " " + t("files"));
+        if (!parts.length) return;
+        // Every place that names the archive (header panel, drawer) states the same facts.
+        Array.prototype.forEach.call(document.querySelectorAll("[data-download-facts]"), function (slot) {
+          slot.textContent = parts.join(" · ");
+        });
+      })
+      .catch(function () {
+        /* the generic hint is already on screen */
+      });
+  }
+
+  function wireDownload() {
+    var widget = document.querySelector("[data-download]");
+    if (!widget) return;
+    document.addEventListener("click", function (event) {
+      if (widget.contains(event.target)) return;
+      widget.open = false;
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape" || !widget.open) return;
+      widget.open = false;
+      var summary = widget.querySelector("summary");
+      if (summary) summary.focus();
+    });
+    // A download link that leaves the panel open looks broken on the next visit.
+    widget.addEventListener("click", function (event) {
+      if (event.target.closest && event.target.closest("a")) widget.open = false;
+    });
+    loadDownloadFacts();
+  }
+
   /* ------------------------------------------------------------------- init --- */
 
   /** Read the four states before first paint where the host page allows it. */
@@ -560,6 +689,7 @@ window.CatalogChrome = (function () {
       drawerHost.innerHTML = "";
       nav.drawer = buildDrawer(state.manifest);
       drawerHost.appendChild(nav.drawer);
+      localiseDrawer();
     }
 
     document.addEventListener("click", function (event) {
@@ -589,6 +719,8 @@ window.CatalogChrome = (function () {
     });
 
     document.addEventListener("keydown", onKeydown);
+    wireDownload();
+    loadDownloadFacts();
 
     var media = window.matchMedia("(prefers-color-scheme: light)");
     var onSystemTheme = function (event) {
@@ -632,6 +764,7 @@ window.CatalogChrome = (function () {
     setTheme: setTheme,
     state: state,
     on: on,
+    formatBytes: formatBytes,
     openDrawer: openDrawer,
     closeDrawer: closeDrawer,
     locale: function () {

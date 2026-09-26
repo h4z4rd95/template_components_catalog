@@ -36,3 +36,7 @@ next-env.d.ts.bak
 
 # scratch capture output during development
 .shots/
+
+# The downloadable source archive is produced by `npm run bundle` (and by every
+# `npm run build`), so it is never committed — like docs/framework/**.
+docs/download/*.zip

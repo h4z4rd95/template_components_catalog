@@ -263,6 +263,7 @@ height; measured overlap at the capture size went from ~31,000 px² to **0**.
 | 9 | Storefronts (physical + virtual) | two hero-scale homepages, deliberately unlike a default template |
 | 10 | Product detail, memorably | two detail pages where the product *is* the motion |
 | 11 | Cart + checkout | add-to-cart flight, removal that reflows and counts, one-step and multi-step checkout |
+| 12 | Download the whole project from the header | masthead control → `docs/download/catalog-source.zip`, rebuilt by `npm run build`, with the archive's real size / file count and the repository as the always-works fallback |
 
 ### Work packages
 
@@ -293,6 +294,11 @@ buildless vanilla drawer/orbital nav. Both bilingual, both theme-aware, both tes
 ### Harness additions
 - card completeness across all four skins — `npm run verify:cards` (shipped, and it immediately
   earned its place: it found the Persian column mounting zero live previews).
+- header reachability across viewports and both directions — `npm run verify:header` (shipped: the
+  bar is `overflow-x: hidden`, so a control that stops fitting is *silently clipped* — the shape of
+  bug that a DOM-only assertion cannot see. It found a 390 px bar wanting 664 px and swallowing the
+  download button, a `position: fixed` panel trapped by the bar's `backdrop-filter`, and a drawer
+  whose built-in text did not follow a language switch).
 - theme sweep: every target is probed in light **and** dark; contrast is computed for the headline,
   the lede and the HUD, and a target that renders invisible copy fails the run.
 - direction sweep: every target is probed in `ltr` and `rtl`; horizontal overflow and clipped

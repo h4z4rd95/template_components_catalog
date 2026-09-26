@@ -828,7 +828,15 @@
       "any": "Any",
       "plannedTitle": "In production",
       "plannedBody": "This variation's page ships in the commerce batch. Its metadata, stack and interaction blueprint are already final — only the page is missing.",
-      "plannedRoute": "Route reserved"
+      "plannedRoute": "Route reserved",
+      "download": "Download",
+      "downloadTitle": "Take the project",
+      "downloadSource": "Project source (ZIP)",
+      "downloadSourceHint": "Every project file, minus the generated motion reel.",
+      "downloadRepo": "Full repository on GitHub",
+      "downloadRepoHint": "Complete history and every asset — including the reel.",
+      "downloadIncludes": "Includes the catalog, both framework apps, the vanilla track, the shared package and the build scripts.",
+      "files": "files"
     },
     "fa": {
       "brand": "کاتالوگ",
@@ -908,7 +916,15 @@
       "any": "هرکدام",
       "plannedTitle": "در دست ساخت",
       "plannedBody": "صفحهٔ این نمونه در دستهٔ فروشگاه منتشر می‌شود. فراداده، پشتهٔ فناوری و نقشهٔ تعاملش همین حالا نهایی است؛ فقط خودِ صفحه مانده.",
-      "plannedRoute": "مسیر رزرو شده"
+      "plannedRoute": "مسیر رزرو شده",
+      "download": "دانلود",
+      "downloadTitle": "برداشتن پروژه",
+      "downloadSource": "سورس پروژه (ZIP)",
+      "downloadSourceHint": "همهٔ فایل‌های پروژه، بدون گالری حرکتیِ تولیدشده.",
+      "downloadRepo": "مخزن کامل روی گیت‌هاب",
+      "downloadRepoHint": "تاریخ کامل و همهٔ دارایی‌ها — همراه گالری حرکتی.",
+      "downloadIncludes": "شامل کاتالوگ، هر دو اپ فریم‌ورک، مسیر وانیلا، پکیج مشترک و اسکریپت‌های بیلد.",
+      "files": "فایل"
     }
   }
 }

@@ -76,6 +76,10 @@ async function main() {
     "utf8",
   );
 
+  // The download archive is part of the deployment: it is generated here, right after the apps,
+  // so the file a visitor downloads is the same revision the site is serving.
+  await run("node", ["scripts/bundle.mjs"]);
+
   console.log(`\n\x1b[32m✔ catalog built\x1b[0m — ${built.length} framework app(s) spliced into docs/`);
   console.log(`  preview it with: npm run preview\n`);
 }
