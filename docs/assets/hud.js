@@ -74,12 +74,10 @@
 
     const actions = el("div", "card__actions");
 
+    // A planned variation has no page, so it gets no "Raw ↗" — that link would be a 404 — and no
+    // primary button. The panel above the actions already explains the status; what remains here
+    // is only what genuinely works: its component page (latent), its id and its source.
     if (variation.status === "planned") {
-      // The page is scheduled, not shipped. Say so, keep the source link, and offer the route
-      // that will exist rather than a button that would open a 404.
-      const soon = el("span", "card__action card__action--soon", t("comingSoon"));
-      soon.setAttribute("role", "note");
-      actions.appendChild(soon);
       const route = el("a", "card__action", t("openPreview") + " ↗");
       route.href = window.CatalogChrome
         ? window.CatalogChrome.componentHref(variation.slug)
@@ -102,16 +100,19 @@
     });
     actions.appendChild(copy);
 
-    const raw = el("a", "card__action", t("raw") + " ↗");
-    raw.href = variation.href + "index.html";
-    raw.target = "_blank";
-    raw.rel = "noreferrer noopener";
-    actions.appendChild(raw);
+    if (variation.status !== "planned") {
+      const raw = el("a", "card__action", t("raw") + " ↗");
+      raw.href = variation.href + "index.html";
+      raw.target = "_blank";
+      raw.rel = "noreferrer noopener";
+      actions.appendChild(raw);
+    }
 
     const source = el("a", "card__action", t("source") + " ↗");
     source.href = GITHUB + "/tree/main/" + variation.source;
     source.target = "_blank";
     source.rel = "noreferrer noopener";
+    if (variation.status === "planned") source.href = GITHUB + "/tree/main/catalog";
     actions.appendChild(source);
 
     hud.appendChild(actions);

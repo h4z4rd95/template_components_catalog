@@ -554,3 +554,53 @@ for them. `npm test` (hub runtime, 23 assertions) is green.
 **Still open from the brief:** generated browse/component pages (`docs/browse/**`,
 `docs/component/**` — work package 3a's last item), the navigation *variations* (3b), and the
 commerce batches (4 and 5). The structure they need now exists.
+
+---
+
+## [2026-09-22 22:05 UTC] · The last card — a dangling promise, and the bug it was hiding
+
+**Reported:** "the last card is still incomplete." It was worse than a visual gap.
+
+### What the last card actually was
+
+The seven planned commerce variations rendered a **full-height preview frame with the normal live
+placeholder inside it** — spinner, "live preview mounts as you scroll", the component id — even
+though no page exists for them and none ever mounts. The card promised something it could not
+deliver. Two faults underneath:
+
+1. `mountFrame()` skipped planned variations (so nothing mounted) but the *placeholder* was built
+   unconditionally for every card, so the promise was printed and never kept.
+2. `frame_prepare()` — the function that was supposed to caption the frame — ran **before the frame
+   element existed**, so its dataset was never applied. Dead code that looked like a feature.
+
+### The fix: a blueprint panel instead of a void
+
+A planned variation now renders `buildPlannedPanel()`, which shows the parts that ARE final —
+component id, topic, stack, the reserved route and one plain sentence in the active language — over
+a drafting grid, with its accent as a spine and its plate number (`V05`, `V06`, `V07`) ghosted into
+the corner so the frame carries weight. `BATCH 04`, the accent dot and the reserved route make it
+read as *specification*, which is what it is.
+
+Its actions are honest too: no `Raw ↗` (there is no page to open raw), no duplicate "planned" note
+above the buttons, and `Source ↗` points at the catalogue manifest for a variation whose source
+directory does not exist yet.
+
+### The bug the report uncovered
+
+While verifying the fix across all four skins, one case came back with **zero live previews in
+Persian**.
+
+The card observer pre-mounts iframes within `rootMargin: 320px`. The Persian layout is **59 px
+taller** — the controls block wraps to an extra row, and Persian line-heights are 1.75 — which was
+just enough to push every card outside the band. English mounted 2 frames; Persian mounted none,
+silently, with no console error. Raising the band to `1200px` fixes the real cause (one screen of
+scrolling in either direction) without loosening the live-frame cap.
+
+That is a bug a monoglot test would never have found, and it existed because the shell was made
+bilingual — which is the point of verifying in both languages rather than assuming.
+
+### Verification
+`verify-cards.mjs` (temporary) checked **every card in all four skins** (en/fa × dark/light) for:
+a frame mode (iframe / placeholder / panel), planned cards showing a panel and never the live
+placeholder, live cards never showing a panel, complete HUD copy, and tags present. Result:
+`17 cards · 7 planned · 4 live frames` in every skin, **PROBLEMS: none**. `npm test` green.

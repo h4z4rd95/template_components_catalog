@@ -825,7 +825,10 @@
       "primaryNav": "Primary",
       "more": "More",
       "tags": "Tags",
-      "any": "Any"
+      "any": "Any",
+      "plannedTitle": "In production",
+      "plannedBody": "This variation's page ships in the commerce batch. Its metadata, stack and interaction blueprint are already final — only the page is missing.",
+      "plannedRoute": "Route reserved"
     },
     "fa": {
       "brand": "کاتالوگ",
@@ -902,7 +905,10 @@
       "primaryNav": "اصلی",
       "more": "بیشتر",
       "tags": "برچسب‌ها",
-      "any": "هرکدام"
+      "any": "هرکدام",
+      "plannedTitle": "در دست ساخت",
+      "plannedBody": "صفحهٔ این نمونه در دستهٔ فروشگاه منتشر می‌شود. فراداده، پشتهٔ فناوری و نقشهٔ تعاملش همین حالا نهایی است؛ فقط خودِ صفحه مانده.",
+      "plannedRoute": "مسیر رزرو شده"
     }
   }
 }

@@ -1073,37 +1073,136 @@ pre {
   }
 }
 
-/* A planned variation is honest about it: the card keeps the metadata, loses the preview, and
-   trades its primary button for a note. No spinner that never resolves, no 404 in a frame. */
+/* ---------------------------------------------------- a planned variation --
+
+   A card whose page has not been written yet must still be worth looking at. It keeps
+   everything that IS final — id, topic, stack, vibe, the reserved route — and replaces the
+   preview frame with a blueprint panel that says so in one plain sentence. No spinner, no
+   "preview mounts as you scroll", no dead Raw link: nothing that promises a page that does
+   not exist. */
+
 .card[data-live="0"] .card__frame {
-  display: grid;
-  place-content: center;
-  padding: 1.4rem;
-  text-align: center;
-  border-style: dashed;
-  border-color: var(--ink-400);
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent 0 14px,
-    color-mix(in oklab, var(--ink-300) 55%, transparent) 14px 15px
-  );
+  display: block;
+  padding: 0;
+  border-style: solid;
 }
 
-.card[data-live="0"] .card__frame::before {
-  content: attr(data-planned-note);
+.card__planned {
+  position: relative;
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  block-size: 100%;
+  padding: 1.3rem 1.4rem;
+  border-inline-start: 3px solid var(--accent, var(--ink-500));
+  background:
+    linear-gradient(color-mix(in oklab, var(--ink-200) 60%, transparent) 1px, transparent 1px) 0 0 / 100% 2.1rem,
+    linear-gradient(90deg, color-mix(in oklab, var(--ink-200) 60%, transparent) 1px, transparent 1px) 0 0 / 2.1rem 100%,
+    var(--ink-050);
+}
+
+.card__planned-head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.card__planned-dot {
+  inline-size: 0.45rem;
+  block-size: 0.45rem;
+  border-radius: 50%;
+  background: var(--accent, var(--ink-500));
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent, var(--ink-500)) 22%, transparent);
+}
+
+.card__planned-kicker {
+  color: var(--ink-700);
+}
+
+.card__planned-batch {
+  margin-inline-start: auto;
+}
+
+.card__planned-id {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: clamp(0.95rem, 1.6vw, 1.25rem);
+  letter-spacing: -0.01em;
+  color: var(--ink-700);
+  overflow-wrap: anywhere;
+}
+
+.card__planned-row {
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding-block: 0.35rem;
+  border-block-start: 1px dashed color-mix(in oklab, var(--ink-400) 50%, transparent);
+}
+
+.card__planned-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.card__planned-value {
+  font-size: 0.82rem;
+  color: var(--ink-600);
+}
+
+.card__planned-route {
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  color: var(--ink-500);
-  line-height: 1.8;
+  color: var(--accent-2);
+  overflow-wrap: anywhere;
 }
 
-.card__action--soon {
-  flex: 1 1 100%;
-  padding: 0.45rem 0.6rem;
-  border: 1px dashed var(--ink-400);
-  border-radius: 999px;
+.card__planned-note {
+  margin: 0;
+  padding-block-start: 0.4rem;
+  font-size: 0.8rem;
+  line-height: 1.75;
   color: var(--ink-500);
-  font-size: 0.72rem;
-  text-align: center;
+}
+
+/* The plate number: the one decorative element in the panel, and the reason the frame does not
+   read as empty now that a preview is not filling it. */
+.card__planned-ghost {
+  position: absolute;
+  inset-block-end: -0.16em;
+  inset-inline-end: 0.1em;
+  z-index: 0;
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 9vw, 6.5rem);
+  line-height: 0.8;
+  letter-spacing: -0.04em;
+  color: color-mix(in oklab, var(--accent, var(--ink-500)) 16%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+.card__planned > *:not(.card__planned-ghost) {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 560px) {
+  .card__planned-row {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .card__planned-ghost {
+    inset-block-end: -0.1em;
+    font-size: 3.4rem;
+  }
 }

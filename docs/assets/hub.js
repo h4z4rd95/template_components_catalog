@@ -276,7 +276,7 @@
 
   function renderTagRail() {
     dom.tagRail.innerHTML = "";
-    dom.tagRail.dataset.label = t("topics");
+    dom.tagRail.dataset.label = t("tags");
 
     var tally = counts().tags.slice(0, 18);
     var all = el("button", "chip is-active", t("all"));
@@ -300,10 +300,7 @@
     card.dataset.discipline = variation.discipline;
     card.dataset.tags = variation.tags.join(",");
     card.dataset.webgl = variation.perf && variation.perf.webgl ? "1" : "0";
-    if (variation.status === "planned") {
-      card.dataset.planned = "1";
-      frame_prepare(card);
-    }
+    if (variation.status === "planned") card.dataset.planned = "1";
     card.id = "card-" + variation.slug;
     card.dataset.haystack = [
       variation.id,
@@ -337,11 +334,15 @@
     card.appendChild(window.CatalogHUD.renderCardHUD(variation, handlers));
 
     var frame = el("div", "card__frame");
-    var placeholder = el("div", "card__placeholder");
-    placeholder.appendChild(el("span", "card__spinner"));
-    placeholder.appendChild(el("span", null, "live preview mounts as you scroll"));
-    placeholder.appendChild(el("b", null, variation.id));
-    frame.appendChild(placeholder);
+    if (variation.status === "planned") {
+      frame.appendChild(buildPlannedPanel(variation));
+    } else {
+      var placeholder = el("div", "card__placeholder");
+      placeholder.appendChild(el("span", "card__spinner"));
+      placeholder.appendChild(el("span", null, t("livePreview")));
+      placeholder.appendChild(el("b", "force-ltr", variation.id));
+      frame.appendChild(placeholder);
+    }
     card.appendChild(frame);
 
     card.appendChild(
@@ -357,12 +358,48 @@
     return card;
   }
 
-  /** Give the frame its "planned" caption in the active language (CSS prints it). */
-  function frame_prepare(card) {
-    var frame = card.querySelector(".card__frame");
-    if (!frame) return;
-    var note = t("comingSoon") + "\n" + t("openPreview");
-    frame.dataset.plannedNote = note;
+  /**
+   * A variation whose page has not been written yet still has a card worth reading. This panel
+   * replaces the preview frame with the parts that ARE finished — id, topic, stack, vibe and the
+   * reserved route — so the card states a fact instead of promising a preview that never mounts.
+   */
+  function buildPlannedPanel(variation) {
+    var panel = el("div", "card__planned");
+    panel.style.setProperty("--accent", variation.accent || "var(--accent)");
+
+    var head = el("div", "card__planned-head");
+    head.appendChild(el("span", "card__planned-dot"));
+    head.appendChild(el("span", "card__planned-kicker", t("plannedTitle")));
+    head.appendChild(el("span", "card__planned-batch force-ltr", "BATCH " + String(variation.batch).padStart(2, "0")));
+    panel.appendChild(head);
+
+    panel.appendChild(el("p", "card__planned-id force-ltr", variation.id));
+
+    var topic = topicById(variation.topic);
+    var topicRow = el("div", "card__planned-row");
+    topicRow.appendChild(el("span", "card__planned-label", t("topics")));
+    topicRow.appendChild(el("span", "card__planned-value", topic ? label(topic) : variation.topic));
+    panel.appendChild(topicRow);
+
+    var stackRow = el("div", "card__planned-row");
+    stackRow.appendChild(el("span", "card__planned-label", t("stack")));
+    stackRow.appendChild(el("span", "card__planned-value force-ltr", variation.stack.join(" · ")));
+    panel.appendChild(stackRow);
+
+    var routeRow = el("div", "card__planned-row");
+    routeRow.appendChild(el("span", "card__planned-label", t("plannedRoute")));
+    var route = el("code", "card__planned-route force-ltr", variation.href);
+    routeRow.appendChild(route);
+    panel.appendChild(routeRow);
+
+    panel.appendChild(el("p", "card__planned-note", t("plannedBody")));
+
+    // A blueprint plate number, drawn from the id itself: it anchors the panel the way a drawing
+    // number anchors a technical sheet, and it gives the frame the weight a live preview would.
+    var ghost = el("span", "card__planned-ghost force-ltr", "V" + String(variation.id.split("_V")[1] || "").slice(0, 2));
+    ghost.setAttribute("aria-hidden", "true");
+    panel.appendChild(ghost);
+    return panel;
   }
 
   /* ------------------------------------------------------------------ filtering */
@@ -594,7 +631,11 @@
         });
         pump();
       },
-      { rootMargin: "320px 0px", threshold: 0.01 },
+      /* The pre-mount band has to clear the whole controls block, and that block is taller in
+         Persian than in English — at 320px the first screen of the fa catalog mounted nothing at
+         all, because every card sat just outside the band. 1200px covers one full screen of
+         scrolling in both directions while still keeping off-screen iframes to a handful. */
+      { rootMargin: "1200px 0px", threshold: 0.01 },
     );
 
     cards.forEach(function (_variation, card) {
