@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-page="topic" data-title-en="Motion Systems · Loaders &amp; Transitions — 0 variations" data-title-fa="سیستم‌های حرکت · لودر و گذارها — 0 نمونه">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Motion Systems · Loaders &amp; Transitions — 0 variations</title>
+    <meta name="description" content="Scroll engines, pinning, page transitions. 0 variations in Loaders &amp; Transitions." data-desc-en="Scroll engines, pinning, page transitions. 0 variations in Loaders &amp; Transitions." data-desc-fa="موتور اسکرول، قفل صفحه و گذار بین صفحه‌ها. 0 نمونه در لودر و گذارها." />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="Motion Systems · Loaders &amp; Transitions — 0 variations" />
+    <meta property="og:description" content="Scroll engines, pinning, page transitions. 0 variations in Loaders &amp; Transitions." />
+    <meta property="og:type" content="website" />
+    <link rel="alternate" hreflang="en" href="?lang=en" />
+    <link rel="alternate" hreflang="fa" href="?lang=fa" />
+
+    <!-- The same pre-paint bootstrap the hub runs: nothing renders in the wrong theme or the wrong
+         direction, because the very first paint already knows which one applies. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try {
+              return localStorage.getItem(k);
+            } catch (e) {
+              return null;
+            }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../../assets/fonts.css" />
+    <!-- hub.css carries the authored dark ink ramp and the masthead bar itself; the shell has to
+         look identical here and on the hub, so there is one definition of it, not two. Order
+         matters and is the hub's: both ramps are single-class specificity, so the light ramp in
+         theme.css only wins because it is read *after* the dark one. -->
+    <link rel="stylesheet" href="../../../assets/hub.css" />
+    <link rel="stylesheet" href="../../../assets/theme.css" />
+    <link rel="stylesheet" href="../../../assets/chrome.css" />
+    <link rel="stylesheet" href="../../../assets/page.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+
+    <script>
+      window.__CATALOG_BASE__ = "../../../";
+    </script>
+    <script src="../../../data/catalog.js" defer></script>
+    <script src="../../../assets/chrome.js" defer></script>
+    <script src="../../../assets/page.js" defer></script>
+  </head>
+
+  <body class="pg" style="--accent: #ff4fd8">
+    <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
+
+    <header class="masthead pg__masthead">
+      <nav class="masthead__bar" data-shell-bar data-i18n-aria="primaryNav"></nav>
+    </header>
+
+    <main id="main" class="pg__main">
+      <nav class="pg__crumbs" aria-label="Breadcrumb">
+        <a href="../../../index.html" data-i18n="home">Catalog</a>
+        <span aria-hidden="true">/</span>
+        <a href="../../index.html" data-i18n-fa="مرور">Browse</a>
+        <span aria-hidden="true">/</span>
+        <a href="../index.html" data-i18n-fa="لودر و گذارها">Loaders &amp; Transitions</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page" data-i18n-fa="سیستم‌های حرکت">Motion Systems</span>
+      </nav>
+      <header class="pg__hero">
+        <p class="pg__kicker force-ltr" data-i18n-fa="لودر و گذارها">Loaders &amp; Transitions</p>
+        <h1 class="pg__title" data-i18n-fa="سیستم‌های حرکت">Motion Systems</h1>
+        <p class="pg__lede" data-i18n-fa="موتور اسکرول، قفل صفحه و گذار بین صفحه‌ها.">Scroll engines, pinning, page transitions.</p>
+        <ul class="pg__stats">
+          <li><span class="pg__stat"><span class="force-ltr">00</span> <span data-i18n="variations">variations</span> <span data-i18n="inThisTopic">in this topic</span></span></li>
+        </ul>
+      </header>
+      <p class="pg__empty" data-i18n="noVariations">No variation has landed in this topic yet.</p>
+      <section class="pg__block pg__block--aside">
+        <h2 class="pg__block-title" data-i18n="siblingTopics">Topics in this discipline</h2>
+        <ul class="pg__chips">
+            <li>
+              <a class="pg__chip" href="../gpu/index.html" data-empty="1">
+                <span class="pg__chip-label" data-i18n-fa="پردازش‌گرافیکی و شیدر">GPU &amp; Shaders</span>
+                <span class="pg__chip-count force-ltr">00</span>
+              </a>
+            </li>
+        </ul>
+      </section>
+
+    </main>
+
+    <footer class="pg__foot">
+      <p class="pg__foot-note" data-i18n="footerNote">
+        Built as an open, bilingual, dual-theme showroom. Every variation is a real page.
+      </p>
+      <a class="pg__foot-link" href="../../../index.html" data-i18n="backToHub">Back to the hub</a>
+    </footer>
+
+    <div data-drawer-host></div>
+  </body>
+</html>

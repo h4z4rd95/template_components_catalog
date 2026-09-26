@@ -1,0 +1,107 @@
+.frame {
+  --accent: #ff4fd8;
+  position: relative;
+  min-height: 100svh;
+  isolation: isolate;
+}
+
+.progressTrack {
+  position: fixed;
+  /* rides the bottom edge of the chrome band */
+  top: calc(2.9rem - 2px);
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: calc(var(--z-hud) - 1);
+  background: rgba(255, 255, 255, 0.06);
+  mix-blend-mode: normal;
+}
+
+.progressBar {
+  display: block;
+  height: 100%;
+  transform-origin: 0 50%;
+  background: var(--accent);
+  box-shadow: 0 0 18px color-mix(in oklab, var(--accent) 70%, transparent);
+  will-change: transform;
+}
+
+/**
+ * The host chrome is a real band, not floating text.
+ *
+ * It previously used `mix-blend-mode: difference` and sat directly on top of each variation's own
+ * top bar, so "THE CATALOG" blended into "STUDIO HÄRT" and the counter merged with the
+ * coordinates — legible in neither light nor dark. A catalogue whose whole job is legibility
+ * cannot let its own chrome fight the artwork, so the band owns a reserved 2.9rem strip with an
+ * opaque background and every variation starts below it.
+ */
+.chrome {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: calc(var(--z-hud) - 2);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  height: 2.9rem;
+  padding: 0 clamp(0.75rem, 0.2rem + 1.6vw, 1.75rem);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(5, 5, 6, 0.82);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mark {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #fff;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  transition: border-color var(--dur-fast) var(--ease-editorial), color var(--dur-fast) var(--ease-editorial);
+}
+.mark:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.markDot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.counter {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+.counterSep {
+  opacity: 0.4;
+}
+
+.main {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .chrome {
+    font-size: 0.52rem;
+    letter-spacing: 0.14em;
+  }
+  .mark {
+    padding: 0.25rem 0.4rem;
+  }
+}

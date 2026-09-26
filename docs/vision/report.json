@@ -1,0 +1,1399 @@
+{
+  "capturedAt": "2026-09-23 02:52 UTC",
+  "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0",
+  "gpuProfile": "swangle",
+  "complete": true,
+  "reports": [
+    {
+      "key": "hub",
+      "path": "/?live=4",
+      "title": "The Catalog — a live showroom of Awwwards-grade components",
+      "hud": true,
+      "h1": {
+        "text": "Every stack. Every motion engine. In one scroll.",
+        "opacity": 1,
+        "height": 290,
+        "visible": true
+      },
+      "webgl": null,
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": false,
+        "display": false
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": true,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [
+        "a.skip (160px, right=-9839/1280, display=block, overflowX=visible)"
+      ],
+      "docHeight": 5868,
+      "iframes": 1,
+      "canvases": 0,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [
+            "a.skip (160px, right=-9839/360, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [
+            "a.skip (160px, right=-9839/768, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [
+            "a.skip (160px, right=-9839/1440, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [
+            "a.skip (160px, right=-9839/2560, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 61,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "Every stack. Every motion engine. In one scroll.",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/hub-hero.png",
+        "vision/shots/hub-mid.png",
+        "vision/shots/hub-deep.png"
+      ],
+      "gif": {
+        "file": "vision/hub.gif",
+        "bytes": 1118255,
+        "kb": 1092,
+        "frames": 84,
+        "capturedFrames": 101,
+        "width": 500,
+        "height": 312,
+        "delayMs": 600,
+        "effectiveFps": 1.7,
+        "choreographyMs": 231898,
+        "colors": 64
+      },
+      "frameCount": 101,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    },
+    {
+      "key": "kinetic-brutal-grid",
+      "path": "/framework/next/hero/kinetic-brutal-grid/",
+      "title": "Hero_V01_KineticBrutalGrid · The Catalog",
+      "hud": true,
+      "h1": {
+        "text": "NOSOFTEDGES.",
+        "opacity": 1,
+        "height": 415,
+        "visible": true
+      },
+      "webgl": null,
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": false,
+        "display": true
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": true,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [],
+      "docHeight": 1670,
+      "iframes": 0,
+      "canvases": 0,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 60,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "NOSOFTEDGES.",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/kinetic-brutal-grid-hero.png",
+        "vision/shots/kinetic-brutal-grid-mid.png",
+        "vision/shots/kinetic-brutal-grid-deep.png"
+      ],
+      "gif": {
+        "file": "vision/kinetic-brutal-grid.gif",
+        "bytes": 1315882,
+        "kb": 1285,
+        "frames": 84,
+        "capturedFrames": 157,
+        "width": 500,
+        "height": 312,
+        "delayMs": 165,
+        "effectiveFps": 6.1,
+        "choreographyMs": 13841,
+        "colors": 64
+      },
+      "frameCount": 157,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    },
+    {
+      "key": "editorial-scroll-lock",
+      "path": "/framework/next/hero/editorial-scroll-lock/",
+      "title": "Hero_V02_EditorialScrollLock · The Catalog",
+      "hud": true,
+      "h1": {
+        "text": "Quiet objects, made loudby time.",
+        "opacity": 1,
+        "height": 292,
+        "visible": true
+      },
+      "webgl": null,
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": true,
+        "display": false
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": true,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [],
+      "docHeight": 3803,
+      "iframes": 0,
+      "canvases": 0,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 60,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "Quiet objects, made loudby time.",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/editorial-scroll-lock-hero.png",
+        "vision/shots/editorial-scroll-lock-mid.png",
+        "vision/shots/editorial-scroll-lock-deep.png"
+      ],
+      "gif": {
+        "file": "vision/editorial-scroll-lock.gif",
+        "bytes": 1503587,
+        "kb": 1468,
+        "frames": 70,
+        "capturedFrames": 70,
+        "width": 660,
+        "height": 413,
+        "delayMs": 119,
+        "effectiveFps": 8.4,
+        "choreographyMs": 8350,
+        "colors": 128
+      },
+      "frameCount": 70,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    },
+    {
+      "key": "particle-morph-field",
+      "path": "/framework/next/hero/particle-morph-field/",
+      "title": "Hero_V03_ParticleMorphField · The Catalog",
+      "hud": true,
+      "h1": {
+        "text": "Every form is a rumour of the next.",
+        "opacity": 1,
+        "height": 141,
+        "visible": true
+      },
+      "webgl": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "buffer": [
+          1024,
+          640
+        ]
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": false,
+        "display": false
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": true,
+      "spills": [],
+      "scrollWidth": 1024,
+      "clientWidth": 1024,
+      "offenders": [],
+      "docHeight": 2252,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [
+            "span.particle-morph-field-module__6YiHta__cursorRing (34px, right=529/360, display=block, overflowX=visible)",
+            "span.particle-morph-field-module__6YiHta__cursorRing (48px, right=536/360, display=block, overflowX=visible)",
+            "span.particle-morph-field-module__6YiHta__cursorRing (63px, right=543/360, display=block, overflowX=visible)",
+            "span.particle-morph-field-module__6YiHta__cursorDot (6px, right=515/360, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 3,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "Every form is a rumour of the next.",
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/particle-morph-field-hero.png",
+        "vision/shots/particle-morph-field-mid.png",
+        "vision/shots/particle-morph-field-deep.png"
+      ],
+      "gif": {
+        "file": "vision/particle-morph-field.gif",
+        "bytes": 1132573,
+        "kb": 1106,
+        "frames": 58,
+        "capturedFrames": 58,
+        "width": 500,
+        "height": 313,
+        "delayMs": 600,
+        "effectiveFps": 1.7,
+        "choreographyMs": 742637,
+        "colors": 64
+      },
+      "frameCount": 58,
+      "captureViewport": {
+        "width": 1024,
+        "height": 640
+      }
+    },
+    {
+      "key": "cyber-scanner-hud",
+      "path": "/framework/next/hero/cyber-scanner-hud/",
+      "title": "Hero_V04_CyberScannerHUD · The Catalog",
+      "hud": true,
+      "h1": {
+        "text": "DEEP 8</2 B3 J6JFBG25",
+        "opacity": 1,
+        "height": 135,
+        "visible": true
+      },
+      "webgl": {
+        "version": null,
+        "note": "canvas present but no context"
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": false,
+        "display": false
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": true,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [],
+      "docHeight": 1650,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 60,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "DEEP SCAN IN PROGRESS",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/cyber-scanner-hud-hero.png",
+        "vision/shots/cyber-scanner-hud-mid.png",
+        "vision/shots/cyber-scanner-hud-deep.png"
+      ],
+      "gif": {
+        "file": "vision/cyber-scanner-hud.gif",
+        "bytes": 898042,
+        "kb": 877,
+        "frames": 30,
+        "capturedFrames": 30,
+        "width": 580,
+        "height": 363,
+        "delayMs": 600,
+        "effectiveFps": 1.7,
+        "choreographyMs": 34163,
+        "colors": 96
+      },
+      "frameCount": 30,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    },
+    {
+      "key": "liquid-chroma-glass",
+      "path": "/framework/next/hero/liquid-chroma-glass/",
+      "title": "Hero_V05_LiquidChromaGlass · The Catalog",
+      "hud": true,
+      "h1": {
+        "text": "Colour, alive.",
+        "opacity": 1,
+        "height": 179,
+        "visible": true
+      },
+      "webgl": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "buffer": [
+          1024,
+          640
+        ]
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": false,
+        "display": false
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": true,
+      "spills": [],
+      "scrollWidth": 1024,
+      "clientWidth": 1024,
+      "offenders": [],
+      "docHeight": 2078,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 3,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "Colour, alive.",
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/liquid-chroma-glass-hero.png",
+        "vision/shots/liquid-chroma-glass-mid.png",
+        "vision/shots/liquid-chroma-glass-deep.png"
+      ],
+      "gif": {
+        "file": "vision/liquid-chroma-glass.gif",
+        "bytes": 1270965,
+        "kb": 1241,
+        "frames": 56,
+        "capturedFrames": 56,
+        "width": 420,
+        "height": 263,
+        "delayMs": 600,
+        "effectiveFps": 1.7,
+        "choreographyMs": 137175,
+        "colors": 48
+      },
+      "frameCount": 56,
+      "captureViewport": {
+        "width": 1024,
+        "height": 640
+      }
+    },
+    {
+      "key": "tres-instanced-shards",
+      "path": "/framework/nuxt/hero/tres-instanced-shards/",
+      "title": "Hero_V06_TresInstancedShards — Volumetric Shard Field",
+      "hud": true,
+      "h1": {
+        "text": "VOLUMETRICshard field",
+        "opacity": 1,
+        "height": 226,
+        "visible": true
+      },
+      "webgl": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "buffer": [
+          1280,
+          800
+        ]
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": true,
+        "display": true
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": false,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [],
+      "docHeight": 1370,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 10,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "VOLUMETRICshard field",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/tres-instanced-shards-hero.png",
+        "vision/shots/tres-instanced-shards-mid.png",
+        "vision/shots/tres-instanced-shards-deep.png"
+      ],
+      "gif": {
+        "file": "vision/tres-instanced-shards.gif",
+        "bytes": 2265599,
+        "kb": 2212,
+        "frames": 62,
+        "capturedFrames": 62,
+        "width": 420,
+        "height": 263,
+        "delayMs": 165,
+        "effectiveFps": 6.1,
+        "choreographyMs": 10209,
+        "colors": 48
+      },
+      "frameCount": 62,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    },
+    {
+      "key": "editorial-chapter-rail",
+      "path": "/framework/nuxt/hero/editorial-chapter-rail/",
+      "title": "Hero_V07_EditorialChapterRail — Editorial Chapter Rail",
+      "hud": true,
+      "h1": {
+        "text": "The quiet cut",
+        "opacity": 1,
+        "height": 73,
+        "visible": true
+      },
+      "webgl": null,
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": true,
+        "display": false
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": false,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [],
+      "docHeight": 2745,
+      "iframes": 0,
+      "canvases": 0,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 60,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "The quiet cut",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/editorial-chapter-rail-hero.png",
+        "vision/shots/editorial-chapter-rail-mid.png",
+        "vision/shots/editorial-chapter-rail-deep.png"
+      ],
+      "gif": {
+        "file": "vision/editorial-chapter-rail.gif",
+        "bytes": 1077934,
+        "kb": 1053,
+        "frames": 78,
+        "capturedFrames": 78,
+        "width": 580,
+        "height": 363,
+        "delayMs": 93,
+        "effectiveFps": 10.8,
+        "choreographyMs": 7246,
+        "colors": 96
+      },
+      "frameCount": 78,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    },
+    {
+      "key": "tres-liquid-terrain",
+      "path": "/framework/nuxt/hero/tres-liquid-terrain/",
+      "title": "Hero_V08_TresLiquidTerrain — Liquid Terrain Sweep",
+      "hud": true,
+      "h1": {
+        "text": "LIQUIDterrain, in three stops",
+        "opacity": 1,
+        "height": 166,
+        "visible": true
+      },
+      "webgl": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "buffer": [
+          1280,
+          800
+        ]
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": true,
+        "display": true
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": false,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [],
+      "docHeight": 1264,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 25,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "LIQUIDterrain, in three stops",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/tres-liquid-terrain-hero.png",
+        "vision/shots/tres-liquid-terrain-mid.png",
+        "vision/shots/tres-liquid-terrain-deep.png"
+      ],
+      "gif": {
+        "file": "vision/tres-liquid-terrain.gif",
+        "bytes": 1484179,
+        "kb": 1449,
+        "frames": 78,
+        "capturedFrames": 78,
+        "width": 500,
+        "height": 312,
+        "delayMs": 112,
+        "effectiveFps": 8.9,
+        "choreographyMs": 8727,
+        "colors": 64
+      },
+      "frameCount": 78,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    },
+    {
+      "key": "vanilla-raymarch",
+      "path": "/vanilla/raymarch-nebula/",
+      "title": "Hero_V09_VanillaRaymarch — Volumetric Nebula | The Catalog",
+      "hud": true,
+      "h1": {
+        "text": "VOLUMETRIC nebula, marched",
+        "opacity": 1,
+        "height": 175,
+        "visible": true
+      },
+      "webgl": {
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "vendor": "Google Inc. (Google)",
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)",
+        "buffer": [
+          571,
+          357
+        ]
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": true,
+        "display": true
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": false,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [],
+      "docHeight": 1620,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 3,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "VOLUMETRIC nebula, marched",
+        "webgl": "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/vanilla-raymarch-hero.png",
+        "vision/shots/vanilla-raymarch-mid.png",
+        "vision/shots/vanilla-raymarch-deep.png"
+      ],
+      "gif": {
+        "file": "vision/vanilla-raymarch.gif",
+        "bytes": 1087336,
+        "kb": 1062,
+        "frames": 33,
+        "capturedFrames": 33,
+        "width": 580,
+        "height": 363,
+        "delayMs": 600,
+        "effectiveFps": 1.7,
+        "choreographyMs": 96482,
+        "colors": 96
+      },
+      "frameCount": 33,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    },
+    {
+      "key": "brutal-stamp-press",
+      "path": "/vanilla/brutal-stamp-press/",
+      "title": "Hero_V10_BrutalStampPress — Letterpress Riot | The Catalog",
+      "hud": true,
+      "h1": {
+        "text": "Set Type LoudPRESS NO.10",
+        "opacity": 1,
+        "height": 311,
+        "visible": true
+      },
+      "webgl": {
+        "version": null,
+        "note": "canvas present but no context"
+      },
+      "fonts": {
+        "inter": true,
+        "mono": true,
+        "serif": true,
+        "display": true
+      },
+      "undefinedClasses": 0,
+      "leakedHidden": [],
+      "underChrome": [],
+      "horizontalScroll": false,
+      "reachableOverflow": false,
+      "viewportClipsX": true,
+      "spills": [],
+      "scrollWidth": 1280,
+      "clientWidth": 1280,
+      "offenders": [
+        "a.skip (182px, right=-9817/1280, display=block, overflowX=visible)"
+      ],
+      "docHeight": 1867,
+      "iframes": 0,
+      "canvases": 1,
+      "errors": [],
+      "failedRequests": [],
+      "abortedByDesign": 0,
+      "responsive": [
+        {
+          "viewport": "mobile",
+          "width": 360,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 360,
+          "clientWidth": 360,
+          "offenders": [
+            "a.skip (182px, right=-9817/360, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "tablet",
+          "width": 768,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 768,
+          "clientWidth": 768,
+          "offenders": [
+            "a.skip (182px, right=-9817/768, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "desktop",
+          "width": 1440,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 1440,
+          "clientWidth": 1440,
+          "offenders": [
+            "a.skip (182px, right=-9817/1440, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        },
+        {
+          "viewport": "ultrawide",
+          "width": 2560,
+          "reachableOverflow": false,
+          "clippedOverflow": false,
+          "scrollWidth": 2560,
+          "clientWidth": 2560,
+          "offenders": [
+            "a.skip (182px, right=-9817/2560, display=block, overflowX=visible)"
+          ],
+          "spills": [],
+          "undefinedClasses": 0,
+          "leakedHidden": [],
+          "underChrome": []
+        }
+      ],
+      "fpsSoftware": 38,
+      "reducedMotion": {
+        "headingVisible": true,
+        "headingOpacity": 1,
+        "h1": "Set Type LoudPRESS NO.10",
+        "webgl": null,
+        "leakedHidden": []
+      },
+      "stills": [
+        "vision/shots/brutal-stamp-press-hero.png",
+        "vision/shots/brutal-stamp-press-mid.png",
+        "vision/shots/brutal-stamp-press-deep.png"
+      ],
+      "gif": {
+        "file": "vision/brutal-stamp-press.gif",
+        "bytes": 1338565,
+        "kb": 1307,
+        "frames": 21,
+        "capturedFrames": 21,
+        "width": 660,
+        "height": 413,
+        "delayMs": 359,
+        "effectiveFps": 2.8,
+        "choreographyMs": 7541,
+        "colors": 128
+      },
+      "frameCount": 21,
+      "captureViewport": {
+        "width": 1280,
+        "height": 800
+      }
+    }
+  ]
+}

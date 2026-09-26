@@ -1,0 +1,455 @@
+/* Hero_V03_ParticleMorphField — deep field, additive points, instrumented glass chrome. */
+
+.root {
+  --void: #04040a;
+  --deep: #0a0d20;
+  --accent: #5b8cff;
+  --ice: #cdf4ff;
+  --violet: #7a4dff;
+  --hair: rgba(160, 190, 255, 0.16);
+  position: relative;
+  background: var(--void);
+  color: #e8eeff;
+  cursor: none;
+}
+
+/* ------------------------------------------------------------------ canvas layer */
+
+.canvasLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none; /* the field reacts to pointer via window listeners, not R3F raycasting */
+}
+
+.canvasLayer :global(canvas) {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+.canvasFallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 30% 35%, rgba(91, 140, 255, 0.22), transparent 70%),
+    radial-gradient(50% 45% at 72% 62%, rgba(122, 77, 255, 0.18), transparent 72%),
+    var(--void);
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 100% at 50% 45%, transparent 42%, rgba(2, 2, 8, 0.72) 100%),
+    linear-gradient(180deg, rgba(4, 4, 10, 0.65), transparent 30%, transparent 62%, rgba(4, 4, 10, 0.92));
+}
+
+.gpuNotice {
+  position: fixed;
+  z-index: 5;
+  left: 50%;
+  bottom: 1.2rem;
+  transform: translateX(-50%);
+  display: grid;
+  gap: 0.25rem;
+  width: min(30rem, calc(100vw - 2rem));
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(255, 196, 71, 0.5);
+  background: rgba(20, 14, 4, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: rgba(255, 236, 200, 0.9);
+}
+.gpuNotice b {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffc447;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(140, 175, 255, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 175, 255, 0.07) 1px, transparent 1px);
+  background-size: 8vmin 8vmin;
+  mask-image: radial-gradient(120% 90% at 50% 50%, black 20%, transparent 78%);
+  -webkit-mask-image: radial-gradient(120% 90% at 50% 50%, black 20%, transparent 78%);
+  opacity: 0.55;
+}
+
+/* ------------------------------------------------------------------ hero copy */
+
+.hero {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: clamp(1rem, 2.2vh, 1.8rem);
+  padding: clamp(5rem, 14vh, 9rem) var(--gutter) clamp(4rem, 12vh, 7rem);
+  pointer-events: none; /* let the field keep receiving pointer physics through the copy */
+}
+
+.hero > * {
+  pointer-events: auto;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: rgba(205, 244, 255, 0.62);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.eyebrow span {
+  opacity: 0.4;
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-weight: 350;
+  font-size: clamp(2.4rem, 7.4vw, 7.4rem);
+  line-height: 0.92;
+  letter-spacing: -0.045em;
+  max-width: 18ch;
+  color: #f2f6ff;
+  text-shadow: 0 0 60px rgba(10, 15, 40, 0.9);
+}
+.title em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ice);
+  background: linear-gradient(100deg, var(--ice), var(--accent) 60%, var(--violet));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.lede {
+  max-width: 56ch;
+  font-size: var(--step-0);
+  line-height: 1.6;
+  color: rgba(214, 226, 255, 0.72);
+}
+
+.stageRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 1px;
+  margin-top: clamp(0.5rem, 2vh, 1.4rem);
+  border: 1px solid var(--hair);
+  background: rgba(10, 13, 32, 0.42);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.stageItem {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.85rem 0.95rem 1rem;
+  border-right: 1px solid var(--hair);
+  transition: background var(--dur-base) var(--ease-editorial), box-shadow var(--dur-base) var(--ease-editorial);
+}
+.stageItem:last-child {
+  border-right: 0;
+}
+.stageItem[aria-current="step"] {
+  background: linear-gradient(140deg, rgba(91, 140, 255, 0.22), rgba(122, 77, 255, 0.08));
+  box-shadow: inset 0 1px 0 rgba(205, 244, 255, 0.35);
+}
+
+.stageIndex {
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.2em;
+  color: rgba(205, 244, 255, 0.5);
+}
+
+.stageKey {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
+  color: #fff;
+}
+.stageItem[aria-current="step"] .stageKey {
+  color: var(--ice);
+  text-shadow: 0 0 18px rgba(205, 244, 255, 0.6);
+}
+
+.stageNote {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(214, 226, 255, 0.55);
+  max-width: 30ch;
+}
+
+.scrollHint {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(205, 244, 255, 0.5);
+}
+
+.scrollHintLine {
+  width: clamp(2rem, 6vw, 5rem);
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  animation: hintPulse 2.4s var(--ease-editorial) infinite;
+  transform-origin: 0 50%;
+}
+
+@keyframes hintPulse {
+  0%,
+  100% {
+    transform: scaleX(0.3);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------------ telemetry */
+
+.telemetry {
+  position: fixed;
+  /* below the host chrome band (2.9rem) plus breathing room */
+  top: clamp(3.6rem, 8vh, 4.8rem);
+  right: var(--gutter);
+  z-index: 4;
+  width: min(15rem, 42vw);
+  padding: 0.7rem 0.8rem 0.8rem;
+  font-family: var(--font-mono);
+  border: 1px solid var(--hair);
+  background: rgba(6, 8, 20, 0.55);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.9);
+}
+
+.telemetryTitle {
+  font-size: 0.5rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(205, 244, 255, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.telemetryList {
+  display: grid;
+  gap: 0.28rem;
+  margin: 0;
+}
+.telemetryList > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: 0.66rem;
+  border-bottom: 1px dashed rgba(160, 190, 255, 0.14);
+  padding-bottom: 0.24rem;
+}
+.telemetryList dt {
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(205, 244, 255, 0.45);
+  font-size: 0.52rem;
+}
+.telemetryList dd {
+  margin: 0;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+.telemetryList dd[data-alert="true"] {
+  color: #ff7a6b;
+}
+
+.telemetryNote {
+  margin-top: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  line-height: 1.45;
+  color: rgba(214, 226, 255, 0.42);
+}
+
+/* ------------------------------------------------------------------ runways */
+
+.notes {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: clamp(4rem, 22vh, 16rem);
+  padding: clamp(6rem, 26vh, 20rem) var(--gutter);
+  max-width: 74rem;
+}
+
+.note {
+  max-width: 44rem;
+  padding: 1.4rem 1.5rem 1.6rem;
+  border-left: 2px solid var(--accent);
+  background: linear-gradient(120deg, rgba(8, 10, 26, 0.78), rgba(8, 10, 26, 0.34));
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+}
+
+.note:nth-child(even) {
+  margin-left: auto;
+  border-left: 0;
+  border-right: 2px solid var(--violet);
+  text-align: right;
+}
+.note:nth-child(even) .noteBody {
+  margin-left: auto;
+}
+
+.noteNum {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.26em;
+  color: var(--accent);
+}
+
+.noteTitle {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  letter-spacing: -0.03em;
+  line-height: 1.02;
+  margin: 0.5rem 0 0.7rem;
+  color: #fff;
+}
+
+.noteBody {
+  max-width: 52ch;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: rgba(214, 226, 255, 0.66);
+}
+
+.outro {
+  position: relative;
+  z-index: 2;
+  min-height: 62vh;
+  display: grid;
+  place-content: center;
+  gap: 1.2rem;
+  text-align: center;
+  padding: clamp(4rem, 14vh, 9rem) var(--gutter) clamp(6rem, 18vh, 10rem);
+}
+
+.outroTitle {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: clamp(1.8rem, 5vw, 4rem);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  max-width: 26ch;
+  margin: 0 auto;
+  color: #fff;
+}
+.outroTitle em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--ice);
+}
+
+.outroNote {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(205, 244, 255, 0.38);
+}
+
+/* ------------------------------------------------------------------ custom cursor */
+
+.cursorLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 8000;
+  /* Rings translate to the pointer; paint containment stops them from ever contributing to the
+     document's scroll width. */
+  contain: paint;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 260ms linear;
+}
+.cursorLayer[data-active="1"] {
+  opacity: 1;
+}
+
+.cursorRing,
+.cursorDot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  mix-blend-mode: screen;
+}
+
+.cursorRing {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(205, 244, 255, 0.75);
+  box-shadow: 0 0 22px rgba(91, 140, 255, 0.5) inset;
+}
+
+.cursorDot {
+  width: 6px;
+  height: 6px;
+  background: var(--ice);
+  box-shadow: 0 0 16px 4px rgba(91, 140, 255, 0.75);
+}
+
+/* ------------------------------------------------------------------ responsive */
+
+@media (max-width: 900px) {
+  .root {
+    cursor: auto;
+  }
+  .telemetry {
+    position: absolute;
+    top: auto;
+    bottom: 1rem;
+    right: 0.75rem;
+    width: min(13rem, 60vw);
+  }
+  .stageNote {
+    display: none;
+  }
+  .notes {
+    gap: clamp(3rem, 14vh, 9rem);
+  }
+  .note:nth-child(even) {
+    text-align: left;
+    border-right: 0;
+    border-left: 2px solid var(--violet);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollHintLine {
+    animation: none;
+    transform: scaleX(1);
+    opacity: 0.8;
+  }
+}

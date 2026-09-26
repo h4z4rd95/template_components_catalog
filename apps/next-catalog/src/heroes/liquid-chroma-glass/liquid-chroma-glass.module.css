@@ -1,0 +1,405 @@
+/* Hero_V05_LiquidChromaGlass — chromatic liquid field, true glass panels, spring physics. */
+
+.root {
+  --accent: #ff4fd8;
+  --accent-2: #5c9eff;
+  --mint: #c2fbee;
+  --violet: #571087;
+  --ink: #f4f7ff;
+  position: relative;
+  background: #050316;
+  color: var(--ink);
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ liquid layer */
+
+.liquid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  /* The grain overlay is inset -10% by design; clip it here so it can never widen the layout. */
+  overflow: clip;
+  pointer-events: none;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Shown while the context spins up and as the whole composition when WebGL2 or
+   reduced-motion says no. Same palette, zero frames. */
+.fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 55% at 22% 26%, #fa4fd9 0%, rgba(250, 79, 217, 0) 62%),
+    radial-gradient(55% 50% at 78% 22%, #5c9eff 0%, rgba(92, 158, 255, 0) 60%),
+    radial-gradient(70% 60% at 62% 78%, #571087 0%, rgba(87, 16, 135, 0) 66%),
+    radial-gradient(45% 40% at 34% 84%, #c2fbee 0%, rgba(194, 251, 238, 0) 58%),
+    linear-gradient(150deg, #050316, #0b0620 55%, #050316);
+  filter: saturate(1.15);
+}
+
+.grain {
+  position: absolute;
+  inset: -10%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.liquid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5, 3, 22, 0.55) 0%, rgba(5, 3, 22, 0.1) 30%, rgba(5, 3, 22, 0.72) 100%);
+}
+
+/* ------------------------------------------------------------------ spotlight */
+
+.spotlight {
+  position: fixed;
+  z-index: 1;
+  width: 46vmin;
+  height: 46vmin;
+  margin: -23vmin 0 0 -23vmin;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, rgba(255, 79, 216, 0.09) 38%, transparent 70%);
+  mix-blend-mode: screen;
+  filter: blur(4px);
+}
+
+/* ------------------------------------------------------------------ hero */
+
+.hero {
+  position: relative;
+  z-index: 2;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding: clamp(5rem, 14vh, 9rem) var(--gutter) clamp(4rem, 12vh, 7rem);
+}
+
+.heroInner {
+  display: grid;
+  gap: clamp(1rem, 2.4vh, 1.6rem);
+  max-width: 46rem;
+  will-change: transform;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(244, 247, 255, 0.6);
+}
+
+.title {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: clamp(3rem, 10vw, 9.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+  color: #fff;
+  text-shadow: 0 12px 60px rgba(5, 3, 22, 0.65);
+}
+.title em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  background: linear-gradient(96deg, #fff 4%, var(--mint) 32%, var(--accent) 62%, var(--accent-2) 96%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.lede {
+  max-width: 52ch;
+  font-size: var(--step-1);
+  line-height: 1.55;
+  color: rgba(244, 247, 255, 0.74);
+  text-shadow: 0 4px 30px rgba(5, 3, 22, 0.7);
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 0.4rem;
+}
+
+.ctaPrimary,
+.ctaGhost {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 0.9rem 1.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  transition: transform 320ms var(--ease-editorial), background 320ms var(--ease-editorial),
+    border-color 320ms var(--ease-editorial), color 320ms var(--ease-editorial);
+}
+
+.ctaPrimary {
+  background: rgba(255, 255, 255, 0.92);
+  color: #0a0518;
+  border-color: transparent;
+}
+.ctaPrimary:hover {
+  background: linear-gradient(100deg, var(--accent), var(--accent-2));
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.ctaGhost:hover {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.16);
+  transform: translateY(-3px);
+}
+
+.hint {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: rgba(244, 247, 255, 0.44);
+}
+
+/* ------------------------------------------------------------------ frames */
+
+.frames {
+  position: relative;
+  z-index: 2;
+  padding: clamp(4rem, 14vh, 10rem) var(--gutter) clamp(3rem, 10vh, 7rem);
+  background: linear-gradient(180deg, rgba(5, 3, 22, 0.1), rgba(5, 3, 22, 0.86) 45%, #050316);
+}
+
+.framesHead {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  align-items: end;
+  margin-bottom: clamp(2.5rem, 8vh, 4.5rem);
+}
+
+.framesTitle {
+  grid-column: 1 / span 7;
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: clamp(1.8rem, 5vw, 4rem);
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: #fff;
+}
+
+.framesLede {
+  grid-column: 9 / span 4;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: rgba(244, 247, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  padding-top: 0.9rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  gap: clamp(1rem, 2vw, 1.6rem);
+  will-change: transform;
+}
+
+.card {
+  --mx: 50%;
+  --my: 50%;
+  position: relative;
+  display: grid;
+  gap: 0.7rem;
+  align-content: start;
+  padding: clamp(1.3rem, 2.4vw, 1.9rem);
+  min-height: 15rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 2px;
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.04));
+  backdrop-filter: blur(18px) saturate(170%);
+  -webkit-backdrop-filter: blur(18px) saturate(170%);
+  box-shadow: 0 30px 70px -50px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition: transform 420ms var(--ease-editorial), border-color 420ms var(--ease-editorial);
+  overflow: hidden;
+}
+
+/* specular highlight that follows the pointer inside the panel */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(240px 240px at var(--mx) var(--my), rgba(255, 255, 255, 0.22), transparent 65%);
+  opacity: 0;
+  transition: opacity 380ms var(--ease-editorial);
+  pointer-events: none;
+}
+.card:hover::after {
+  opacity: 1;
+}
+.card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.36);
+}
+
+.cardIndex {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.26em;
+  color: var(--mint);
+}
+
+.cardTitle {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(1.1rem, 1.8vw, 1.45rem);
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: #fff;
+}
+
+.cardBody {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: rgba(244, 247, 255, 0.74);
+}
+
+.cardMetric {
+  margin-top: auto;
+  align-self: end;
+  justify-self: start;
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(244, 247, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.5rem;
+}
+
+/* ------------------------------------------------------------------ stats */
+
+.stats {
+  list-style: none;
+  margin: clamp(2.5rem, 8vh, 4.5rem) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.stat {
+  background: rgba(8, 5, 26, 0.72);
+  padding: 1.2rem 1.1rem 1.4rem;
+  display: grid;
+  gap: 0.4rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.stat b {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: clamp(1.5rem, 3vw, 2.4rem);
+  letter-spacing: -0.03em;
+  color: #fff;
+}
+
+.stat span {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(244, 247, 255, 0.5);
+}
+
+/* ------------------------------------------------------------------ outro */
+
+.outro {
+  position: relative;
+  z-index: 2;
+  min-height: 60vh;
+  display: grid;
+  place-content: center;
+  gap: 1.2rem;
+  text-align: center;
+  padding: clamp(4rem, 14vh, 9rem) var(--gutter) clamp(6rem, 18vh, 10rem);
+  background: #050316;
+}
+
+.outroTitle {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: clamp(1.7rem, 4.6vw, 3.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  max-width: 26ch;
+  margin: 0 auto;
+  color: #fff;
+}
+.outroTitle em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  background: linear-gradient(96deg, var(--mint), var(--accent) 70%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.outroNote {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(244, 247, 255, 0.4);
+}
+
+/* ------------------------------------------------------------------ responsive */
+
+@media (max-width: 1080px) {
+  .framesTitle,
+  .framesLede {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .spotlight {
+    display: none; /* touch devices have no hover position to follow */
+  }
+  .liquid {
+    position: absolute;
+  }
+  .title {
+    font-size: clamp(2.8rem, 17vw, 5rem);
+  }
+  .card {
+    min-height: 0;
+    backdrop-filter: blur(12px) saturate(150%);
+    -webkit-backdrop-filter: blur(12px) saturate(150%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .ctaPrimary,
+  .ctaGhost {
+    transition: none;
+  }
+}

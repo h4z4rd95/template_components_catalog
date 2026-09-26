@@ -1,0 +1,611 @@
+/* ============================================================================
+   The Catalog — shell chrome: navigation, mega-menus, the mobile drawer and the
+   language / theme switches.
+
+   Everything here is written with logical properties so the same rules serve LTR
+   and RTL. Physical values appear only where the design genuinely means "left" or
+   "right" (a glow offset, a chevron), and those are marked.
+   ========================================================================= */
+
+/* ------------------------------------------------------------------ switches */
+
+.shell-switches {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline-start: auto;
+}
+
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+}
+
+.lang-switch__button {
+  min-inline-size: 2.4rem;
+  padding: 0.35rem 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-600);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+}
+
+.lang-switch__button[aria-pressed="true"] {
+  background: var(--ink-700);
+  color: var(--ink-000);
+}
+
+/* ---------------------------------------------------------------------- nav */
+
+.nav {
+  display: flex;
+  align-items: center;
+  min-inline-size: 0;
+}
+
+.nav__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav__item {
+  position: relative;
+}
+
+.nav__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-600);
+  font: inherit;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.nav__trigger:hover,
+.nav__trigger:focus-visible {
+  color: var(--ink-700);
+  border-color: var(--ink-300);
+}
+
+.nav__item.is-open .nav__trigger {
+  color: var(--ink-000);
+  background: var(--ink-700);
+  border-color: var(--ink-700);
+}
+
+.nav__count {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-500);
+}
+
+.nav__item.is-open .nav__count {
+  color: color-mix(in oklab, var(--ink-000) 70%, transparent);
+}
+
+/* The mega-panel: two columns — topics on the leading edge, components after. */
+.nav__panel {
+  position: absolute;
+  inset-block-start: calc(100% + 0.55rem);
+  inset-inline-start: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.7fr) minmax(16rem, 1.3fr);
+  gap: 1.2rem;
+  inline-size: max-content;
+  max-inline-size: min(92vw, 40rem);
+  padding: 1rem 1.1rem 1.15rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--ink-100) 94%, transparent);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+.nav__col {
+  display: grid;
+  align-content: start;
+  gap: 0.3rem;
+  min-inline-size: 0;
+}
+
+.nav__col--wide {
+  padding-inline-start: 1.1rem;
+  border-inline-start: 1px solid var(--ink-300);
+}
+
+.nav__col-title {
+  margin: 0 0 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.nav__topic,
+.nav__more {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.32rem 0.45rem;
+  border-radius: 6px;
+  color: var(--ink-600);
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+.nav__topic:hover,
+.nav__more:hover,
+.nav__topic:focus-visible,
+.nav__more:focus-visible {
+  background: var(--ink-200);
+  color: var(--ink-700);
+}
+
+.nav__link {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.4rem 0.45rem;
+  border-radius: 6px;
+  color: var(--ink-700);
+  text-decoration: none;
+}
+
+.nav__link:hover,
+.nav__link:focus-visible {
+  background: var(--ink-200);
+}
+
+.nav__link-id {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-500);
+  text-transform: uppercase;
+}
+
+.nav__link-title {
+  font-size: 0.86rem;
+}
+
+.nav__link.is-planned .nav__link-title {
+  color: var(--ink-500);
+}
+
+.nav__more {
+  margin-block-start: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ------------------------------------------------------------------- burger */
+
+.burger {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.burger__glyph {
+  display: grid;
+  gap: 3px;
+}
+
+.burger__glyph span {
+  display: block;
+  inline-size: 15px;
+  block-size: 1.5px;
+  background: currentColor;
+}
+
+/* ------------------------------------------------------------------- drawer */
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  background: var(--ink-000);
+  color: var(--ink-700);
+  overflow: hidden;
+}
+
+.drawer__head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem var(--gutter);
+  border-block-end: 1px solid var(--ink-300);
+}
+
+.drawer__title {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.drawer__close {
+  margin-inline-start: auto;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.drawer__foot {
+  grid-row: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  justify-content: space-between;
+  padding: 0.85rem var(--gutter);
+  border-block-end: 1px solid var(--ink-300);
+}
+
+.drawer__body {
+  grid-row: 3;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--gutter) 2.5rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.drawer__section {
+  border-block-end: 1px solid var(--ink-300);
+}
+
+.drawer__summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  inline-size: 100%;
+  padding: 1rem 0.2rem;
+  border: 0;
+  background: transparent;
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 1.05rem;
+  text-align: start;
+  cursor: pointer;
+}
+
+.drawer__summary-label {
+  flex: 1;
+}
+
+.drawer__section.is-open .drawer__summary {
+  color: var(--accent-2);
+}
+
+.drawer__panel {
+  display: grid;
+  gap: 0.15rem;
+  padding-block-end: 0.9rem;
+}
+
+.drawer__blurb {
+  margin: 0 0 0.5rem;
+  color: var(--ink-500);
+  font-size: 0.84rem;
+  line-height: 1.7;
+}
+
+.drawer__link {
+  display: grid;
+  gap: 0.1rem;
+  padding: 0.7rem 0.6rem;
+  border-radius: 8px;
+  background: var(--ink-050);
+  color: var(--ink-700);
+  text-decoration: none;
+  font-size: 0.94rem;
+}
+
+.drawer__link-id {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+body.has-drawer {
+  overflow: hidden;
+}
+
+/* -------------------------------------------------------------- responsive -- */
+
+@media (max-width: 1080px) {
+  .nav__list {
+    display: none;
+  }
+
+  .burger {
+    display: inline-flex;
+  }
+}
+
+@media (max-width: 720px) {
+  .nav__panel {
+    grid-template-columns: 1fr;
+    max-inline-size: 92vw;
+  }
+
+  .nav__col--wide {
+    padding-inline-start: 0;
+    border-inline-start: 0;
+    padding-block-start: 0.9rem;
+    border-block-start: 1px solid var(--ink-300);
+  }
+}
+
+/* On desktop the drawer is never the right answer: resizing past the breakpoint
+   with it open would otherwise leave a dialog covering the page. */
+@media (min-width: 1081px) {
+  .drawer {
+    display: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------ download --
+   The catalogue is a static site, so it cannot zip on demand: the archive is built by
+   `npm run bundle` and committed beside the site. `<details>` keeps the control working
+   without JavaScript — the summary opens the panel, the links are ordinary anchors. */
+
+.download {
+  position: relative;
+}
+
+.download__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  list-style: none;
+  white-space: nowrap;
+}
+
+.download__button::-webkit-details-marker {
+  display: none;
+}
+
+.download__button:hover,
+.download__button:focus-visible,
+.download[open] .download__button {
+  border-color: var(--accent-2);
+  color: var(--ink-000);
+  background: var(--accent-2);
+}
+
+.download__glyph {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.download__panel {
+  position: absolute;
+  inset-block-start: calc(100% + 0.55rem);
+  /* The control sits at the trailing edge of the bar, so the panel is pinned to that edge —
+     physically on the right in LTR, physically on the left in RTL. `inset-inline-end` is the
+     logical way to say exactly that about a trailing anchor. */
+  inset-inline-end: 0;
+  z-index: 80;
+  display: grid;
+  gap: 0.5rem;
+  inline-size: min(23rem, calc(100vw - 2rem));
+  padding: 1rem 1.05rem 1.1rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--ink-100) 96%, transparent);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(18px) saturate(140%);
+  text-align: start;
+}
+
+.download__title {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.download__option {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.65rem 0.7rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 8px;
+  color: var(--ink-700);
+  text-decoration: none;
+}
+
+.download__option:hover,
+.download__option:focus-visible {
+  border-color: var(--accent-2);
+  background: var(--ink-200);
+}
+
+.download__option--primary {
+  border-color: color-mix(in oklab, var(--accent-2) 55%, var(--ink-300));
+  background: color-mix(in oklab, var(--accent-2) 12%, transparent);
+}
+
+.download__option-name {
+  font-size: 0.86rem;
+}
+
+.download__option-hint {
+  font-size: 0.74rem;
+  line-height: 1.6;
+  color: var(--ink-500);
+}
+
+.download__note {
+  margin: 0.15rem 0 0;
+  font-size: 0.7rem;
+  line-height: 1.65;
+  color: var(--ink-500);
+}
+
+@media (max-width: 720px) {
+  /* A 23rem panel cannot sit beside a 360px screen's edge, so it takes the width it needs and the
+     clamp keeps it inside the viewport. `position: fixed` is deliberately avoided: the masthead
+     bar carries `backdrop-filter`, which makes it the containing block for fixed descendants, and
+     the panel would then be positioned against the bar instead of the screen. */
+  .download__panel {
+    inline-size: min(23rem, calc(100vw - 2rem));
+    max-inline-size: calc(100vw - 2rem);
+  }
+}
+
+/* ------------------------------------------------------------- compact header --
+   Below 1080px the nav list gives way to the burger, so the variation counters — the least
+   important thing in the bar — go first. Below 720px the bar keeps the three controls that must
+   never be more than a tap away: the brand, the download, and the menu. The reel link and the
+   language / theme switches move into the drawer, which is already the phone's navigation. */
+
+/* The counters are the first thing to go: they are decoration, they are the widest thing in the
+   bar, and at 1280px they were enough to push the download button past the viewport edge. */
+@media (max-width: 1360px) {
+  .masthead__meta {
+    display: none;
+  }
+}
+
+/* Whatever else gives, a control's label never breaks across two lines — a wrapped "VISION REEL"
+   reads as two controls. */
+.masthead__cta,
+.download__button,
+.nav__trigger,
+.burger {
+  white-space: nowrap;
+}
+
+@media (max-width: 720px) {
+  .masthead__bar {
+    gap: 0.6rem;
+    padding-inline: 0.9rem;
+  }
+
+  .masthead__bar .lang-switch,
+  .masthead__bar .theme-switch,
+  .masthead__bar .masthead__cta {
+    display: none;
+  }
+
+  .download__button {
+    padding: 0.45rem 0.7rem;
+  }
+
+  .brand__name {
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand__name {
+    display: none;
+  }
+}
+
+/* ----------------------------------------------------------------- drawer links */
+
+.drawer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  inline-size: 100%;
+}
+
+.drawer__cta {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-700);
+  font-size: 0.76rem;
+  text-decoration: none;
+}
+
+.drawer__cta:hover,
+.drawer__cta:focus-visible {
+  border-color: var(--accent-2);
+  background: var(--ink-200);
+}
+
+.drawer__cta--primary {
+  border-color: color-mix(in oklab, var(--accent-2) 55%, var(--ink-300));
+  background: color-mix(in oklab, var(--accent-2) 14%, transparent);
+}
+
+.drawer__cta-facts {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-500);
+}
+
+.download__facts {
+  display: block;
+  margin-block-start: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-500);
+}
