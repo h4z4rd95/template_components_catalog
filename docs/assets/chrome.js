@@ -126,12 +126,28 @@ window.CatalogChrome = (function () {
 
     paintSwitches();
     translateTree(document);
+    translateData(document);
     localiseDrawer();
     syncUrl();
   }
 
+  /**
+   * One guarded place for the two media queries the shell asks about. `matchMedia` is universal in
+   * browsers, but it is also the kind of call that should never be the reason a header fails to
+   * build — a missing API answers "no" here, and the shell carries on.
+   */
+  function media(query) {
+    if (typeof window.matchMedia !== "function") return null;
+    try {
+      return window.matchMedia(query);
+    } catch (err) {
+      return null;
+    }
+  }
+
   function prefersReduced() {
-    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var mq = media("(prefers-reduced-motion: reduce)");
+    return !!(mq && mq.matches);
   }
 
   function syncUrl() {
@@ -151,6 +167,28 @@ window.CatalogChrome = (function () {
   /* -------------------------------------------------------------- translation */
 
   /** Any element carrying `data-i18n` is a shell string; anything else is content. */
+  /**
+   * `[data-i18n]` covers the shell's own strings. Generated pages also carry *data* — discipline
+   * names, variation titles, blurbs, blueprint sentences — which is not in the `ui` dictionary.
+   * Those nodes ship both languages in the markup (`data-i18n-fa` holds the Persian text, the
+   * element's own text is English) and are swapped here, so a page written once is bilingual
+   * without a JSON payload and without JavaScript-only content that search engines cannot read.
+   */
+  function translateData(scope) {
+    var nodes = (scope || document).querySelectorAll("[data-i18n-fa]");
+    Array.prototype.forEach.call(nodes, function (node) {
+      if (node.getAttribute("data-l10n-lang") === state.locale) return;
+      if (state.locale === "fa") {
+        if (!node.hasAttribute("data-l10n-en")) node.setAttribute("data-l10n-en", node.textContent);
+        var fa = node.getAttribute("data-i18n-fa");
+        if (fa) node.textContent = fa;
+      } else if (node.hasAttribute("data-l10n-en")) {
+        node.textContent = node.getAttribute("data-l10n-en");
+      }
+      node.setAttribute("data-l10n-lang", state.locale);
+    });
+  }
+
   function translateTree(scope) {
     var nodes = (scope || document).querySelectorAll("[data-i18n]");
     for (var i = 0; i < nodes.length; i += 1) {
@@ -265,6 +303,175 @@ window.CatalogChrome = (function () {
       map[v.discipline].push(v);
     });
     return map;
+  }
+
+  /**
+   * The bar is the same chrome on every page of the site, and there is exactly one definition of
+   * it. Any page that ships `<nav class="masthead__bar" data-shell-bar>` gets the brand, the
+   * menus, the counters, the switches and the download control built into it. Keeping a copy of
+   * this markup in the hub *and* in the generated pages would mean two headers to keep honest —
+   * which is precisely how one of them ends up with a bug the other one was fixed for.
+   */
+  function el(tag, className, text) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text !== undefined) node.textContent = text;
+    return node;
+  }
+
+  function buildBar(manifest) {
+    var bar = document.querySelector("[data-shell-bar]");
+    if (!bar) return;
+    bar.innerHTML = "";
+
+    var brand = el("a", "brand");
+    // On any page but the hub the brand has to walk back to it.
+    brand.href = window.__CATALOG_BASE__ ? href("index.html") : "#top";
+    brand.appendChild(el("span", "brand__dot")).setAttribute("aria-hidden", "true");
+    var name = el("span", "brand__name", t("brand"));
+    name.setAttribute("data-i18n", "brand");
+    brand.appendChild(name);
+    bar.appendChild(brand);
+
+    var burger = el("button", "burger");
+    burger.type = "button";
+    burger.setAttribute("data-burger", "");
+    burger.setAttribute("aria-expanded", "false");
+    burger.setAttribute("aria-controls", "nav-drawer");
+    var glyph = el("span", "burger__glyph");
+    glyph.setAttribute("aria-hidden", "true");
+    for (var i = 0; i < 3; i += 1) glyph.appendChild(el("span"));
+    burger.appendChild(glyph);
+    var burgerLabel = el("span", null, t("menu"));
+    burgerLabel.setAttribute("data-i18n", "menu");
+    burger.appendChild(burgerLabel);
+    bar.appendChild(burger);
+
+    var navHost = el("div", "nav");
+    navHost.setAttribute("data-nav-host", "");
+    navHost.setAttribute("role", "navigation");
+    navHost.setAttribute("data-i18n-aria", "browseCatalog");
+    bar.appendChild(navHost);
+
+    // Counters: the numbers are filled from the manifest, the words follow the ui dictionary.
+    var counts = manifest.counts || {};
+    var meta = el("span", "masthead__meta");
+    [
+      ["stat-variations", counts.total, "variations"],
+      // Counted the same way the hub counts them: distinct batches and distinct stack entries, not
+      // the highest batch number, so the two stay in agreement if a batch is ever skipped.
+      ["stat-batches", (manifest.variations || []).reduce(function (all, v) {
+        if (v.batch) all[v.batch] = true;
+        return all;
+      }, {}), "batches"],
+      ["stat-stacks", (manifest.variations || []).reduce(function (all, v) {
+        (v.stack || []).forEach(function (name) {
+          all[name] = true;
+        });
+        return all;
+      }, {}), "stacks"],
+    ].forEach(function (row, index) {
+      if (index) meta.appendChild(el("span", "sep", "·")).setAttribute("aria-hidden", "true");
+      var value = typeof row[1] === "object" && row[1] !== null ? Object.keys(row[1]).length : row[1] || 0;
+      var counter = el("span", "counter force-ltr", String(value).padStart(2, "0"));
+      counter.id = row[0];
+      meta.appendChild(counter);
+      var word = el("span", null, t(row[2]));
+      word.setAttribute("data-i18n", row[2]);
+      meta.appendChild(word);
+    });
+    bar.appendChild(meta);
+
+    var switches = el("div", "shell-switches");
+    var lang = el("div", "lang-switch");
+    lang.setAttribute("role", "group");
+    lang.setAttribute("data-i18n-aria", "language");
+    (manifest.locales || []).forEach(function (locale) {
+      var button = el("button", "lang-switch__button", locale.id === "fa" ? "فا" : "EN");
+      button.type = "button";
+      button.setAttribute("data-lang", locale.id);
+      lang.appendChild(button);
+    });
+    switches.appendChild(lang);
+
+    var theme = el("div", "theme-switch");
+    theme.setAttribute("role", "group");
+    theme.setAttribute("data-i18n-aria", "theme");
+    [["light", "☀", "light"], ["dark", "☾", "dark"]].forEach(function (row) {
+      var button = el("button", "theme-switch__button");
+      button.type = "button";
+      button.setAttribute("data-theme-set", row[0]);
+      var themeGlyph = el("span", "theme-switch__glyph", row[1]);
+      themeGlyph.setAttribute("aria-hidden", "true");
+      button.appendChild(themeGlyph);
+      var themeLabel = el("span", null, t(row[2]));
+      themeLabel.setAttribute("data-i18n", row[2]);
+      button.appendChild(themeLabel);
+      theme.appendChild(button);
+    });
+    switches.appendChild(theme);
+
+    var reel = el("a", "masthead__cta");
+    reel.href = href("vision/index.html");
+    var reelLabel = el("span", null, t("visionReel"));
+    reelLabel.setAttribute("data-i18n", "visionReel");
+    reel.appendChild(reelLabel);
+    reel.appendChild(document.createTextNode(" ↗"));
+    switches.appendChild(reel);
+
+    var download = el("details", "download");
+    download.setAttribute("data-download", "");
+    var summary = el("summary", "download__button");
+    summary.setAttribute("data-i18n-aria", "downloadTitle");
+    var downloadGlyph = el("span", "download__glyph", "⤓");
+    downloadGlyph.setAttribute("aria-hidden", "true");
+    summary.appendChild(downloadGlyph);
+    var downloadLabel = el("span", null, t("download"));
+    downloadLabel.setAttribute("data-i18n", "download");
+    summary.appendChild(downloadLabel);
+    download.appendChild(summary);
+
+    var panel = el("div", "download__panel");
+    var panelTitle = el("p", "download__title", t("downloadTitle"));
+    panelTitle.setAttribute("data-i18n", "downloadTitle");
+    panel.appendChild(panelTitle);
+
+    var zipLink = el("a", "download__option download__option--primary");
+    zipLink.href = href("download/catalog-source.zip");
+    zipLink.setAttribute("download", "");
+    var zipName = el("span", "download__option-name", t("downloadSource"));
+    zipName.setAttribute("data-i18n", "downloadSource");
+    zipLink.appendChild(zipName);
+    var zipHint = el("span", "download__option-hint");
+    var zipHintText = el("span", null, t("downloadSourceHint"));
+    zipHintText.setAttribute("data-i18n", "downloadSourceHint");
+    zipHint.appendChild(zipHintText);
+    var zipFacts = el("span", "download__facts");
+    zipFacts.setAttribute("data-download-facts", "");
+    zipHint.appendChild(zipFacts);
+    zipLink.appendChild(zipHint);
+    panel.appendChild(zipLink);
+
+    var repoLink = el("a", "download__option");
+    var repo = (manifest.meta && manifest.meta.repo) || "h4z4rd95/template_components_catalog";
+    repoLink.href = "https://github.com/" + repo;
+    repoLink.target = "_blank";
+    repoLink.rel = "noreferrer noopener";
+    var repoName = el("span", "download__option-name", t("downloadRepo"));
+    repoName.setAttribute("data-i18n", "downloadRepo");
+    repoLink.appendChild(repoName);
+    var repoHint = el("span", "download__option-hint", t("downloadRepoHint"));
+    repoHint.setAttribute("data-i18n", "downloadRepoHint");
+    repoLink.appendChild(repoHint);
+    panel.appendChild(repoLink);
+
+    var includes = el("p", "download__note", t("downloadIncludes"));
+    includes.setAttribute("data-i18n", "downloadIncludes");
+    panel.appendChild(includes);
+    download.appendChild(panel);
+    switches.appendChild(download);
+
+    bar.appendChild(switches);
   }
 
   function buildDesktopNav(manifest) {
@@ -667,7 +874,8 @@ window.CatalogChrome = (function () {
 
     var wantedTheme = param("theme") || readStored(THEME_KEY);
     if (wantedTheme !== "light" && wantedTheme !== "dark") {
-      wantedTheme = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+      var light = media("(prefers-color-scheme: light)");
+      wantedTheme = light && light.matches ? "light" : "dark";
     }
     state.theme = wantedTheme;
   }
@@ -676,6 +884,8 @@ window.CatalogChrome = (function () {
     state.manifest = manifest || { variations: [], disciplines: [], locales: [], ui: {} };
     resolve(state.manifest);
     apply({ animate: false });
+
+    buildBar(state.manifest);
 
     var host = document.querySelector("[data-nav-host]");
     if (host) {
@@ -722,13 +932,13 @@ window.CatalogChrome = (function () {
     wireDownload();
     loadDownloadFacts();
 
-    var media = window.matchMedia("(prefers-color-scheme: light)");
+    var systemTheme = media("(prefers-color-scheme: light)");
     var onSystemTheme = function (event) {
       // Only follow the system while the visitor has not made a choice of their own.
       if (readStored(THEME_KEY) || param("theme")) return;
       setTheme(event.matches ? "light" : "dark");
     };
-    if (media.addEventListener) media.addEventListener("change", onSystemTheme);
+    if (systemTheme && systemTheme.addEventListener) systemTheme.addEventListener("change", onSystemTheme);
 
     // The stage overlay is an iframe; a language flip there needs telling.
     on(function (detail) {

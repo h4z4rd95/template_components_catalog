@@ -887,7 +887,16 @@
       "downloadRepo": "Full repository on GitHub",
       "downloadRepoHint": "Complete history and every asset — including the reel.",
       "downloadIncludes": "Includes the catalog, both framework apps, the vanilla track, the shared package and the build scripts.",
-      "files": "files"
+      "files": "files",
+      "home": "Catalog",
+      "discipline": "Discipline",
+      "topicLabel": "Topic",
+      "buildMissingTitle": "framework build missing",
+      "buildMissingLead": "This variation ships from",
+      "buildMissingTail": "and is exported into docs/framework/ at build time. Run it with npm run build, or read the source on GitHub.",
+      "buildMissingSource": "Read the source ↗",
+      "buildMissingWorkflow": "View build workflow ↗",
+      "pagePlan": "Its page ships in the commerce batch — the metadata, stack and blueprint above are already final."
     },
     "fa": {
       "brand": "کاتالوگ",
@@ -975,7 +984,16 @@
       "downloadRepo": "مخزن کامل روی گیت‌هاب",
       "downloadRepoHint": "تاریخ کامل و همهٔ دارایی‌ها — همراه گالری حرکتی.",
       "downloadIncludes": "شامل کاتالوگ، هر دو اپ فریم‌ورک، مسیر وانیلا، پکیج مشترک و اسکریپت‌های بیلد.",
-      "files": "فایل"
+      "files": "فایل",
+      "home": "کاتالوگ",
+      "discipline": "دیسیپلین",
+      "topicLabel": "موضوع",
+      "buildMissingTitle": "بیلدِ فریم‌ورک موجود نیست",
+      "buildMissingLead": "این واریاسیون از",
+      "buildMissingTail": "می‌آید و هنگام بیلد در docs/framework/ منتشر می‌شود. با npm run build بسازیدش یا سورس را روی گیت‌هاب ببینید.",
+      "buildMissingSource": "دیدن سورس ↗",
+      "buildMissingWorkflow": "دیدن workflow بیلد ↗",
+      "pagePlan": "صفحهٔ این واریاسیون در بچِ کامرس می‌آید — متادیتا، استک و بلوپرینتِ بالا همین حالا نهایی‌اند."
     }
   },
   "counts": {
@@ -984,5 +1002,5 @@
     "beta": 0,
     "planned": 7
   },
-  "generatedAt": "2026-09-26T00:26:49.470Z"
+  "generatedAt": "2026-09-26T00:31:32.225Z"
 }

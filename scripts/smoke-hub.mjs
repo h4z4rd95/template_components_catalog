@@ -40,6 +40,9 @@ async function main() {
   const scripts = {
     catalog: await read("data/catalog.js"),
     hud: await read("assets/hud.js"),
+    // The shell runtime belongs in this test: it builds the masthead bar, the menus and the
+    // drawer, so a throw in here would leave CI green while the real page had no header at all.
+    chrome: await read("assets/chrome.js"),
     hub: await read("assets/hub.js"),
   };
 
@@ -58,10 +61,23 @@ async function main() {
   const { window } = dom;
   // Stub availability probing as "build present" so the iframe mount path is exercised.
   window.fetch = () => Promise.resolve({ ok: true, status: 200 });
+  // jsdom implements no media queries; the shell asks two of them (theme preference and reduced
+  // motion). Stubbing keeps that a property of the test environment, not of the shell's code.
+  window.matchMedia = (query) => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addEventListener() {},
+    removeEventListener() {},
+    addListener() {},
+    removeListener() {},
+    dispatchEvent: () => false,
+  });
 
-  // Execute the same three scripts the page loads, in document order.
+  // Execute the same scripts the page loads, in document order.
   window.eval(scripts.catalog);
   window.eval(scripts.hud);
+  window.eval(scripts.chrome);
   window.eval(scripts.hub);
 
   // The manifest promise chain needs a macrotask or two to settle.
@@ -84,6 +100,21 @@ async function main() {
 
   const counters = doc.getElementById("stat-variations");
   check("live counter filled", counters && counters.textContent.trim() !== "—", counters?.textContent);
+
+  check(
+    "the shell built the masthead bar (brand · menus · switches · download)",
+    !!doc.querySelector("[data-shell-bar] .brand") &&
+      doc.querySelectorAll("[data-nav-host] .nav__item").length > 0 &&
+      doc.querySelectorAll("[data-shell-bar] .lang-switch__button").length === 2 &&
+      !!doc.querySelector("[data-download] summary"),
+  );
+  check(
+    "the drawer carries the moved controls (language · theme · reel · archive)",
+    !!doc.querySelector("#nav-drawer .lang-switch") &&
+      !!doc.querySelector("#nav-drawer .theme-switch") &&
+      !!doc.querySelector('#nav-drawer a[href$="catalog-source.zip"]') &&
+      !!doc.querySelector('#nav-drawer a[href$="vision/index.html"]'),
+  );
 
   const firstCard = doc.querySelector(".card");
   check("card carries its accent token", !!firstCard.style.getPropertyValue("--card-accent"));

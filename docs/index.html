@@ -74,76 +74,9 @@
         <span class="aurora__grain"></span>
       </div>
 
-      <nav class="masthead__bar" data-i18n-aria="primaryNav">
-        <a class="brand" href="#top">
-          <span class="brand__dot" aria-hidden="true"></span>
-          <span class="brand__name" data-i18n="brand">THE CATALOG</span>
-        </a>
-
-        <!-- Desktop: one menu per discipline, each opening a topic + component panel.
-             Mobile: the same model behind a full-height drawer (chrome.js builds both). -->
-        <button type="button" class="burger" data-burger aria-expanded="false" aria-controls="nav-drawer">
-          <span class="burger__glyph" aria-hidden="true"><span></span><span></span><span></span></span>
-          <span data-i18n="menu">Menu</span>
-        </button>
-        <div class="nav" data-nav-host role="navigation" data-i18n-aria="browseCatalog"></div>
-
-        <span class="masthead__meta">
-          <span id="stat-variations" class="counter force-ltr">—</span> <span data-i18n="variations">variations</span>
-          <span class="sep" aria-hidden="true">·</span>
-          <span id="stat-batches" class="counter force-ltr">—</span> <span data-i18n="batches">batches</span>
-          <span class="sep" aria-hidden="true">·</span>
-          <span id="stat-stacks" class="counter force-ltr">—</span> <span data-i18n="stacks">stacks</span>
-        </span>
-        <div class="shell-switches">
-          <div class="lang-switch" role="group" data-i18n-aria="language">
-            <button type="button" class="lang-switch__button" data-lang="en">EN</button>
-            <button type="button" class="lang-switch__button" data-lang="fa">فا</button>
-          </div>
-          <div class="theme-switch" role="group" data-i18n-aria="theme">
-            <button type="button" class="theme-switch__button" data-theme-set="light">
-              <span class="theme-switch__glyph" aria-hidden="true">☀</span>
-              <span data-i18n="light">Light</span>
-            </button>
-            <button type="button" class="theme-switch__button" data-theme-set="dark">
-              <span class="theme-switch__glyph" aria-hidden="true">☾</span>
-              <span data-i18n="dark">Dark</span>
-            </button>
-          </div>
-          <a class="masthead__cta" href="vision/index.html"><span data-i18n="visionReel">Vision reel</span> ↗</a>
-
-          <details class="download" data-download>
-            <summary class="download__button" data-i18n-aria="downloadTitle">
-              <span class="download__glyph" aria-hidden="true">⤓</span>
-              <span data-i18n="download">Download</span>
-            </summary>
-            <div class="download__panel">
-              <p class="download__title" data-i18n="downloadTitle">Take the project</p>
-              <a class="download__option download__option--primary" href="download/catalog-source.zip" download>
-                <span class="download__option-name" data-i18n="downloadSource">Project source (ZIP)</span>
-                <span class="download__option-hint">
-                  <span data-i18n="downloadSourceHint">Every project file, minus the generated motion reel.</span>
-                  <span class="download__facts" data-download-facts></span>
-                </span>
-              </a>
-              <a
-                class="download__option"
-                href="https://github.com/h4z4rd95/template_components_catalog"
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <span class="download__option-name" data-i18n="downloadRepo">Full repository on GitHub</span>
-                <span class="download__option-hint" data-i18n="downloadRepoHint">
-                  Complete history and every asset — including the reel.
-                </span>
-              </a>
-              <p class="download__note" data-i18n="downloadIncludes">
-                Includes the catalog, both framework apps, the vanilla track, the shared package and the build scripts.
-              </p>
-            </div>
-          </details>
-        </div>
-      </nav>
+      <!-- The bar itself is built by assets/chrome.js (`buildBar`), which is what makes the hub and
+           every generated browse / component page share one header instead of three copies of it. -->
+      <nav class="masthead__bar" data-shell-bar data-i18n-aria="primaryNav"></nav>
 
       <div class="masthead__body">
         <p class="kicker" data-i18n="tagline">Every stack. Every motion engine. In one scroll.</p>
