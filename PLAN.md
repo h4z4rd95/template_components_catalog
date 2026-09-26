@@ -291,6 +291,8 @@ buildless vanilla drawer/orbital nav. Both bilingual, both theme-aware, both tes
 `storefront`, `product`, `cart`, `checkout`.
 
 ### Harness additions
+- card completeness across all four skins — `npm run verify:cards` (shipped, and it immediately
+  earned its place: it found the Persian column mounting zero live previews).
 - theme sweep: every target is probed in light **and** dark; contrast is computed for the headline,
   the lede and the HUD, and a target that renders invisible copy fails the run.
 - direction sweep: every target is probed in `ltr` and `rtl`; horizontal overflow and clipped

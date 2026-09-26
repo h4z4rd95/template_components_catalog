@@ -46,6 +46,7 @@ Six gates, each catching a class of defect the others structurally cannot:
 | Types | `npm run typecheck` | strict TypeScript across the app and the shared kit |
 | Showroom runtime | `npm run test:hub` | 23 jsdom assertions: filters, search, deep-links, stage overlay, postMessage relay, iframe caps, missing-build notice |
 | Production build | `npm run build` | 8 static routes exported and spliced into `docs/` |
+| **Card completeness (4 skins)** | `npm run verify:cards` | every card in en/fa × day/night: a frame mode, no promise a planned variation cannot keep, complete HUD copy and tags |
 | **Real-browser audit + vision** | `npm run verify:browser` | **actual painted pixels**: 4 breakpoints, WebGL context creation, console/network, `hidden`-attribute leaks, text colliding with chrome, reduced-motion composition — plus an animated capture of every variation |
 
 `npm test` runs gates 1–4 (fast, no browser). The browser gate is separate because it needs a Chromium.
