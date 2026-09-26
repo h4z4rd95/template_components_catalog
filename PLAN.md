@@ -279,7 +279,15 @@ height; measured overlap at the capture size went from ~31,000 px² to **0**.
   search that matches both languages, topic facets, and a `Commerce` discipline that exists from the
   start so the structure is real before the pages are.
 - Generated pages: `docs/browse/<discipline>/`, `docs/browse/<discipline>/<topic>/`,
-  `docs/component/<slug>/` — emitted by the sync step from the same manifest.
+  `docs/component/<slug>/` — emitted by `scripts/pages.mjs` on every sync (shipped, 47 pages,
+  bilingual in the markup itself so they read correctly before any script runs).
+
+**Batch 3b — variation pages: their own language and their own day mode.** The catalogue shell
+(bar, menus, drawer, browse and component pages) is bilingual and dual-theme; the variations
+inside the frames are not yet. The frame contract is in place — the shell broadcasts
+`catalog:skin` to any `iframe[data-catalog-frame]` and generates those attributes — so this batch
+adds the listener to `CatalogHUD.tsx`, `CatalogHUD.vue` and the vanilla HUD script, plus the
+per-variation light palette and the Persian font pairing for each design language.
 
 **Batch 3b — navigation variations** · `Nav_V01_MegaMenuCommand` (Next.js + Motion) and a
 buildless vanilla drawer/orbital nav. Both bilingual, both theme-aware, both tested on mobile.
@@ -304,3 +312,7 @@ buildless vanilla drawer/orbital nav. Both bilingual, both theme-aware, both tes
 - direction sweep: every target is probed in `ltr` and `rtl`; horizontal overflow and clipped
   controls are reported per direction.
 - nav test: the drawer is opened, its links counted, Escape is pressed, and focus return is asserted.
+- generated-page sweep — `npm run verify:pages` (shipped: assets and links resolve against the real
+  filesystem, no horizontal overflow in either direction, localised headings and HUD labels, a
+  stable component mounts its stage while a planned one never does, and same page / other theme
+  must not paint the same background — the check that caught the light ramp being overridden).

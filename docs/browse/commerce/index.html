@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-page="discipline" data-title-en="Commerce &amp; Checkout — variations, topics and stacks" data-title-fa="فروشگاه و پرداخت — نمونه‌ها، موضوع‌ها و استک‌ها">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Commerce &amp; Checkout — variations, topics and stacks</title>
+    <meta name="description" content="ویترین کالای فیزیکی و دیجیتال، صفحهٔ محصول، سبد و پرداخت. 7 variations across 3 topics." data-desc-en="ویترین کالای فیزیکی و دیجیتال، صفحهٔ محصول، سبد و پرداخت. 7 variations across 3 topics." data-desc-fa="ویترین کالای فیزیکی و دیجیتال، صفحهٔ محصول، سبد و پرداخت. 7 نمونه در 3 موضوع." />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="Commerce &amp; Checkout — variations, topics and stacks" />
+    <meta property="og:description" content="ویترین کالای فیزیکی و دیجیتال، صفحهٔ محصول، سبد و پرداخت. 7 variations across 3 topics." />
+    <meta property="og:type" content="website" />
+    <link rel="alternate" hreflang="en" href="?lang=en" />
+    <link rel="alternate" hreflang="fa" href="?lang=fa" />
+
+    <!-- The same pre-paint bootstrap the hub runs: nothing renders in the wrong theme or the wrong
+         direction, because the very first paint already knows which one applies. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try {
+              return localStorage.getItem(k);
+            } catch (e) {
+              return null;
+            }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../assets/fonts.css" />
+    <!-- hub.css carries the authored dark ink ramp and the masthead bar itself; the shell has to
+         look identical here and on the hub, so there is one definition of it, not two. Order
+         matters and is the hub's: both ramps are single-class specificity, so the light ramp in
+         theme.css only wins because it is read *after* the dark one. -->
+    <link rel="stylesheet" href="../../assets/hub.css" />
+    <link rel="stylesheet" href="../../assets/theme.css" />
+    <link rel="stylesheet" href="../../assets/chrome.css" />
+    <link rel="stylesheet" href="../../assets/page.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+
+    <script>
+      window.__CATALOG_BASE__ = "../../";
+    </script>
+    <script src="../../data/catalog.js" defer></script>
+    <script src="../../assets/chrome.js" defer></script>
+    <script src="../../assets/page.js" defer></script>
+  </head>
+
+  <body class="pg pg--accented" style="--accent: #5CE1FF">
+    <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
+
+    <header class="masthead pg__masthead">
+      <nav class="masthead__bar" data-shell-bar data-i18n-aria="primaryNav"></nav>
+    </header>
+
+    <main id="main" class="pg__main">
+      <nav class="pg__crumbs" aria-label="Breadcrumb">
+        <a href="../../index.html" data-i18n="home">Catalog</a>
+        <span aria-hidden="true">/</span>
+        <a href="../index.html" data-i18n-fa="مرور">Browse</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page" data-i18n-fa="فروشگاه و پرداخت">Commerce &amp; Checkout</span>
+      </nav>
+      <header class="pg__hero">
+        <p class="pg__kicker force-ltr" data-i18n-fa="فروشگاه و پرداخت">Commerce</p>
+        <h1 class="pg__title" data-i18n-fa="فروشگاه و پرداخت">Commerce &amp; Checkout</h1>
+        <p class="pg__lede" data-i18n-fa="ویترین کالای فیزیکی و دیجیتال، صفحهٔ محصول، سبد و پرداخت.">ویترین کالای فیزیکی و دیجیتال، صفحهٔ محصول، سبد و پرداخت.</p>
+        <ul class="pg__stats">
+          <li><span class="pg__stat"><span class="force-ltr">07</span> <span data-i18n="variations">variations</span></span></li>
+          <li><span class="pg__stat"><span class="force-ltr">03</span> <span data-i18n="topics">topics</span></span></li>
+        </ul>
+      </header>
+      <nav class="pg__topics" data-i18n-aria="filterTopic">
+        <ul class="pg__chips">
+            <li>
+              <a class="pg__chip" href="storefront/index.html">
+                <span class="pg__chip-label" data-i18n-fa="صفحهٔ فروشگاه">Storefronts</span>
+                <span class="pg__chip-count force-ltr">02</span>
+              </a>
+            </li>
+            <li>
+              <a class="pg__chip" href="product/index.html">
+                <span class="pg__chip-label" data-i18n-fa="جزئیات محصول">Product Detail</span>
+                <span class="pg__chip-count force-ltr">02</span>
+              </a>
+            </li>
+            <li>
+              <a class="pg__chip" href="cart/index.html">
+                <span class="pg__chip-label" data-i18n-fa="سبد و پرداخت">Cart &amp; Checkout</span>
+                <span class="pg__chip-count force-ltr">03</span>
+              </a>
+            </li>
+        </ul>
+      </nav>
+      <section class="pg__block">
+        <div class="pg__block-head">
+          <h2 class="pg__block-title">
+            <a href="storefront/index.html" data-i18n-fa="صفحهٔ فروشگاه">Storefronts</a>
+          </h2>
+          <p class="pg__block-blurb" data-i18n-fa="جایی که فروشگاه از قالب‌زدگی درمی‌آید.">Where a shop stops looking like a template.</p>
+        </div>
+          <ul class="pg__rows">
+            <li>
+              <a class="pg__row" href="../../component/holo-storefront/index.html" style="--row-accent: #5CE1FF" data-status="planned">
+                <span class="pg__row-id force-ltr">Commerce_V01_HoloStorefront</span>
+                <span class="pg__row-title" data-i18n-fa="ویترینِ هولوگرافیک">Holographic Storefront</span>
+                <span class="pg__row-vibe" data-i18n-fa="غرق‌شده در وب‌جی‌ال · خرده‌فروشی">Immersive WebGL-First · Retail</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Next.js</span><span class="pg__row-chip">React 19</span><span class="pg__row-chip">TypeScript</span><span class="pg__row-chip">R3F + Drei</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+            <li>
+              <a class="pg__row" href="../../component/digital-vault/index.html" style="--row-accent: #B48CFF" data-status="planned">
+                <span class="pg__row-id force-ltr">Commerce_V02_DigitalVault</span>
+                <span class="pg__row-title" data-i18n-fa="گاوصندوقِ دیجیتال">Digital Vault</span>
+                <span class="pg__row-vibe" data-i18n-fa="گرادیانِ مایعِ رنگین · شیشه‌ای">Chromatic Liquid Gradient · Glassmorphism</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Nuxt 4</span><span class="pg__row-chip">Vue 3</span><span class="pg__row-chip">TresJS</span><span class="pg__row-chip">GSAP</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+          </ul>
+      </section>
+
+      <section class="pg__block">
+        <div class="pg__block-head">
+          <h2 class="pg__block-title">
+            <a href="product/index.html" data-i18n-fa="جزئیات محصول">Product Detail</a>
+          </h2>
+          <p class="pg__block-blurb" data-i18n-fa="صفحه‌ای که خریدار پیش از تصمیم واردش می‌شود.">The page a shopper lands on before deciding.</p>
+        </div>
+          <ul class="pg__rows">
+            <li>
+              <a class="pg__row" href="../../component/chromatic-product/index.html" style="--row-accent: #FF6FA8" data-status="planned">
+                <span class="pg__row-id force-ltr">Commerce_V03_ChromaticProduct</span>
+                <span class="pg__row-title" data-i18n-fa="محصولِ رنگین">Chromatic Product</span>
+                <span class="pg__row-vibe" data-i18n-fa="گرادیانِ مایعِ رنگین · سرمقاله‌ای">Chromatic Liquid Gradient · Editorial</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Next.js</span><span class="pg__row-chip">React 19</span><span class="pg__row-chip">Three.js</span><span class="pg__row-chip">GSAP ScrollTrigger</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+            <li>
+              <a class="pg__row" href="../../component/editorial-product/index.html" style="--row-accent: #D8B472" data-status="planned">
+                <span class="pg__row-id force-ltr">Commerce_V04_EditorialProduct</span>
+                <span class="pg__row-title" data-i18n-fa="محصولِ سرمقاله‌ای">Editorial Product</span>
+                <span class="pg__row-vibe" data-i18n-fa="مینیمالیسم لوکس · سرمقاله‌ای">Luxury Minimalism · Editorial</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Nuxt 4</span><span class="pg__row-chip">Vue 3</span><span class="pg__row-chip">GSAP SplitText</span><span class="pg__row-chip">Lenis</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+          </ul>
+      </section>
+
+      <section class="pg__block">
+        <div class="pg__block-head">
+          <h2 class="pg__block-title">
+            <a href="cart/index.html" data-i18n-fa="سبد و پرداخت">Cart &amp; Checkout</a>
+          </h2>
+          <p class="pg__block-blurb" data-i18n-fa="افزودن، حذف و پرداخت بدون اصطکاک.">Adding, removing, and paying without friction.</p>
+        </div>
+          <ul class="pg__rows">
+            <li>
+              <a class="pg__row" href="../../component/fly-to-cart/index.html" style="--row-accent: #FF3B1F" data-status="planned">
+                <span class="pg__row-id force-ltr">Commerce_V05_FlyToCart</span>
+                <span class="pg__row-title" data-i18n-fa="پرواز به سبد">Fly to Cart</span>
+                <span class="pg__row-vibe" data-i18n-fa="تایپوگرافی جنبشی · ریزتعامل">Kinetic Typography · Micro-interaction</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Vanilla JS</span><span class="pg__row-chip">Canvas2D</span><span class="pg__row-chip">Web Animations API</span><span class="pg__row-chip">FLIP</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+            <li>
+              <a class="pg__row" href="../../component/one-step-checkout/index.html" style="--row-accent: #00F0A8" data-status="planned">
+                <span class="pg__row-id force-ltr">Commerce_V06_OneStepCheckout</span>
+                <span class="pg__row-title" data-i18n-fa="پرداختِ تک‌مرحله‌ای">One-Step Checkout</span>
+                <span class="pg__row-vibe" data-i18n-fa="مینیمالیسم لوکس · نرخ تبدیل">Luxury Minimalism · Conversion</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Next.js</span><span class="pg__row-chip">React 19</span><span class="pg__row-chip">Motion</span><span class="pg__row-chip">CSS</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+            <li>
+              <a class="pg__row" href="../../component/ritual-checkout/index.html" style="--row-accent: #9D7BFF" data-status="planned">
+                <span class="pg__row-id force-ltr">Commerce_V07_RitualCheckout</span>
+                <span class="pg__row-title" data-i18n-fa="پرداختِ آیینی">Ritual Checkout</span>
+                <span class="pg__row-vibe" data-i18n-fa="تایپوگرافی جنبشی · سرمقاله‌ای">Kinetic Typography · Editorial</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Nuxt 4</span><span class="pg__row-chip">Vue 3</span><span class="pg__row-chip">GSAP Timeline</span><span class="pg__row-chip">Lenis</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+          </ul>
+      </section>
+      <section class="pg__block pg__block--aside">
+        <h2 class="pg__block-title" data-i18n="disciplines">Disciplines</h2>
+        <ul class="pg__chips">
+<li><a class="pg__chip" href="../../browse/hero/index.html"><span class="pg__chip-label" data-i18n-fa="بخش قهرمان">Hero Sections</span></a></li>
+<li><a class="pg__chip" href="../../browse/nav/index.html"><span class="pg__chip-label" data-i18n-fa="ناوبری و مگا‌منو">Navigation &amp; Mega-Menus</span></a></li>
+<li><a class="pg__chip" href="../../browse/loader/index.html"><span class="pg__chip-label" data-i18n-fa="لودر و گذارها">Loaders &amp; Transitions</span></a></li>
+<li><a class="pg__chip" href="../../browse/scroll/index.html"><span class="pg__chip-label" data-i18n-fa="اسکرول و قفل صفحه">Scroll &amp; Pinning</span></a></li>
+<li><a class="pg__chip" href="../../browse/footer/index.html"><span class="pg__chip-label" data-i18n-fa="فوتر و ناحیهٔ فراخوان">Footers &amp; CTA Zones</span></a></li>
+<li><a class="pg__chip" href="../../browse/ux/index.html"><span class="pg__chip-label" data-i18n-fa="عناصر تجربهٔ کاربری">UX Primitives</span></a></li>
+<li><a class="pg__chip" href="../../browse/dashboard/index.html"><span class="pg__chip-label" data-i18n-fa="اپ و داشبورد">App &amp; Dashboards</span></a></li>
+        </ul>
+      </section>
+
+    </main>
+
+    <footer class="pg__foot">
+      <p class="pg__foot-note" data-i18n="footerNote">
+        Built as an open, bilingual, dual-theme showroom. Every variation is a real page.
+      </p>
+      <a class="pg__foot-link" href="../../index.html" data-i18n="backToHub">Back to the hub</a>
+    </footer>
+
+    <div data-drawer-host></div>
+  </body>
+</html>

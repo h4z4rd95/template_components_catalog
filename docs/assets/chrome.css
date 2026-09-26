@@ -53,6 +53,7 @@
 
 .nav__list {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.15rem;
   margin: 0;
@@ -515,10 +516,21 @@ body.has-drawer {
    never be more than a tap away: the brand, the download, and the menu. The reel link and the
    language / theme switches move into the drawer, which is already the phone's navigation. */
 
-@media (max-width: 1080px) {
+/* The counters are the first thing to go: they are decoration, they are the widest thing in the
+   bar, and at 1280px they were enough to push the download button past the viewport edge. */
+@media (max-width: 1360px) {
   .masthead__meta {
     display: none;
   }
+}
+
+/* Whatever else gives, a control's label never breaks across two lines — a wrapped "VISION REEL"
+   reads as two controls. */
+.masthead__cta,
+.download__button,
+.nav__trigger,
+.burger {
+  white-space: nowrap;
 }
 
 @media (max-width: 720px) {

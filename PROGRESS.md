@@ -674,3 +674,108 @@ drawer opens with both new links, and switching language while the drawer is ope
 (en→fa and fa→en). Result: **PROBLEMS: none**, plus a pixel read of the screenshots in both
 directions and both themes. `npm test` green (hub 23/23) · `npm run verify:cards` green in all four
 skins · `npm run build` green, and the build now ends by regenerating the archive.
+
+---
+
+## Every component gets a page — 47 of them, generated
+
+**Acceptance criteria 7 and 8** were the oldest open item in Phase 3: *"categories properly cover
+topics"* and *"every selected component opens its own page"*. Until this work the hub's mega-menus
+linked to `browse/**` and `component/**` URLs that did not exist — the navigation advertised a
+hierarchy the site did not have. Those links are real now.
+
+### The hierarchy, as pages
+
+`scripts/pages.mjs` runs inside `npm run sync` and writes the whole tree from the manifest:
+
+```
+docs/browse/index.html                          every discipline → topic → variation, one index
+docs/browse/<discipline>/index.html             one discipline: its topics, then its variations
+docs/browse/<discipline>/<topic>/index.html     one topic inside one discipline
+docs/component/<slug>/index.html                one variation: HUD, live stage, source, neighbours
+```
+
+Forty-seven pages: one index, eight disciplines, twenty-one discipline-scoped topics, seventeen
+components. **Generated, never hand-edited** — the tree is wiped and rewritten every sync, so a
+variation deleted from the manifest cannot leave an orphan page behind claiming it still exists,
+and a new one cannot be forgotten.
+
+Each discipline page groups its variations **by its own declared topic order**, so it reads as that
+discipline's table of contents rather than as a flat list. A topic chip carries the number of
+variations under it and is rendered dashed when that number is zero, which is how the Commerce
+topics appear today: the structure is published before the pages land in it.
+
+### Bilingual without a payload
+
+The pages carry **both languages in the markup**: the element's own text is English and
+`data-i18n-fa` holds the Persian, which the shell swaps (`translateData` in `chrome.js`). Nothing is
+fetched before the text appears, the Persian page is complete before a script runs, and a search
+engine sees the same content a reader does. The document's `<title>` and description follow the
+locale too, from `data-title-en` / `data-title-fa` on the root.
+
+### The component page
+
+The star of the tree. It opens with breadcrumbs, then a hero carrying the component's **id** as a
+kicker, its name and its aesthetic vibe, then the **metadata HUD** — id, discipline, topic, stack
+chips, vibe, interaction blueprint, tags — as a definition list that stays labelled in either
+language. Below it the **live stage** mounts the real built route in an iframe, with `Raw ↗` and
+`Source ↗` in its bar; then how to run it, the variations related by topic, and previous/next
+within the discipline. A catalogue that never offers a next thing to look at is a dead end.
+
+A **planned** variation gets the same page with the same metadata, but where the stage would be it
+shows the blueprint: the reserved route, the list of what is already final, and the honest note
+that its page ships in the commerce batch. No empty frame, no 404 in an iframe, and — the mistake
+this catalogue already made once — never a live-preview promise it cannot keep.
+
+### One header, not three
+
+The generated pages needed the same masthead, and a second copy of a header is how one of them ends
+up with a bug the other was fixed for. So `chrome.js` now **builds the bar** (`buildBar`) into any
+`[data-shell-bar]`, from the manifest: brand, menus, counters, switches, download control. The hub
+dropped 70 lines of markup and now uses it too — including the counters, which are counted the same
+way in both places, and the repository URL, which comes from the manifest rather than being typed
+into a link.
+
+That immediately exposed a gap in CI: the jsdom smoke test never loaded `chrome.js` at all, so a
+throw in the shell would have left CI green and the real page header-less. The shell is in the test
+now, with assertions for the bar, the menus and the drawer's controls. It found an unconditional
+`matchMedia` call on the first run; both media queries the shell asks about go through one guarded
+helper.
+
+### What the pixels caught
+
+Four defects that every DOM assertion in the suite had happily passed:
+
+1. **The pages rendered blank below the bar.** `hub.css`'s `.masthead` is the hub's near-full-height
+   hero header (`min-height: 96svh`, `display: grid`) — inherited by the pages' thin masthead
+   wrapper, which pushed the entire page below the fold. Its `overflow: hidden` would also have
+   clipped the mega-menus and the download panel.
+2. **`theme=light` painted a dark page.** Both ink ramps are single-class specificity, so order
+   decides: the hub reads the dark ramp first and the light ramp after. The generated pages had them
+   the other way round, and the attribute said `light` while the pixels stayed black. The gate now
+   compares the background *painted* by the same page in both themes, not the attribute.
+3. **The download button was clipped at 1280.** The counters are the widest decoration in the bar;
+   they now yield at 1360px, and the bar itself may wrap a second row rather than push a control off
+   the inline end. `npm run verify:header` grew two viewports (1280, 1100) and a *functional* wrap
+   check — force `nowrap` and see whether the control gets shorter — after a first attempt that
+   counted line boxes by `top` and reported three lines for every button.
+4. **A kicker printed its own key.** The browse index rendered the string `browse` (uppercased to
+   "BROWSE") because the generator wrote the key instead of the localised label. Kickers that are
+   shell strings now carry `data-i18n`, so the same markup is correct in both languages.
+
+### Verification
+`npm run verify:pages` (new gate) walks a browse index, a discipline, a topic, a stable component
+and a planned one in all four skins: 24 page loads asserting that every asset returns 200, **every
+internal link resolves to a file that exists on disk**, there is no horizontal overflow in either
+direction, the heading and HUD labels are localised, a stable page mounts its stage, a planned page
+never does — and that the same page paints a different background in the other theme. It then
+structurally sweeps **all 47** generated pages. Result: clean. `npm test` green · `npm run
+verify:cards` green in all four skins · `npm run verify:header` green in six viewports ·
+`npm run build` green, and it regenerates the archive.
+
+### Next
+Batch 3b, first half: the variations **inside** the frames still know nothing about language or
+theme. The contract is already wired — the shell broadcasts `catalog:skin` to any
+`iframe[data-catalog-frame]`, and both the hub's cards and the component stage now set that
+attribute — so the next work package adds the listener to `CatalogHUD.tsx`, `CatalogHUD.vue` and
+the vanilla HUD, then the per-variation light palette and Persian font pairing.

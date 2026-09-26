@@ -44,6 +44,8 @@ const CASES = [
   ["fa", "dark", 390, 844],
   ["en", "light", 390, 844],
   ["fa", "light", 720, 900],
+  ["en", "light", 1280, 900],
+  ["fa", "dark", 1100, 900],
 ];
 
 for (const [lang, theme, width, height] of CASES) {
@@ -57,6 +59,22 @@ for (const [lang, theme, width, height] of CASES) {
 
   const bar = await page.evaluate(() => {
     const b = document.querySelector(".masthead__bar");
+    // A label that wraps makes one control look like two, and it is invisible to a DOM check.
+    // Counting line boxes by their `top` lies (a glyph span and a label span sit on the same line
+    // with different boxes), so ask the layout a question instead: does forcing `nowrap` make the
+    // control shorter? If it does, the label was on two lines.
+    const wraps = (el) => {
+      const before = el.getBoundingClientRect().height;
+      const previous = el.style.whiteSpace;
+      el.style.whiteSpace = "nowrap";
+      const after = el.getBoundingClientRect().height;
+      el.style.whiteSpace = previous;
+      return after + 0.5 < before;
+    };
+    const wrapped = [...b.querySelectorAll(".masthead__cta, .download__button, .nav__trigger, .burger")]
+      .filter((el) => getComputedStyle(el).display !== "none")
+      .filter(wraps)
+      .map((el) => el.className.split(" ")[0]);
     const kids = [...b.children]
       .filter((el) => getComputedStyle(el).display !== "none")
       .map((el) => el.className.split(" ")[0] + ":" + Math.round(el.getBoundingClientRect().width));
@@ -69,9 +87,10 @@ for (const [lang, theme, width, height] of CASES) {
         const r = el.getBoundingClientRect();
         return { cls: el.className.split(" ")[0], inside: r.left >= -1 && r.right <= window.innerWidth + 1 && r.width > 0 };
       });
-    return { kids, overflows, cut, vw: window.innerWidth };
+    return { kids, overflows, cut, wrapped, vw: window.innerWidth };
   });
   if (bar.overflows) problems.push(`${lang}/${theme}/${width}: bar overflows (${bar.kids.join(" ")})`);
+  if (bar.wrapped.length) problems.push(`${lang}/${theme}/${width}: control label wrapped (${bar.wrapped.join(", ")})`);
   for (const c of bar.cut) if (!c.inside) problems.push(`${lang}/${theme}/${width}: ${c.cls} clipped by the bar`);
 
   const button = await page.evaluate(() => {

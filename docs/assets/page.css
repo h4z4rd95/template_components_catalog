@@ -1,0 +1,727 @@
+/* ============================================================================
+   The Catalog — generated pages (browse index, discipline, topic, component).
+
+   Everything here is namespaced `pg`. The shell files this page also loads —
+   hub.css (ink ramp, masthead bar), theme.css (day/night, direction), chrome.css
+   (menus, drawer, switches) — already own the header, so nothing in this file
+   restyles it. What is left is the page itself: crumbs, hero, the index blocks,
+   the variation rows, the metadata HUD and the live stage.
+
+   Direction is handled with logical properties throughout; the only physical
+   values are the accent glow offsets, and they are marked.
+   ========================================================================= */
+
+.pg__main {
+  max-inline-size: 78rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-block: clamp(1.5rem, 1rem + 2vw, 3rem) clamp(4rem, 3rem + 6vw, 8rem);
+}
+
+/* On the hub, `.masthead` is a near-full-height hero header (96svh, grid, overflow hidden). Here
+   the masthead is the bar alone, so those three inherited properties have to go: the height would
+   push the page below the fold, and `overflow: hidden` would clip the mega-menus and the download
+   panel — everything that hangs off the bar and is taller than it. */
+.pg__masthead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 60;
+  display: block;
+  min-block-size: 0;
+  overflow: visible;
+  grid-template-rows: none;
+  background: color-mix(in oklab, var(--ink-000) 82%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+/* ---------------------------------------------------------------- breadcrumbs --- */
+
+.pg__crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-block-end: 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.pg__crumbs a {
+  color: var(--ink-600);
+  text-decoration: none;
+}
+
+.pg__crumbs a:hover,
+.pg__crumbs a:focus-visible {
+  color: var(--accent);
+}
+
+.pg__crumbs [aria-current="page"] {
+  color: var(--ink-700);
+}
+
+/* --------------------------------------------------------------------- hero --- */
+
+.pg__hero {
+  position: relative;
+  padding-block-end: clamp(1.6rem, 1rem + 2vw, 2.6rem);
+  border-block-end: 1px solid var(--ink-300);
+}
+
+/* The accent bar is a physical decoration anchored to the inline start: it reads as "this page
+   belongs to that variation" in both directions, and the clip keeps the glow off the text. */
+.pg__hero::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0.2rem;
+  inset-inline-start: 0;
+  inline-size: 2.4rem;
+  block-size: 2px;
+  background: var(--accent);
+}
+
+.pg__kicker {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.pg__title {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(2rem, 1.2rem + 4.2vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ink-700);
+  text-wrap: balance;
+}
+
+[lang="fa"] .pg__title {
+  line-height: var(--leading-fa, 1.6);
+  letter-spacing: 0;
+}
+
+.pg__lede {
+  max-inline-size: 52ch;
+  margin: 1rem 0 0;
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.12rem);
+  line-height: 1.75;
+  color: var(--ink-600);
+}
+
+.pg__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pg__stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-600);
+}
+
+.pg__stat a {
+  color: inherit;
+}
+
+.pg__stat--status {
+  border-color: color-mix(in oklab, var(--accent) 45%, var(--ink-300));
+  color: var(--accent);
+}
+
+.pg__stat--status[data-status="planned"] {
+  border-style: dashed;
+  color: var(--ink-500);
+}
+
+/* ------------------------------------------------------------------- blocks --- */
+
+.pg__block {
+  margin-block-start: clamp(2rem, 1.4rem + 2vw, 3.4rem);
+}
+
+.pg__block--aside {
+  padding-block-start: 1.4rem;
+  border-block-start: 1px solid var(--ink-300);
+}
+
+.pg__block-head {
+  display: grid;
+  gap: 0.35rem;
+  margin-block-end: 1rem;
+}
+
+.pg__block-title {
+  margin: 0;
+  font-size: clamp(1.15rem, 1rem + 0.8vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink-700);
+}
+
+.pg__block-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pg__block-title a:hover,
+.pg__block-title a:focus-visible {
+  color: var(--accent);
+}
+
+.pg__block-blurb {
+  max-inline-size: 60ch;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--ink-600);
+}
+
+.pg__block-counts {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.pg__empty {
+  margin: 0;
+  padding: 1.1rem 1.2rem;
+  border: 1px dashed var(--ink-300);
+  border-radius: var(--radius);
+  font-size: 0.86rem;
+  color: var(--ink-500);
+}
+
+/* --------------------------------------------------------------- topic chips --- */
+
+.pg__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0 0 1.2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.pg__chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-600);
+  font-size: 0.82rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.pg__chip:hover,
+.pg__chip:focus-visible {
+  border-color: var(--accent);
+  color: var(--ink-700);
+}
+
+.pg__chip[data-empty] {
+  border-style: dashed;
+  color: var(--ink-500);
+}
+
+.pg__chip.is-active {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+  color: var(--ink-700);
+}
+
+.pg__chip-count {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-500);
+}
+
+/* ------------------------------------------------------------ variation rows --- */
+
+.pg__rows {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pg__row {
+  display: grid;
+  grid-template-columns: 13.5rem minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1.1fr) auto;
+  gap: 0.9rem;
+  align-items: center;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--ink-300);
+  border-inline-start: 2px solid var(--row-accent, var(--accent));
+  border-radius: var(--radius);
+  background: var(--ink-100);
+  color: var(--ink-700);
+  text-decoration: none;
+  transition: border-color 160ms linear, background 160ms linear, transform 160ms var(--ease-snap);
+}
+
+.pg__row:hover,
+.pg__row:focus-visible {
+  border-color: color-mix(in oklab, var(--row-accent, var(--accent)) 60%, var(--ink-300));
+  transform: translateY(-1px);
+}
+
+.pg__row[data-status="planned"] {
+  border-inline-start-style: dashed;
+}
+
+.pg__row-id {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-500);
+}
+
+.pg__row-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.pg__row-vibe,
+.pg__row-stack {
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: var(--ink-600);
+}
+
+.pg__row-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.pg__row-chip {
+  padding: 0.15rem 0.45rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-500);
+  white-space: nowrap;
+}
+
+.pg__row-status {
+  justify-self: end;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.pg__row[data-status="stable"] .pg__row-status {
+  color: var(--accent-3);
+}
+
+/* ---------------------------------------------------------------------- HUD --- */
+
+.pg__hud {
+  margin-block-start: clamp(1.6rem, 1rem + 1.6vw, 2.4rem);
+  padding: clamp(1rem, 0.8rem + 1vw, 1.6rem);
+  border: 1px solid var(--ink-300);
+  border-block-start: 2px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--ink-100);
+}
+
+.pg__hud-title {
+  margin: 0 0 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.pg__spec {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+}
+
+.pg__spec-row {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 0.4rem 1.2rem;
+  align-items: baseline;
+  padding-block-end: 0.9rem;
+  border-block-end: 1px solid var(--ink-300);
+}
+
+.pg__spec-row:last-child {
+  padding-block-end: 0;
+  border-block-end: 0;
+}
+
+.pg__spec-row dt {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.pg__spec-row dd {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--ink-700);
+}
+
+.pg__spec-row dd a {
+  color: var(--ink-700);
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+.pg__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pg__tag {
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-500);
+}
+
+/* -------------------------------------------------------------------- stage --- */
+
+.pg__stage {
+  margin-block-start: clamp(1.6rem, 1rem + 1.6vw, 2.4rem);
+  border: 1px solid var(--ink-300);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--ink-100);
+}
+
+.pg__stage--planned {
+  border-style: dashed;
+}
+
+.pg__stage-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.6rem 0.85rem;
+  border-block-end: 1px solid var(--ink-300);
+  background: var(--ink-050);
+}
+
+.pg__stage-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.pg__stage-actions {
+  display: flex;
+  gap: 0.45rem;
+}
+
+.pg__action {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-100);
+  color: var(--ink-600);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.pg__action:hover,
+.pg__action:focus-visible {
+  border-color: var(--accent);
+  color: var(--ink-700);
+}
+
+.pg__action--primary {
+  border-color: color-mix(in oklab, var(--accent) 55%, var(--ink-300));
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+}
+
+.pg__stage-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  block-size: clamp(24rem, 60vh, 44rem);
+  background: var(--ink-000);
+}
+
+.pg__stage-frame iframe {
+  inline-size: 100%;
+  block-size: 100%;
+  border: 0;
+  opacity: 0;
+  transition: opacity 420ms var(--ease-editorial);
+}
+
+.pg__stage-frame iframe.is-live {
+  opacity: 1;
+}
+
+.pg__stage-idle {
+  position: absolute;
+  inset-block-start: 1rem;
+  inset-inline-start: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.pg__blueprint {
+  display: grid;
+  gap: 0.7rem;
+  padding: clamp(1.2rem, 1rem + 1.4vw, 2rem);
+}
+
+.pg__blueprint .card__planned-kicker,
+.pg__blueprint .card__planned-note {
+  margin: 0;
+}
+
+/* The blueprint is a grid, so a link in it would stretch to the full column and read as a banner
+   rather than as a button. */
+.pg__blueprint .pg__action {
+  justify-self: start;
+}
+
+.pg__blueprint .card__planned-value {
+  font-size: 0.8rem;
+}
+
+/* ------------------------------------------------------------------- notice --- */
+
+.pg__notice {
+  display: grid;
+  gap: 0.7rem;
+  max-inline-size: 46rem;
+  padding: 1.4rem;
+  text-align: start;
+}
+
+.pg__notice strong {
+  font-size: 0.95rem;
+  color: var(--ink-700);
+}
+
+.pg__notice p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: var(--ink-600);
+}
+
+.pg__notice code {
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-700);
+}
+
+.pg__notice-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* -------------------------------------------------------------------- how-to --- */
+
+.pg__howto {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.pg__howto code {
+  padding: 0.3rem 0.6rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-600);
+}
+
+.pg__howto-note {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+/* -------------------------------------------------------------------- pager --- */
+
+.pg__pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-block-start: clamp(2rem, 1.4rem + 2vw, 3rem);
+  padding-block-start: 1.4rem;
+  border-block-start: 1px solid var(--ink-300);
+}
+
+.pg__pager-link {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--ink-300);
+  border-radius: var(--radius);
+  color: var(--ink-700);
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.pg__pager-link:hover,
+.pg__pager-link:focus-visible {
+  border-color: var(--accent);
+}
+
+.pg__pager-link.is-empty {
+  border-style: dashed;
+  opacity: 0.4;
+}
+
+.pg__pager-link--next {
+  text-align: end;
+}
+
+.pg__pager-dir {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+/* -------------------------------------------------------------------- foot --- */
+
+.pg__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  max-inline-size: 78rem;
+  margin-inline: auto;
+  padding: 1.4rem var(--gutter) 3rem;
+  border-block-start: 1px solid var(--ink-300);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.pg__foot-note {
+  margin: 0;
+  max-inline-size: 46ch;
+  line-height: 1.8;
+}
+
+.pg__foot-link {
+  color: var(--ink-600);
+}
+
+.pg__foot-link:hover,
+.pg__foot-link:focus-visible {
+  color: var(--accent);
+}
+
+/* ------------------------------------------------------------------ responsive --- */
+
+@media (max-width: 1080px) {
+  .pg__row {
+    grid-template-columns: 11rem minmax(0, 1.4fr) auto;
+  }
+
+  .pg__row-vibe {
+    display: none;
+  }
+
+  .pg__row-stack {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .pg__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.4rem 0.8rem;
+  }
+
+  .pg__row-id,
+  .pg__row-stack {
+    grid-column: 1 / -1;
+  }
+
+  .pg__spec-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+
+  .pg__pager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pg__stage-frame {
+    block-size: clamp(20rem, 52vh, 32rem);
+  }
+}

@@ -845,7 +845,14 @@
       "buildMissingTail": "and is exported into docs/framework/ at build time. Run it with npm run build, or read the source on GitHub.",
       "buildMissingSource": "Read the source ↗",
       "buildMissingWorkflow": "View build workflow ↗",
-      "pagePlan": "Its page ships in the commerce batch — the metadata, stack and blueprint above are already final."
+      "pagePlan": "Its page ships in the commerce batch — the metadata, stack and blueprint above are already final.",
+      "browseLede": "Every discipline, the topics under it, and every variation — one index, one click deep.",
+      "componentPage": "Component page",
+      "previous": "Previous",
+      "next": "Next",
+      "inThisTopic": "in this topic",
+      "noVariations": "No variation has landed in this topic yet.",
+      "batch": "Batch"
     },
     "fa": {
       "brand": "کاتالوگ",
@@ -942,7 +949,14 @@
       "buildMissingTail": "می‌آید و هنگام بیلد در docs/framework/ منتشر می‌شود. با npm run build بسازیدش یا سورس را روی گیت‌هاب ببینید.",
       "buildMissingSource": "دیدن سورس ↗",
       "buildMissingWorkflow": "دیدن workflow بیلد ↗",
-      "pagePlan": "صفحهٔ این واریاسیون در بچِ کامرس می‌آید — متادیتا، استک و بلوپرینتِ بالا همین حالا نهایی‌اند."
+      "pagePlan": "صفحهٔ این واریاسیون در بچِ کامرس می‌آید — متادیتا، استک و بلوپرینتِ بالا همین حالا نهایی‌اند.",
+      "browseLede": "هر رشته، موضوع‌های زیرش و همهٔ نمونه‌ها — یک فهرست، به فاصلهٔ یک کلیک.",
+      "componentPage": "صفحهٔ کامپوننت",
+      "previous": "پیشین",
+      "next": "پسین",
+      "inThisTopic": "در این موضوع",
+      "noVariations": "هنوز نمونه‌ای در این موضوع ننشسته است.",
+      "batch": "بچ"
     }
   }
 }

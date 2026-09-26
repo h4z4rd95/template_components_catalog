@@ -36,6 +36,30 @@ GSAP 3.13+ ships SplitText/Observer free in the public package, and this repo us
 
 ---
 
+### The pages behind the scroll
+
+The hub is one scroll; it cannot answer *"what else is under Typography?"* and it cannot give a
+single component a URL worth sending to a client. So the same manifest that feeds the hub is also
+the source of the site's real pages, written by `scripts/pages.mjs` during `npm run sync`:
+
+```
+docs/browse/index.html                        every discipline → topic → variation
+docs/browse/<discipline>/index.html           one discipline: its topics, then its variations
+docs/browse/<discipline>/<topic>/index.html   one topic inside one discipline
+docs/component/<slug>/index.html              one variation: HUD, live stage, source, neighbours
+```
+
+47 pages today. They are **generated, never hand-edited** — the tree is wiped and rewritten on
+every sync, so a variation removed from the manifest cannot leave a page behind pointing at
+nothing — and **bilingual in the markup**: the element text is English and `data-i18n-fa` carries
+the Persian, which the shell swaps at runtime. The pages are readable, indexable and complete
+before a script runs, and there is no payload to fetch before the text appears.
+
+A component page carries the variation's metadata HUD (id, discipline, topic, stack, aesthetic
+vibe, interaction blueprint, tags), a live stage mounting the real built route, `Raw ↗` and
+`Source ↗`, the commands to run it, related variations, and previous/next navigation. A *planned*
+variation gets the same page with an honest blueprint instead of a stage — never an empty frame.
+
 ### Downloading the project
 
 The masthead carries a **Download** button (bilingual, in both themes, and it collapses to the
@@ -64,6 +88,7 @@ Six gates, each catching a class of defect the others structurally cannot:
 | Production build | `npm run build` | 8 static routes exported and spliced into `docs/` |
 | **Card completeness (4 skins)** | `npm run verify:cards` | every card in en/fa × day/night: a frame mode, no promise a planned variation cannot keep, complete HUD copy and tags |
 | Download archive | `npm run bundle` | rebuilds `docs/download/catalog-source.zip` from `git ls-files` (excludes the generated reel) — `npm run build` runs it automatically |
+| **Generated pages (all skins)** | `npm run verify:pages` | 47 browse/component pages: assets load, every internal link exists on disk, no overflow in either direction, localised copy, stage mounted, themes paint differently |
 | **Header reachability (all skins)** | `npm run verify:header` | the bar fits, no visible control is clipped, the download panel opens inside the viewport in en/fa × day/night and on phone/tablet/desktop, and the drawer re-labels on a language switch |
 | **Real-browser audit + vision** | `npm run verify:browser` | **actual painted pixels**: 4 breakpoints, WebGL context creation, console/network, `hidden`-attribute leaks, text colliding with chrome, reduced-motion composition — plus an animated capture of every variation |
 

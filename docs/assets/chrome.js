@@ -271,16 +271,19 @@ window.CatalogChrome = (function () {
     return String(id).toLowerCase();
   }
 
+  // Like the preview frames, every generated page is addressed by its concrete file: a directory
+  // URL resolves on Pages but not over file://, and these links are exactly the ones a reader
+  // follows to get somewhere.
   function disciplineHref(id) {
-    return href("browse/" + disciplineSlug(id) + "/");
+    return href("browse/" + disciplineSlug(id) + "/index.html");
   }
 
   function topicHref(disciplineId, topic) {
-    return href("browse/" + disciplineSlug(disciplineId) + "/" + topic + "/");
+    return href("browse/" + disciplineSlug(disciplineId) + "/" + topic + "/index.html");
   }
 
   function componentHref(slug) {
-    return href("component/" + slug + "/");
+    return href("component/" + slug + "/index.html");
   }
 
   /** Where the live variation actually lives — the built route, opened raw. */

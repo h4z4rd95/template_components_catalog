@@ -74,16 +74,18 @@
 
     const actions = el("div", "card__actions");
 
-    // A planned variation has no page, so it gets no "Raw ↗" — that link would be a 404 — and no
-    // primary button. The panel above the actions already explains the status; what remains here
-    // is only what genuinely works: its component page (latent), its id and its source.
+    // Every card reaches its own component page — that page exists for stable and planned
+    // variations alike (a planned one opens on its blueprint instead of a preview).
+    const page = el("a", "card__action", t("componentPage") + " ↗");
+    page.href = window.CatalogChrome
+      ? window.CatalogChrome.componentHref(variation.slug)
+      : variation.href;
+    page.rel = "noreferrer noopener";
+
+    // A planned variation has no live route, so it gets no "Raw ↗" — that link would be a 404 —
+    // and the overlay button would open an empty stage. The panel above already explains why.
     if (variation.status === "planned") {
-      const route = el("a", "card__action", t("openPreview") + " ↗");
-      route.href = window.CatalogChrome
-        ? window.CatalogChrome.componentHref(variation.slug)
-        : variation.href;
-      route.rel = "noreferrer noopener";
-      actions.appendChild(route);
+      actions.appendChild(page);
     } else {
       const open = el("button", "card__action card__action--primary", t("openPreview"));
       open.type = "button";
@@ -91,6 +93,7 @@
         handlers.onOpen(variation);
       });
       actions.appendChild(open);
+      actions.appendChild(page);
     }
 
     const copy = el("button", "card__action", t("copyId"));

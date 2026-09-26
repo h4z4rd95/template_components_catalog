@@ -15,6 +15,7 @@ import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+import { emitPages } from "./pages.mjs";
 const MANIFEST = join(ROOT, "catalog", "catalog.json");
 const OUT_DIR = join(ROOT, "docs", "data");
 
@@ -338,6 +339,11 @@ async function main() {
     await writeFile(target, JSON.stringify(payload, null, 2) + "\n", "utf8");
   }
 
+  // ---- generated pages ----------------------------------------------------
+  // browse/** and component/** are derived from the manifest on every sync: the pages a reader
+  // navigates (discipline → topic → variation) and the page each variation owns.
+  const pages = await emitPages({ root: ROOT, manifest, variations });
+
   // ---- report -------------------------------------------------------------
   const vendored = await vendorAssets();
   vendored.push(await emitFontStylesheet());
@@ -359,7 +365,8 @@ async function main() {
     console.error(`\n  ${errors.length} manifest error(s). Fix catalog/catalog.json and re-run.\n`);
     process.exit(1);
   }
-  console.log(`  ✓ wrote docs/data/catalog.json + docs/data/catalog.js\n`);
+  console.log(`  ✓ wrote docs/data/catalog.json + docs/data/catalog.js`);
+  console.log(`  ✓ generated ${pages.written.length} pages under docs/browse/** and docs/component/**\n`);
 }
 
 main().catch((err) => {
