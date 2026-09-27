@@ -10,6 +10,10 @@
  *
  * Behaviour: `H` toggles it, the collapsed state persists in localStorage, and inside an iframe
  * it hands the "expand" affordance to the parent frame instead of fighting for fullscreen.
+ *
+ * `?hud=0` renders no HUD at all. A composed page that embeds a variation and *already prints the
+ * provenance next to it* would otherwise have this panel floating on top of the variation's own
+ * copy — a collapsed chip is still an overlay in a 44svh frame.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Variation } from "@catalog/shared";
@@ -29,6 +33,7 @@ export default function CatalogHUD({ variation, defaultOpen = true }: CatalogHUD
   const [open, setOpen] = useState(defaultOpen);
   const [copied, setCopied] = useState<null | "id" | "link">(null);
   const [inIframe, setInIframe] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [hub, setHub] = useState("/");
   const [raw, setRaw] = useState("");
   const rootRef = useRef<HTMLElement>(null);
@@ -115,8 +120,17 @@ export default function CatalogHUD({ variation, defaultOpen = true }: CatalogHUD
     else void node.requestFullscreen?.().catch(() => {});
   }, [inIframe, variation.id]);
 
+  // Opt-out, checked once: an embedding page that shows the metadata itself asks for no HUD.
+  useEffect(() => {
+    const flag = (new URLSearchParams(window.location.search).get("hud") || "").toLowerCase();
+    if (flag === "0" || flag === "off" || flag === "none") setHidden(true);
+  }, []);
+
   const sourceHref = `${GITHUB}/tree/main/${variation.source}`;
   const badge = useMemo(() => `BATCH ${String(variation.batch).padStart(2, "0")}`, [variation.batch]);
+
+  // After every hook, so the hook order never depends on a query string.
+  if (hidden) return null;
 
   return (
     <aside

@@ -20,6 +20,8 @@ const CATALOG_REPO = "https://github.com/h4z4rd95/template_components_catalog";
 const STORAGE_KEY = "catalog:hud:collapsed";
 
 const open = ref(true);
+/** `?hud=0` when the embedding page prints the metadata itself — see the React twin. */
+const hidden = ref(false);
 const copied = ref<"" | "id" | "link">("");
 const inIframe = ref(false);
 const baseURL = useRuntimeConfig().app.baseURL || "/";
@@ -102,11 +104,17 @@ onMounted(() => {
   window.addEventListener("keydown", onKey);
 });
 
+onMounted(() => {
+  const flag = (new URLSearchParams(window.location.search).get("hud") || "").toLowerCase();
+  if (flag === "0" || flag === "off" || flag === "none") hidden.value = true;
+});
+
 onUnmounted(() => window.removeEventListener("keydown", onKey));
 </script>
 
 <template>
   <aside
+    v-if="!hidden"
     class="cat-hud"
     data-catalog-hud
     :style="{ '--accent': variation.accent }"

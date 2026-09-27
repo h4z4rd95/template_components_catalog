@@ -113,7 +113,9 @@
           return;
         }
         var iframe = document.createElement("iframe");
-        iframe.src = src;
+        // The slot's own caption already names the variation, links its component page and warns
+        // when the framework export is missing, so the in-frame HUD would only cover the copy.
+        iframe.src = src + (src.indexOf("?") >= 0 ? "&" : "?") + "hud=0";
         iframe.title = "Live catalogue variation";
         iframe.loading = "lazy";
         iframe.setAttribute("allow", "fullscreen; autoplay");
