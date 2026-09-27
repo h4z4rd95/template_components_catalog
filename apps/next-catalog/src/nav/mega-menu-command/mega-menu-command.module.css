@@ -1,0 +1,874 @@
+/* ============================================================================
+   Nav_V01_MegaMenuCommand
+
+   Day / night is a token swap on `[data-theme]`, which the variation's own root
+   carries (set from the shell's skin, see lib/skin.ts). Direction is handled with
+   logical properties, so the RTL build mirrors without a second stylesheet; the
+   only physical values are the panel glow's spread and the pointer coordinates,
+   which are physical by nature.
+   ========================================================================= */
+
+.root {
+  /* Night — the authored one. */
+  --ink-000: #07070c;
+  --ink-050: #0c0c14;
+  --ink-100: #12121c;
+  --ink-200: #1a1a26;
+  --ink-300: #262636;
+  --ink-400: #3b3b50;
+  --ink-500: #7d7d95;
+  --ink-600: #b4b4c6;
+  --ink-700: #f4f4f8;
+  --accent: #5ce1ff;
+  --accent-2: #ff3bd4;
+  --hairline: rgba(255, 255, 255, 0.08);
+  --panel-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9);
+  --glow: 0.5;
+
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-sans: "Inter Variable", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-fa: "Vazirmatn Variable", "Vazirmatn", Vazirmatn, system-ui, sans-serif;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+  position: relative;
+  min-block-size: 100svh;
+  background: var(--ink-000);
+  color: var(--ink-700);
+  font-family: var(--font-sans);
+  overflow-x: clip;
+}
+
+.root[data-theme="light"] {
+  --ink-000: #f6f5f1;
+  --ink-050: #efeee8;
+  --ink-100: #ffffff;
+  --ink-200: #f7f6f1;
+  --ink-300: #e2e0d6;
+  --ink-400: #c6c4b8;
+  --ink-500: #6f6d63;
+  --ink-600: #46443c;
+  --ink-700: #131311;
+  --accent: #0a6ea8;
+  --accent-2: #c01f9a;
+  --hairline: rgba(19, 19, 17, 0.1);
+  --panel-shadow: 0 30px 60px -34px rgba(20, 20, 18, 0.35);
+  --glow: 0.12;
+}
+
+/* Persian text sets in the catalogue's Persian sans, with Persian line-height. */
+.root[data-locale="fa"] {
+  font-family: var(--font-fa);
+  line-height: 1.75;
+}
+
+/* ---------------------------------------------------------------- atmosphere --- */
+
+.atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* A hairline technical grid: the "high-density" half of the aesthetic. */
+.grid {
+  position: absolute;
+  inset: -1px;
+  background-image: linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%);
+  opacity: 0.85;
+}
+
+.auroraA,
+.auroraB {
+  position: absolute;
+  inline-size: 46vmax;
+  block-size: 46vmax;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: var(--glow);
+  /* Physical offsets: a glow has no logical side. */
+  top: -18vmax;
+  left: -10vmax;
+  background: radial-gradient(circle at 40% 40%, var(--accent), transparent 65%);
+}
+
+.auroraB {
+  top: auto;
+  left: auto;
+  bottom: -22vmax;
+  right: -12vmax;
+  background: radial-gradient(circle at 60% 60%, var(--accent-2), transparent 65%);
+}
+
+/* --------------------------------------------------------------------- bar --- */
+
+.bar {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 40;
+  background: color-mix(in oklab, var(--ink-000) 78%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  border-block-end: 1px solid var(--hairline);
+  transition: background 240ms linear, box-shadow 240ms linear;
+}
+
+/* Condenses rather than disappears: navigation that hides on scroll is navigation that lies. */
+.barScrolled {
+  background: color-mix(in oklab, var(--ink-000) 92%, transparent);
+  box-shadow: 0 20px 40px -34px rgba(0, 0, 0, 0.8);
+}
+
+.barRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem clamp(1rem, 0.5rem + 1.6vw, 2.5rem);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--ink-700);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brandDot {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 22%, transparent);
+}
+
+.brandName {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+}
+
+.brandTag {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+/* ----------------------------------------------------------------- triggers --- */
+
+.triggers {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  margin-inline-start: 0.6rem;
+  /* The row is measured before it is clipped, so a discipline can never be silently cut off the
+     trailing edge — it moves into the "More" trigger instead. `min-inline-size: 0` lets the flex
+     child shrink rather than push the bar wide. */
+  min-inline-size: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding: 0.5rem 0.7rem;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--ink-600);
+  font: inherit;
+  font-size: 0.86rem;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.trigger:hover,
+.trigger:focus-visible {
+  color: var(--ink-700);
+  background: var(--ink-100);
+}
+
+.triggerOpen,
+.trigger[data-open] {
+  color: var(--ink-000);
+  background: var(--accent);
+}
+
+/* A label never wraps inside a trigger: two lines make one discipline look like two buttons, and
+   the measured row would fit the wrong number of them. */
+.triggerLabel {
+  white-space: nowrap;
+}
+
+.triggerIndex,
+.triggerCount {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-500);
+}
+
+.triggerOpen .triggerIndex,
+.triggerOpen .triggerCount,
+.trigger[data-open] .triggerIndex,
+.trigger[data-open] .triggerCount {
+  color: color-mix(in oklab, var(--ink-000) 70%, transparent);
+}
+
+/* ------------------------------------------------------------------ actions --- */
+
+.barActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline-start: auto;
+}
+
+.commandPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-600);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.commandPill:hover,
+.commandPill:focus-visible {
+  border-color: var(--accent);
+  color: var(--ink-700);
+}
+
+.commandGlyph {
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+.commandKey {
+  padding: 0.05rem 0.35rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-500);
+}
+
+.sheetButton {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.sheetGlyph {
+  display: grid;
+  gap: 4px;
+  inline-size: 0.9rem;
+}
+
+.sheetGlyph span {
+  block-size: 1px;
+  background: currentColor;
+}
+
+/* -------------------------------------------------------------------- panel --- */
+
+.panel {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.85fr) minmax(0, 1.6fr);
+  gap: clamp(1.5rem, 1rem + 2vw, 3.5rem);
+  padding: clamp(1.4rem, 1rem + 1.6vw, 2.4rem) clamp(1rem, 0.5rem + 1.6vw, 2.5rem) clamp(1.8rem, 1.2rem + 2vw, 2.8rem);
+  border-block-start: 1px solid var(--hairline);
+  background: var(--ink-050);
+  box-shadow: var(--panel-shadow);
+  overflow: hidden;
+}
+
+/* The pointer light. Physical x/y on purpose — it follows the cursor. */
+.panelGlow {
+  position: absolute;
+  inline-size: 34rem;
+  block-size: 34rem;
+  margin-inline-start: -17rem;
+  margin-block-start: -17rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in oklab, var(--accent) 26%, transparent), transparent 62%);
+  opacity: var(--glow);
+  pointer-events: none;
+}
+
+.panelHead {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.7rem;
+}
+
+.panelKicker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.panelIndex {
+  color: var(--accent);
+}
+
+.panelTitle {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  font-size: clamp(1.6rem, 1.1rem + 2.4vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink-700);
+}
+
+.panelChar {
+  display: inline-block;
+  will-change: transform;
+}
+
+.panelBlurb {
+  max-inline-size: 42ch;
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.75;
+  color: var(--ink-600);
+}
+
+.panelCta {
+  justify-self: start;
+  margin-block-start: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  border: 1px solid color-mix(in oklab, var(--accent) 55%, var(--ink-300));
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+  color: var(--ink-700);
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
+.panelCta:hover,
+.panelCta:focus-visible {
+  background: var(--accent);
+  color: var(--ink-000);
+}
+
+.panelColumns {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 0.6rem + 1.4vw, 2.4rem);
+}
+
+.panelColumn {
+  min-inline-size: 0;
+}
+
+.columnTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.7rem;
+  padding-block-end: 0.5rem;
+  border-block-end: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.columnCount {
+  color: var(--accent);
+}
+
+/* A row in the overflow panel: the label opens the group's panel, the arrow opens its page. */
+.moreRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.moreRow .link {
+  inline-size: 100%;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.moreRow .linkNote {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.moreLink {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 4px;
+  color: var(--ink-500);
+  text-decoration: none;
+}
+
+.moreLink:hover,
+.moreLink:focus-visible {
+  border-color: var(--accent);
+  color: var(--ink-700);
+}
+
+.linkList {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.link {
+  display: grid;
+  grid-template-columns: 2px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.45rem 0.5rem;
+  border-radius: 4px;
+  color: var(--ink-600);
+  text-decoration: none;
+}
+
+.link:hover,
+.link:focus-visible {
+  background: var(--ink-100);
+  color: var(--ink-700);
+}
+
+.linkBar {
+  block-size: 1.1rem;
+  background: var(--link-accent, var(--accent));
+  border-radius: 2px;
+  opacity: 0.55;
+}
+
+.link:hover .linkBar,
+.link:focus-visible .linkBar {
+  opacity: 1;
+}
+
+.linkLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.linkNote {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--ink-500);
+  white-space: nowrap;
+}
+
+.linkArrow {
+  font-size: 0.75rem;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 160ms linear, transform 200ms var(--ease);
+}
+
+.link:hover .linkArrow,
+.link:focus-visible .linkArrow {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------------------------------------------------------------------- sheet --- */
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: var(--ink-000);
+  overflow: hidden;
+}
+
+.sheetHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem clamp(1rem, 0.5rem + 1.6vw, 2.5rem);
+  border-block-end: 1px solid var(--hairline);
+}
+
+.sheetTitle {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.sheetClose {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.sheetBody {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 1.2rem clamp(1rem, 0.5rem + 1.6vw, 2.5rem) 4rem;
+}
+
+.sheetSection + .sheetSection {
+  margin-block-start: 1.6rem;
+}
+
+.sheetSectionTitle {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin: 0 0 0.6rem;
+  font-size: 1.05rem;
+  color: var(--ink-700);
+}
+
+.sheetIndex {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+}
+
+.sheetLinks {
+  display: grid;
+  gap: 0.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheetLink {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.6rem 0.7rem;
+  border-inline-start: 2px solid var(--link-accent, var(--accent));
+  border-radius: 2px;
+  background: var(--ink-050);
+  color: var(--ink-700);
+  text-decoration: none;
+}
+
+.sheetLinkLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sheetLinkNote {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-500);
+}
+
+/* -------------------------------------------------------------------- palette --- */
+
+.paletteBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  align-content: start;
+  justify-items: center;
+  padding: 12vh clamp(0.8rem, 4vw, 2rem) 2rem;
+  background: color-mix(in oklab, var(--ink-000) 72%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.palette {
+  inline-size: min(46rem, 100%);
+  border: 1px solid var(--ink-300);
+  border-radius: 10px;
+  background: var(--ink-100);
+  box-shadow: var(--panel-shadow);
+  overflow: hidden;
+}
+
+.paletteField {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.9rem 1rem;
+  border-block-end: 1px solid var(--hairline);
+}
+
+.paletteGlyph {
+  color: var(--accent);
+}
+
+.paletteInput {
+  flex: 1;
+  min-inline-size: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 1rem;
+  outline: none;
+}
+
+.paletteEsc {
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-500);
+}
+
+.paletteList {
+  max-block-size: min(52vh, 26rem);
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.paletteRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 6px;
+  color: var(--ink-600);
+  text-decoration: none;
+}
+
+.paletteRowActive {
+  background: color-mix(in oklab, var(--accent) 16%, transparent);
+  color: var(--ink-700);
+}
+
+.paletteRowLabel {
+  font-size: 0.92rem;
+}
+
+.paletteRowKind {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-500);
+  white-space: nowrap;
+}
+
+.paletteEmpty {
+  margin: 0;
+  padding: 1.4rem 1rem;
+  font-size: 0.86rem;
+  color: var(--ink-500);
+}
+
+.paletteHint {
+  margin: 0;
+  padding: 0.7rem 1rem 0.9rem;
+  border-block-start: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+/* --------------------------------------------------------------------- demo --- */
+
+.demo {
+  position: relative;
+  z-index: 1;
+  max-inline-size: 74rem;
+  margin-inline: auto;
+  padding: clamp(8rem, 14vh, 12rem) clamp(1rem, 0.5rem + 2vw, 2.5rem) clamp(5rem, 10vh, 9rem);
+}
+
+.demoKicker {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.demoTitle {
+  margin: 0;
+  font-size: clamp(2.4rem, 1.4rem + 5vw, 5.4rem);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
+  color: var(--ink-700);
+  text-wrap: balance;
+}
+
+.demoEm {
+  font-style: normal;
+  background: linear-gradient(100deg, var(--accent), var(--accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.demoLede {
+  max-inline-size: 58ch;
+  margin: 1.2rem 0 0;
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  line-height: 1.8;
+  color: var(--ink-600);
+}
+
+.demoMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block-start: 1.4rem;
+}
+
+.demoMeta span {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.demoBlocks {
+  display: grid;
+  gap: 1rem;
+  margin-block-start: clamp(3rem, 8vh, 6rem);
+}
+
+.demoBlock {
+  padding: 1.3rem 1.4rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 8px;
+  background: color-mix(in oklab, var(--ink-100) 70%, transparent);
+}
+
+.demoBlockNum {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--accent);
+}
+
+.demoBlockTitle {
+  margin: 0.5rem 0 0.4rem;
+  font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.4rem);
+  letter-spacing: -0.01em;
+  color: var(--ink-700);
+}
+
+.demoBlockBody {
+  max-inline-size: 62ch;
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: var(--ink-600);
+}
+
+/* ------------------------------------------------------------------ responsive --- */
+
+@media (max-width: 1180px) {
+  .panel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .panelHead {
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 880px) {
+  .triggers,
+  .commandText {
+    display: none;
+  }
+
+  .sheetButton {
+    display: inline-flex;
+  }
+
+  .barRow {
+    gap: 0.6rem;
+  }
+
+  .panelColumns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .brandTag,
+  .commandKey {
+    display: none;
+  }
+
+  .demo {
+    padding-block-start: 7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panelChar,
+  .link,
+  .linkArrow {
+    transition: none;
+  }
+}

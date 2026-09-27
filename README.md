@@ -60,6 +60,27 @@ vibe, interaction blueprint, tags), a live stage mounting the real built route, 
 `Source ↗`, the commands to run it, related variations, and previous/next navigation. A *planned*
 variation gets the same page with an honest blueprint instead of a stage — never an empty frame.
 
+### The shell contract (what makes a variation bilingual and dual-theme)
+
+The catalogue shell owns language, direction and theme. A variation renders inside an iframe, so it
+cannot see any of that — the shell hands it over twice: through the same `localStorage` keys the
+shell persists (`catalog:locale`, `catalog:theme`) plus `?lang=` / `?theme=`, which is what makes a
+*frame reload* land in the right skin; and through `postMessage({ type: "catalog:skin", … })` on
+every change, broadcast to any `iframe[data-catalog-frame]`.
+
+`apps/next-catalog/src/lib/skin.ts` is the variation side of that contract:
+
+```tsx
+const skin = useCatalogSkin();            // { locale, theme, dir } — follows the shell live
+useSkinDocument(skin, { dark, light });   // writes dir/lang/data-theme on <html> (+ the canvas)
+<div {...skinAttributes(skin)}>…</div>    // and on the variation's own root, for scoped CSS
+lex({ en: "Command", fa: "فرمان" }, skin.locale)   // pick a side of a bilingual pair
+```
+
+Which means `Nav_V01_MegaMenuCommand` — and every variation that adopts it — is bilingual, RTL-aware
+and dual-theme without knowing anything about the catalogue, and still correct when opened raw on
+its own URL, because the stored values are the ones the shell wrote.
+
 ### Downloading the project
 
 The masthead carries a **Download** button (bilingual, in both themes, and it collapses to the
@@ -88,6 +109,7 @@ Six gates, each catching a class of defect the others structurally cannot:
 | Production build | `npm run build` | 8 static routes exported and spliced into `docs/` |
 | **Card completeness (4 skins)** | `npm run verify:cards` | every card in en/fa × day/night: a frame mode, no promise a planned variation cannot keep, complete HUD copy and tags |
 | Download archive | `npm run bundle` | rebuilds `docs/download/catalog-source.zip` from `git ls-files` (excludes the generated reel) — `npm run build` runs it automatically |
+| **Nav variation (all skins)** | `npm run verify:nav` | the navigation variation: direction/theme/canvas, a trigger row that never clips, "More" reachability, panels inside the viewport, the phone sheet, and ⌘K filtering |
 | **Generated pages (all skins)** | `npm run verify:pages` | 47 browse/component pages: assets load, every internal link exists on disk, no overflow in either direction, localised copy, stage mounted, themes paint differently |
 | **Header reachability (all skins)** | `npm run verify:header` | the bar fits, no visible control is clipped, the download panel opens inside the viewport in en/fa × day/night and on phone/tablet/desktop, and the drawer re-labels on a language switch |
 | **Real-browser audit + vision** | `npm run verify:browser` | **actual painted pixels**: 4 breakpoints, WebGL context creation, console/network, `hidden`-attribute leaks, text colliding with chrome, reduced-motion composition — plus an animated capture of every variation |

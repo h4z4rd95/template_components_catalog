@@ -8,7 +8,16 @@ import styles from "./index.module.css";
  * to /framework/next/ still lands somewhere intentional.
  */
 export default function NextTrackIndex() {
-  const heroes = variations.filter((v) => v.discipline === "Hero");
+  // Every discipline this app actually ships, in manifest order: the index should grow by itself
+  // as variations do, without a hand-maintained list to forget.
+  const shipped = ["Hero", "Nav"]
+    .map((id) => ({
+      id,
+      label: disciplines.find((d) => d.id === id)?.label ?? id,
+      items: variations.filter((v) => v.discipline === id && v.status !== "planned"),
+    }))
+    .filter((group) => group.items.length > 0);
+  const heroes = shipped[0]?.items ?? [];
 
   return (
     <div className={styles.index}>
@@ -20,8 +29,8 @@ export default function NextTrackIndex() {
           kinetic behaviour.
         </h1>
         <p className={styles.lede}>
-          {counts.total} variations registered in the manifest, {heroes.length} of them heroes in this app. Each one is
-          a full page: real copy, real physics, real scroll behaviour — open one and scroll.
+          {counts.total} variations registered in the manifest, {heroes.length} heroes and {shipped.length > 1 ? shipped[1].items.length : 0} navigation
+          systems in this app. Each one is a full page: real copy, real physics, real scroll behaviour — open one and scroll.
         </p>
         <div className={styles.stats}>
           <span>
@@ -37,9 +46,9 @@ export default function NextTrackIndex() {
       </header>
 
       <ul className={styles.list}>
-        {heroes.map((v, i) => (
+        {shipped.flatMap((group) => group.items).map((v, i) => (
           <li key={v.id} className={styles.item} style={{ ["--accent" as string]: v.accent }}>
-            <Link href={`/hero/${v.slug}/`} className={styles.link}>
+            <Link href={`/${v.discipline.toLowerCase()}/${v.slug}/`} className={styles.link}>
               <span className={styles.num}>{String(i + 1).padStart(2, "0")}</span>
               <span className={styles.body}>
                 <span className={styles.id}>{v.id}</span>

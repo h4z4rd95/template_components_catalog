@@ -779,3 +779,69 @@ theme. The contract is already wired — the shell broadcasts `catalog:skin` to 
 `iframe[data-catalog-frame]`, and both the hub's cards and the component stage now set that
 attribute — so the next work package adds the listener to `CatalogHUD.tsx`, `CatalogHUD.vue` and
 the vanilla HUD, then the per-variation light palette and Persian font pairing.
+
+---
+
+## The first navigation variation — and the row that was quietly cutting disciplines off
+
+**Batch 3b, first half.** `Nav_V01_MegaMenuCommand` is the catalogue's first non-hero variation and
+the second discipline the Next.js track ships.
+
+### What it is
+
+A command bar, not a link strip. Each discipline in the bar is a trigger; hovering or focusing it
+wipes its panel down from the bar (a `clip-path` inset) while the discipline's name re-assembles
+letter by letter — the label *is* the transition. Pointer intent with a 240 ms grace period means
+crossing the gap between trigger and panel does not close it, and once a group is open you can
+sweep sideways and the panels swap in place. ⌘K / Ctrl+K raises a command palette over every
+discipline, topic and component in the catalogue, filtered as you type, with ↑↓ ⏎ and a
+`scrollIntoView` that keeps the cursor row visible.
+
+Below 880 px the triggers collapse into one button and the same groups become a full-height sheet
+with accordions — the desktop model, not a reduced one.
+
+**The menu is the manifest.** `buildMenu()` reads `catalog/catalog.json`: every group is a
+discipline, every topic link points at `browse/<discipline>/<topic>/index.html`, every destination
+at `component/<slug>/index.html` — the pages the previous stretch generated. The palette and the
+mega-menu read the same model, so they cannot drift apart. Hrefs resolve against the *catalogue*
+root (`hubHref()`), never the app root, because this variation is served from
+`…/framework/next/nav/mega-menu-command/` while the pages it links to live beside it.
+
+### The shell contract, written down
+
+Variations live in iframes and cannot see the shell's language or theme. `src/lib/skin.ts` is the
+variation-side half of the contract: `useCatalogSkin()` reads `?lang`/`?theme`, then the
+`localStorage` keys the shell persists (which is what makes a *frame reload* land in the right
+skin), then listens for the shell's `catalog:skin` broadcast. `useSkinDocument()` writes
+`dir` / `lang` / `data-theme` onto `<html>` — and restores what was there on unmount, because the
+hub re-mounts frames — and takes the variation's own canvas colours, since only the variation knows
+what its overscroll edge should look like.
+
+### What the pixels caught
+
+1. **The trigger row was silently cutting disciplines off.** `overflow: clip` with eight disciplines
+   at 1440 px removed "App & Dashboard" from the bar — still in the DOM, invisible on screen,
+   unreachable by pointer or keyboard. Persian was worse: two-line labels and a wider script meant
+   six of eight triggers were clipped in *both* directions. Guessing a breakpoint would have been
+   wrong twice over, so the row now **measures itself** (`useLayoutEffect` + `ResizeObserver`, and
+   again when `document.fonts.ready` resolves, because the Persian label width arrives with the
+   webfont) and hands whatever does not fit to a **"More" trigger** whose panel lists those
+   disciplines with a ↗ to their pages. `npm run verify:nav` asserts the accounting: visible +
+   hidden must equal the disciplines that exist, and nothing may be hidden while "More" is off.
+2. **A light-theme variation painted on a dark canvas.** The skin reached the variation's own root
+   but not `<html>`, so `bg=rgb(5,5,6)` sat under a `theme=light` variation — visible at the
+   overscroll edge and under a short page. Both halves are asserted now, and the canvas colour is
+   compared between the two themes the way `verify:pages` compares its pages.
+3. **Two CSS-module classes did not exist.** `check:styles` failed the run with
+   `.triggerLabel, .sheetLinkLabel: no such class` — dead references that would have rendered
+   unstyled, caught before the commit rather than in the browser.
+
+### Verification
+`npm run verify:nav` (new gate): desktop en/dark, desktop fa/light and phone fa/dark — direction,
+theme and canvas; the trigger row never overflows; every hidden discipline is reachable through
+"More"; the panel opens inside the viewport with links that really resolve (`browse/hero/index.html
+→ 200`); the phone sheet is full height, carries 39 links and closes on Escape; ⌘K filters "gpu"
+down to 3 rows instead of emptying. Result: **PROBLEMS: none**, with pixels read in both directions
+and both themes. Then the whole suite: `npm test` green · `npm run verify:cards` green in four skins
+(**18 cards**, 7 planned, 4 live frames) · `npm run verify:pages` green (48 generated pages) ·
+`npm run verify:header` green in six viewports · `npm run build` green.

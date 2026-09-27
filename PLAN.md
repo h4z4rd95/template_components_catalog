@@ -289,8 +289,13 @@ inside the frames are not yet. The frame contract is in place — the shell broa
 adds the listener to `CatalogHUD.tsx`, `CatalogHUD.vue` and the vanilla HUD script, plus the
 per-variation light palette and the Persian font pairing for each design language.
 
-**Batch 3b — navigation variations** · `Nav_V01_MegaMenuCommand` (Next.js + Motion) and a
-buildless vanilla drawer/orbital nav. Both bilingual, both theme-aware, both tested on mobile.
+**Batch 3b — navigation variations** · `Nav_V01_MegaMenuCommand` (Next.js + Motion) — **shipped**:
+a command-bar mega-menu whose panels are built from the manifest, so every link lands on a real
+generated page; it carries the "More" trigger for disciplines that do not fit the measured row, a
+full-height phone sheet, and a ⌘K palette over the whole catalogue. It is bilingual, RTL-aware and
+dual-theme through the shell's skin contract (`src/lib/skin.ts`), and gated by
+`npm run verify:nav` on desktop, phone, both directions and both themes. A buildless vanilla
+drawer/orbital nav is still open.
 
 **Batch 4 — commerce** · `Shop_V01_…` physical storefront, `Shop_V02_…` digital storefront,
 `Product_V01_…` / `Product_V02_…` detail pages.
@@ -316,3 +321,7 @@ buildless vanilla drawer/orbital nav. Both bilingual, both theme-aware, both tes
   filesystem, no horizontal overflow in either direction, localised headings and HUD labels, a
   stable component mounts its stage while a planned one never does, and same page / other theme
   must not paint the same background — the check that caught the light ramp being overridden).
+- navigation variation gate — `npm run verify:nav` (shipped: direction, theme and canvas colour are
+  what the shell asked for; the trigger row never overflows and every discipline it hides is
+  reachable through "More"; panels open inside the viewport with links that resolve; the phone gets
+  a full-height sheet that Escape closes; ⌘K filters instead of emptying).

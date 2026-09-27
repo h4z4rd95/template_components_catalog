@@ -484,6 +484,46 @@
       "url": "vanilla/brutal-stamp-press/"
     },
     {
+      "id": "Nav_V01_MegaMenuCommand",
+      "discipline": "Nav",
+      "batch": 3,
+      "topic": "cyber",
+      "title": "Mega-Menu Command Line",
+      "titleFa": "مگا-منوی خط فرمان",
+      "stack": [
+        "Next.js 16",
+        "React 19",
+        "Motion",
+        "CSS Grid",
+        "Pointer intent",
+        "Command palette"
+      ],
+      "vibe": "Cyberpunk · High-Density UI · Kinetic Typography",
+      "vibeFa": "سایبرپانک · رابط پرتراکم · تایپوگرافی جنبشی",
+      "interaction": "Hovering a section wipes its panel down from the bar while the discipline name re-assembles letter by letter; sweeping sideways swaps panels without closing, and ⌘K raises a command palette that searches every discipline, topic and component.",
+      "interactionFa": "با بردن نشانگر روی هر بخش، پنلش از نوار پایین می‌آید و نام دیسیپلین حرف‌به‌حرف ساخته می‌شود؛ حرکت افقی پنل‌ها را بدون بستن عوض می‌کند و ⌘K پالت فرمانی را باز می‌کند که در همهٔ رشته‌ها، موضوع‌ها و کامپوننت‌ها جست‌وجو می‌کند.",
+      "href": "framework/next/nav/mega-menu-command/",
+      "source": "apps/next-catalog/src/nav/mega-menu-command/",
+      "status": "stable",
+      "accent": "#5CE1FF",
+      "tags": [
+        "nav",
+        "mega-menu",
+        "command-palette",
+        "keyboard",
+        "pointer-intent",
+        "bilingual",
+        "dual-theme"
+      ],
+      "perf": {
+        "webgl": false,
+        "assetWeight": "light"
+      },
+      "slug": "mega-menu-command",
+      "route": "nav/mega-menu-command/",
+      "url": "framework/next/nav/mega-menu-command/"
+    },
+    {
       "id": "Commerce_V01_HoloStorefront",
       "discipline": "Commerce",
       "batch": 4,
@@ -1011,10 +1051,10 @@
     }
   },
   "counts": {
-    "total": 17,
-    "stable": 10,
+    "total": 18,
+    "stable": 11,
     "beta": 0,
     "planned": 7
   },
-  "generatedAt": "2026-09-26T00:47:19.412Z"
+  "generatedAt": "2026-09-27T03:34:33.544Z"
 }
