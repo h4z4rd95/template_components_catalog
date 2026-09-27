@@ -845,3 +845,93 @@ down to 3 rows instead of emptying. Result: **PROBLEMS: none**, with pixels read
 and both themes. Then the whole suite: `npm test` green · `npm run verify:cards` green in four skins
 (**18 cards**, 7 planned, 4 live frames) · `npm run verify:pages` green (48 generated pages) ·
 `npm run verify:header` green in six viewports · `npm run build` green.
+
+## [2026-09-27 04:30 UTC] · Batch 3c — Full sites composed from the variations · the handbook · Nav_V02
+
+**The instruction.** «شروع کن به بخش بعدی، نمونه‌های مربوط به وب‌سایت خبری گیمینگ با استفاده از
+ترکیب همین سمپل‌ها هم ایجاد کن، فایل زیپ پروژه رو هم در پایان بروزرسانی کن، نسخهٔ فارسی راهنمای
+استفاده از المان‌ها هم توی پروژه آپدیت کن.» — start the next section; build gaming-news samples *by
+combining these same samples*; refresh the project ZIP at the end; update the in-project Persian
+guide for using the elements. All four are done, and all four are gated.
+
+**What shipped**
+
+| Artefact | Path | What it is |
+| --- | --- | --- |
+| Nav_V02_VanillaOrbitalDrawer | `docs/vanilla/orbital-nav/` + `docs/vanilla/shared/orbital-nav.{js,css}` | The navigation interaction with no bundler and no dependencies — *one* implementation, shared with the newsroom |
+| Site_V01_GameNewsDesk | `docs/sites/gaming-news/index.html` | The desk: lead story, live scanner-HUD module, four-card grid, three-column ticker |
+| Site_V02_GameNewsSections | `docs/sites/gaming-news/category.html` | Section browser: filter chips over rows with a real empty state |
+| Site_V03_GameNewsLongform | `docs/sites/gaming-news/article.html` | Letterpress reading page: pull quote, progress hairline, embedded variation in the body |
+| The handbook | `docs/guide/index.html` | Eight sections generated from `guides/using-the-elements.json`, bilingual, dual-theme |
+
+The newsroom is a **composition proof, not a fourth component library**: its menu *is*
+`Nav_V02` mounted from `sites/gaming-news/nav.json`, its banner slots are the catalogue's own
+exported variation routes (`data-embed` → `docs/framework/**`, with an honest notice when the
+framework export has not been built), and everything around them is the same shell, the same fonts
+and the same runtime as the rest of the site. Two new entries — the **Full Sites / سایت‌های کامل**
+discipline with topics `news` and `article` — put them in the browse tree next to the components
+they are built from.
+
+**Catalogue now:** 22 variations (15 stable + 7 planned) · 9 disciplines · 107 `ui` keys per locale ·
+**55** generated browse/component pages + **3** newsroom pages + **1** handbook (8 sections) ·
+`docs/data/download.json` → **184 files · 2832 KB → 1121 KB zipped**.
+
+**Bugs found by looking at the rendered pixels, not by reasoning about the code**
+
+1. **The ring could not work.** Nine wide labels on a 136 px radius sit 30 px apart horizontally at
+   the top of the arc and are 152 px wide — the screenshot showed a pile of overlapping boxes.
+   Rebuilt as a **fan**: uniform *measured* spacing (Persian labels set taller than English ones)
+   with a sine bulge for the curve. A ring of boxes overlaps itself; a fan cannot. The gate now
+   asserts no two open items intersect, at either width.
+2. **`parseFloat("8.5rem")` is `8.5`.** The radius helper read a `rem` value as pixels and put every
+   item on the trigger. The unit is now read: `rem`/`em` resolve against the element's own font size.
+3. **A phone sheet anchored to the bar.** The nav's usual host carries `backdrop-filter`, which makes
+   it the containing block for `position: fixed` descendants — the "bottom sheet" dropped from the
+   bar and landed above the fold. It is now anchored to the trigger with `position: absolute`.
+4. **Media queries add no specificity.** The phone list's `transform: none` lost to the open state's
+   `translate(...)`, so items flew out of the sheet. The rule now matches the state selector rather
+   than shouting `!important` over it.
+5. **`translateData` was never exported** — the only exported translator was `translateTree` (the
+   `ui` dictionary), so nav items, cards and captions mounted *after* `init()` kept their English
+   text on every Persian page. Now exported and called by both consumers, and the gate fails any
+   `[data-i18n-fa]` node still showing English on a Persian page (and vice versa).
+6. **A `<pre>` was sizing the handbook.** `min-inline-size: auto` on a grid item is its min-content
+   contribution, and one long command line made the guide **848 px wide inside a 390 px viewport**.
+   Fixed at the item (`min-inline-size: 0`) and at the code (`overflow-x: auto`, wrapping on phones).
+7. **`index.htmlindex.html`.** Component pages append `index.html` to a variation's `href`; the
+   newsroom variations point straight at a page, so the raw link doubled the filename. `verify:pages`
+   caught it.
+
+**Verification (all green, in this order)**
+
+| Gate | Result |
+| --- | --- |
+| `npm test` | sync + styles + typecheck + hub smoke ✓ (2 benign Vue plugin-path lines) |
+| `npm run check:styles` | every `styles.*` reference resolves ✓ |
+| `npm run verify:cards` | 22 cards complete in all 4 skins ✓ |
+| `npm run verify:pages` | 55 pages: assets, links, overflow, locale, staged ✓ |
+| `npm run verify:header` | 6 viewports, every control reachable, drawer re-labels ✓ |
+| `npm run verify:nav` | en/fa × day/night × desktop/phone ✓ |
+| `npm run verify:site` | **new**: 12 page×skin×viewport combos + structure over all 4 composed pages ✓ |
+| `npm run build` | 2 framework apps spliced into `docs/` ✓ → `node scripts/bundle.mjs` → 184 files, 1121 KB |
+
+Screenshot review (Chrome under SwiftShader, real pixels): guide fa/light 390 — single column, TOC
+chips wrap, inline `catalog/catalog.json` renders LTR inside RTL prose; orbital nav en/dark 1440 —
+nine items fanned below the trigger, none intersecting, HUD lane clear; orbital nav fa/light 390 —
+Persian items, sheet scrolls inside the viewport; newsroom fa/light 390 — captions and chrome Persian.
+
+**Decisions**
+
+- The nav is shared *by file* between the variation and the newsroom. A second copy would drift, and
+  the drift would stay invisible until someone compared two pages side by side.
+- Composed pages are still generated by `catalog:sync` from JSON (`sites/gaming-news.json`,
+  `guides/using-the-elements.json`) so they cannot fall behind the manifest they link into.
+- Persian rich text in the handbook travels as HTML in `data-i18n-fa-html`; the English side is
+  stored as markup on first swap, because storing it as text stripped inline `<code>` on the way back.
+- The composed-site gate lives in `scripts/`, not in a scratch harness — it was written while fixing
+  the bug it then caught, which is the only reason it exists at all.
+
+**NEXT:** the commerce track (Batch 4): `Shop_V01_…` physical storefront, `Shop_V02_…` digital
+storefront, then `Product_V01_…` / `Product_V02_…` detail pages, then Batch 5's cart and checkout —
+all inside the same bilingual / dual-theme / dual-direction shell, each added to the manifest so the
+browse tree covers it. Still open from earlier: `apps/next-catalog/src/app/not-found.tsx`.

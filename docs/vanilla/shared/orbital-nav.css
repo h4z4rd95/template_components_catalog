@@ -1,0 +1,260 @@
+/* ============================================================================
+   The Catalog — orbital navigation (buildless, shared)
+   ---------------------------------------------------------------------------
+   One implementation, two consumers: the `Nav_V02_VanillaOrbitalDrawer` variation
+   page, and the gaming-news site in docs/sites/gaming-news/**. That is the point
+   of a buildless track: no bundler, no CDN, no duplicate copy of a nav.
+
+   Everything is logical-property based, so RTL mirrors without a second file,
+   and every colour is a token the host page defines (with fallbacks), so the nav
+   takes the host's day/night palette instead of imposing one.
+   ========================================================================= */
+
+.orb {
+  --orb-size: 3rem;
+  --orb-radius: 8.5rem;
+  position: relative;
+  font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
+.orb__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--orb-line, rgba(255, 255, 255, 0.16));
+  border-radius: 999px;
+  background: var(--orb-surface, rgba(12, 12, 20, 0.72));
+  color: var(--orb-ink, #f2f2f7);
+  font: inherit;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.orb__trigger:hover,
+.orb__trigger:focus-visible,
+.orb[data-open="true"] .orb__trigger {
+  border-color: var(--orb-accent, #5bffc8);
+  color: var(--orb-accent, #5bffc8);
+}
+
+.orb__trigger-icon {
+  display: grid;
+  place-items: center;
+  inline-size: 1rem;
+  block-size: 1rem;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+}
+
+.orb__trigger-icon::before {
+  content: "";
+  inline-size: 0.3rem;
+  block-size: 0.3rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.orb__count {
+  font-size: 0.62rem;
+  opacity: 0.7;
+}
+
+/* ------------------------------------------------------------------ the field --- */
+
+.orb__field {
+  position: absolute;
+  inset-block-start: calc(100% + 0.75rem);
+  /* Anchored to the trigger's logical end, so the fan opens inwards on both sides. The height is
+     measured and written by the script (`--orb-field-h`), so a nine-item fan scrolls on a short
+     screen instead of running off it. */
+  inset-inline-end: 0;
+  inline-size: calc(9.5rem + var(--orb-bulge, 3rem));
+  block-size: var(--orb-field-h, 22rem);
+  max-block-size: min(74svh, 36rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms linear;
+  z-index: 70;
+}
+
+.orb[data-open="true"] .orb__field {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+/* The radar sweep is decorative and purely CSS; it hangs off the trigger corner and stops when the
+   fan closes. It is deliberately oversized and behind the items: atmosphere, not layout. */
+.orb__sweep {
+  position: absolute;
+  inset-block-start: -6rem;
+  inset-inline-end: -6rem;
+  inline-size: 18rem;
+  block-size: 18rem;
+  border-radius: 50%;
+  border: 1px dashed var(--orb-line, rgba(255, 255, 255, 0.14));
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.orb__core {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  inline-size: var(--orb-size);
+  block-size: var(--orb-size);
+  border-radius: 50%;
+  border: 1px solid var(--orb-accent, #5bffc8);
+  background: var(--orb-surface, rgba(12, 12, 20, 0.9));
+  color: var(--orb-accent, #5bffc8);
+  font: inherit;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transform: scale(0.6);
+  opacity: 0;
+  transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms linear;
+}
+
+.orb[data-open="true"] .orb__core {
+  transform: none;
+  opacity: 1;
+}
+
+.orb__item {
+  /* Anchored to the trigger's side and moved by the measured offsets, so the fan hangs from the
+     bar in either direction without a single physical `left`/`right`. */
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  inline-size: 9.5rem;
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--orb-line, rgba(255, 255, 255, 0.16));
+  border-radius: 10px;
+  background: var(--orb-surface, rgba(10, 10, 18, 0.94));
+  color: var(--orb-ink, #f2f2f7);
+  text-align: start;
+  text-decoration: none;
+  /* Positions come from JS as translate(x, y) in *logical* terms; the ring is symmetric, so the
+     only direction-aware part is the sweep angle, which JS mirrors for RTL. */
+  transform: translate(0, 0) scale(0.92);
+  opacity: 0;
+  transition: transform 380ms cubic-bezier(0.16, 1, 0.3, 1), opacity 220ms linear, border-color 160ms linear;
+  will-change: transform;
+}
+
+.orb[data-open="true"] .orb__item {
+  transform: translate(var(--orb-x, 0px), var(--orb-y, 0px)) scale(1);
+  opacity: 1;
+}
+
+.orb__item:hover,
+.orb__item:focus-visible,
+.orb__item[data-active="true"] {
+  border-color: var(--orb-accent, #5bffc8);
+}
+
+.orb__item-label {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.orb__item-meta {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+/* ------------------------------------------------------------------- sheet --- */
+
+.orb__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: color-mix(in oklab, var(--orb-canvas, #07070c) 78%, transparent);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms linear;
+}
+
+.orb[data-open="true"] .orb__backdrop {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* On a phone a 17rem ring cannot fit a 360px screen: the same items become a list under the
+   trigger, which is the honest responsive answer rather than a scaled-down ring. */
+@media (max-width: 720px) {
+  /* Anchored *below the trigger*, not to the viewport. The bar this nav usually sits in carries a
+     `backdrop-filter`, and a filtered ancestor becomes the containing block for fixed descendants —
+     a "fixed bottom sheet" then hangs off the bar instead of the screen and lands above the fold.
+     An absolutely positioned sheet has no such trap: it drops from the trigger wherever that is. */
+  .orb__field {
+    position: absolute;
+    inset-block-start: calc(100% + 0.6rem);
+    inset-block-end: auto;
+    inset-inline: 0;
+    inline-size: auto;
+    block-size: auto;
+    max-block-size: min(70svh, 34rem);
+    overflow-y: auto;
+    padding: 0.8rem;
+    border: 1px solid var(--orb-line, rgba(255, 255, 255, 0.16));
+    border-radius: 12px;
+    background: var(--orb-surface, rgba(10, 10, 18, 0.98));
+    box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 0.85);
+    transform: translateY(10px);
+    transition: opacity 200ms linear, transform 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .orb[data-open="true"] .orb__field {
+    transform: none;
+  }
+
+  .orb__sweep,
+  .orb__core {
+    display: none;
+  }
+
+  /* Media queries add no specificity, so the open ring's `translate(...)` would still win over a
+     lone `.orb__item` rule here and fling the list out of the sheet. Matching the state selector is
+     the honest fix — `!important` would hide the real conflict instead of resolving it. */
+  .orb__item,
+  .orb[data-open="true"] .orb__item {
+    position: static;
+    inline-size: auto;
+    margin: 0;
+    transform: none;
+    opacity: 1;
+  }
+
+  .orb__item + .orb__item {
+    margin-block-start: 0.4rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb__item,
+  .orb__core,
+  .orb__field,
+  .orb__backdrop {
+    transition: opacity 120ms linear;
+    transform: none !important;
+  }
+
+  .orb__item {
+    opacity: 1;
+  }
+}

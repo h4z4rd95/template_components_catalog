@@ -1,0 +1,361 @@
+/* Nav_V02_VanillaOrbitalDrawer — the variation's own stage.
+   The nav itself is styled by ../shared/orbital-nav.css (shared with the gaming-news site); this
+   file is only the page around it: the bar, the HUD, the demo copy and the responsive rules. */
+
+.orb-page {
+  --orb-line: color-mix(in oklab, var(--ink-700) 16%, transparent);
+  --orb-surface: color-mix(in oklab, var(--ink-100) 92%, transparent);
+  --orb-ink: var(--ink-700);
+  --orb-accent: #5bffc8;
+  --orb-canvas: var(--ink-000);
+  min-block-size: 100svh;
+  background: var(--ink-000);
+  color: var(--ink-700);
+}
+
+[data-theme="light"] .orb-page {
+  --orb-accent: #0f7f63;
+  --orb-surface: color-mix(in oklab, #ffffff 92%, transparent);
+}
+
+/* The accent is the variation's signature; on paper it deepens so it stays readable. */
+.orb-bar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 50;
+  border-block-end: 1px solid var(--ink-300);
+  background: color-mix(in oklab, var(--ink-000) 88%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+.orb-bar__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem clamp(0.9rem, 0.4rem + 2vw, 2.4rem);
+}
+
+.orb-bar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--ink-700);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  text-decoration: none;
+}
+
+.orb-bar__dot {
+  inline-size: 0.45rem;
+  block-size: 0.45rem;
+  border-radius: 50%;
+  background: var(--orb-accent);
+}
+
+.orb-bar__mount {
+  margin-inline-start: auto;
+}
+
+.orb-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.orb-bar__link {
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  color: var(--ink-600);
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.orb-bar__link:hover,
+.orb-bar__link:focus-visible {
+  border-color: var(--orb-accent);
+  color: var(--ink-700);
+}
+
+/* --------------------------------------------------------------------- HUD --- */
+
+.orb-hud {
+  position: fixed;
+  inset-block-end: clamp(0.9rem, 2vw, 1.6rem);
+  inset-inline-start: clamp(0.9rem, 2vw, 1.6rem);
+  z-index: 40;
+  display: grid;
+  gap: 0.5rem;
+  inline-size: min(26rem, calc(100vw - 2rem));
+  padding: 1rem 1.1rem 1.1rem;
+  border: 1px solid var(--ink-300);
+  border-inline-start: 3px solid var(--orb-accent);
+  border-radius: var(--radius);
+  background: color-mix(in oklab, var(--ink-100) 94%, transparent);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 0.8);
+}
+
+.orb-hud[hidden] {
+  display: none;
+}
+
+.orb-hud__toggle {
+  justify-self: end;
+  margin-block-end: -0.2rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-500);
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.orb-hud__id {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  color: var(--orb-accent);
+}
+
+.orb-hud__title {
+  margin: 0;
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+  color: var(--ink-700);
+}
+
+.orb-hud__spec {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.orb-hud__spec dt {
+  font-family: var(--font-mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.orb-hud__spec dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--ink-600);
+}
+
+.orb-hud__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.2rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.orb-hud__links a {
+  color: var(--ink-600);
+}
+
+.orb-hud__links a:hover,
+.orb-hud__links a:focus-visible {
+  color: var(--orb-accent);
+}
+
+/* ------------------------------------------------------------------- stage --- */
+
+.orb-stage {
+  max-inline-size: 74rem;
+  margin-inline: auto;
+  padding: clamp(2.4rem, 6vh, 5rem) clamp(0.9rem, 0.4rem + 2vw, 2.4rem) clamp(6rem, 14vh, 10rem);
+}
+
+.orb-stage__kicker {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--orb-accent);
+}
+
+.orb-stage__title {
+  max-inline-size: 22ch;
+  margin: 0;
+  font-size: clamp(2rem, 1.2rem + 4vw, 4.2rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--ink-700);
+}
+
+[lang="fa"] .orb-stage__title {
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.orb-stage__lede {
+  max-inline-size: 60ch;
+  margin: 1.2rem 0 0;
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  line-height: 1.85;
+  color: var(--ink-600);
+}
+
+.orb-stage__lede code {
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.84em;
+  direction: ltr;
+}
+
+.orb-stage__points {
+  display: grid;
+  gap: 0.9rem;
+  max-inline-size: 62ch;
+  margin: 2.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.orb-stage__points li {
+  position: relative;
+  padding-inline-start: 1.5rem;
+  font-size: 0.94rem;
+  line-height: 1.85;
+  color: var(--ink-600);
+}
+
+.orb-stage__points li::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.6rem;
+  inline-size: 0.5rem;
+  block-size: 2px;
+  background: var(--orb-accent);
+}
+
+.orb-stage__points code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  direction: ltr;
+}
+
+.orb-stage__specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-block-start: 2.4rem;
+}
+
+.orb-stage__spec {
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.orb-foot {
+  display: grid;
+  gap: 0.8rem;
+  max-inline-size: 74rem;
+  margin-inline: auto;
+  padding: 1.6rem clamp(0.9rem, 0.4rem + 2vw, 2.4rem) 3rem;
+  border-block-start: 1px solid var(--ink-300);
+  font-size: 0.82rem;
+  line-height: 1.8;
+  color: var(--ink-500);
+}
+
+.orb-foot p {
+  margin: 0;
+  max-inline-size: 62ch;
+}
+
+.orb-foot__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.orb-foot a {
+  color: var(--ink-600);
+}
+
+.orb-foot a:hover,
+.orb-foot a:focus-visible {
+  color: var(--orb-accent);
+}
+
+/* The toggle states its own label in both languages; which one is visible is a CSS decision, so a
+   Persian page never shows the English string while a script is still starting up. */
+.orb-hud__show {
+  display: none;
+}
+
+.orb-hud[data-collapsed="true"] .orb-hud__show {
+  display: inline;
+}
+
+.orb-hud[data-collapsed="true"] .orb-hud__hide {
+  display: none;
+}
+
+/* On a phone the HUD would cover the stage, so it starts collapsed — and the page keeps a lane
+   free at the bottom for it either way. An overlay that sits on the copy is not a HUD. */
+@media (max-width: 900px), (max-height: 760px) {
+  .orb-hud {
+    inline-size: min(24rem, calc(100vw - 1.6rem));
+  }
+
+  .orb-hud[data-collapsed="true"] .orb-hud__spec,
+  .orb-hud[data-collapsed="true"] .orb-hud__links,
+  .orb-hud[data-collapsed="true"] .orb-hud__title {
+    display: none;
+  }
+
+  .orb-stage {
+    padding-block-end: 9rem;
+  }
+
+  .orb-foot {
+    padding-block-end: 9rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .orb-bar__mount {
+    order: 3;
+    flex-basis: 100%;
+    margin-inline-start: 0;
+  }
+
+  .orb-bar__link {
+    display: none;
+  }
+}

@@ -1,14 +1,14 @@
 {
   "source": {
     "file": "download/catalog-source.zip",
-    "bytes": 1013467,
-    "uncompressedBytes": 2468694,
-    "files": 153,
+    "bytes": 1150165,
+    "uncompressedBytes": 2907016,
+    "files": 184,
     "excludes": [
       "docs/vision/**",
       "docs/framework/**",
       "docs/download/**"
     ],
-    "generatedAt": "2026-09-27T03:34:46.356Z"
+    "generatedAt": "2026-09-27T04:19:10.921Z"
   }
 }

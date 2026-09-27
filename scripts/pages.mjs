@@ -402,7 +402,10 @@ function buildComponentPage({ base, variation, discipline, topic, variations, gi
     .join("");
 
   const sourceUrl = `${github}/tree/main/${variation.source}`;
-  const rawUrl = `${base}${variation.href}index.html`;
+  // Most variations are a directory and their `href` ends at it; the newsroom variations point
+  // straight at a page (`sites/gaming-news/index.html`). Appending the index to both produced
+  // `index.htmlindex.html`, so the extension is the test.
+  const rawUrl = `${base}${variation.href}${/\.[a-z0-9]{2,5}$/i.test(variation.href) ? "" : "index.html"}`;
 
   const stage = planned
     ? `      <section class="${PREFIX}__stage ${PREFIX}__stage--planned" data-planned>

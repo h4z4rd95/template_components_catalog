@@ -175,16 +175,35 @@ window.CatalogChrome = (function () {
    * without a JSON payload and without JavaScript-only content that search engines cannot read.
    */
   function translateData(scope) {
-    var nodes = (scope || document).querySelectorAll("[data-i18n-fa]");
+    var nodes = (scope || document).querySelectorAll("[data-i18n-fa], [data-i18n-fa-html]");
     Array.prototype.forEach.call(nodes, function (node) {
       if (node.getAttribute("data-l10n-lang") === state.locale) return;
+
+      // Two kinds of node, and both have to survive a round trip:
+      //  · plain text — swapped through `textContent`, so no markup is ever injected;
+      //  · rich text (the handbook has inline code and emphasis) — carried in attributes as real
+      //    markup and swapped through `innerHTML`. Storing the English side as text would silently
+      //    strip its formatting the first time a reader visited the Persian page and came back.
+      var rich = node.hasAttribute("data-i18n-fa-html");
+      var hasMarkup = node.children.length > 0;
+
       if (state.locale === "fa") {
-        if (!node.hasAttribute("data-l10n-en")) node.setAttribute("data-l10n-en", node.textContent);
-        var fa = node.getAttribute("data-i18n-fa");
-        if (fa) node.textContent = fa;
+        if (rich || hasMarkup) {
+          if (!node.hasAttribute("data-l10n-en-html")) node.setAttribute("data-l10n-en-html", node.innerHTML);
+        } else if (!node.hasAttribute("data-l10n-en")) {
+          node.setAttribute("data-l10n-en", node.textContent);
+        }
+        var replacement = rich ? node.getAttribute("data-i18n-fa-html") : node.getAttribute("data-i18n-fa");
+        if (replacement) {
+          if (rich || hasMarkup) node.innerHTML = replacement;
+          else node.textContent = replacement;
+        }
+      } else if (node.hasAttribute("data-l10n-en-html")) {
+        node.innerHTML = node.getAttribute("data-l10n-en-html");
       } else if (node.hasAttribute("data-l10n-en")) {
         node.textContent = node.getAttribute("data-l10n-en");
       }
+
       node.setAttribute("data-l10n-lang", state.locale);
     });
   }
@@ -973,6 +992,9 @@ window.CatalogChrome = (function () {
     topicHref: topicHref,
     variationHref: variationHref,
     translateTree: translateTree,
+    // Mounted content — nav items, story cards, captions — arrives *after* `init()` has already
+    // translated the document, so its consumer needs the same pair-swapper to finish the job.
+    translateData: translateData,
     setLocale: setLocale,
     setTheme: setTheme,
     state: state,

@@ -1,0 +1,58 @@
+{
+  "accent": "#5BFFC8",
+  "triggerEn": "Sections",
+  "trigger": {
+    "en": "Sections",
+    "fa": "بخش‌ها"
+  },
+  "items": [
+    {
+      "href": "index.html",
+      "label": {
+        "en": "News",
+        "fa": "اخبار"
+      },
+      "meta": {
+        "en": "desk",
+        "fa": "میز"
+      },
+      "accent": "#5BFFC8"
+    },
+    {
+      "href": "category.html",
+      "label": {
+        "en": "Reviews",
+        "fa": "نقدها"
+      },
+      "meta": {
+        "en": "long form",
+        "fa": "بلند"
+      },
+      "accent": "#5BFFC8"
+    },
+    {
+      "href": "article.html",
+      "label": {
+        "en": "Features",
+        "fa": "ویژه‌ها"
+      },
+      "meta": {
+        "en": "essay",
+        "fa": "جستار"
+      },
+      "accent": "#5BFFC8"
+    },
+    {
+      "href": "category.html#live",
+      "label": {
+        "en": "Live",
+        "fa": "زنده"
+      },
+      "meta": {
+        "en": "scoreboard",
+        "fa": "جدول"
+      },
+      "accent": "#5BFFC8"
+    }
+  ]
+}

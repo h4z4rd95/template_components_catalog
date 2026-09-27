@@ -294,8 +294,41 @@ a command-bar mega-menu whose panels are built from the manifest, so every link 
 generated page; it carries the "More" trigger for disciplines that do not fit the measured row, a
 full-height phone sheet, and a ⌘K palette over the whole catalogue. It is bilingual, RTL-aware and
 dual-theme through the shell's skin contract (`src/lib/skin.ts`), and gated by
-`npm run verify:nav` on desktop, phone, both directions and both themes. A buildless vanilla
-drawer/orbital nav is still open.
+`npm run verify:nav` on desktop, phone, both directions and both themes.
+
+`Nav_V02_VanillaOrbitalDrawer` — **shipped**: the same interaction with no bundler at all
+(`docs/vanilla/orbital-nav/`, one JS file, zero dependencies). Its implementation is *shared* with
+the newsroom blueprint (`docs/vanilla/shared/orbital-nav.{js,css}`), so the variation and the site
+that mounts it cannot drift apart. The menu is a **fan**: uniform measured spacing along a sine
+bulge, which is what keeps nine wide labels from colliding on a small radius — a ring of boxes
+overlaps itself, a fan cannot. It is bilingual, RTL-mirrored, keyboard-driven (arrows, Home/End,
+Escape, Enter), closed by default, and on a phone it becomes a scrollable sheet anchored to its
+trigger rather than a fixed panel (a `backdrop-filter` ancestor would otherwise re-parent it).
+
+**Batch 3c — full sites, composed from the variations (shipped).** The user's instruction was to
+build gaming-news samples *out of the samples that already exist*, so the newsroom is not a new
+component library — it is a **composition proof**: `docs/sites/gaming-news/` mounts
+`Nav_V02_VanillaOrbitalDrawer` as its section menu, frames real exported variation routes inside
+its banner slots (`data-embed` → `docs/framework/**`, degrading to an honest note when the
+framework export has not been built), and re-uses the catalogue's own skin runtime, fonts and
+generated pages for everything around them. Three pages, one implementation:
+
+| Page | What it proves |
+| --- | --- |
+| `index.html` — *the desk* | A lead story, a live scanner-HUD module, a four-card desk grid and a three-column ticker, all driven by `sites/gaming-news.json` |
+| `category.html` — *sections* | Filter chips over rows (`data-filter` / `data-category`, with a real `[data-empty]` state) — no JavaScript-only content, the list is in the markup |
+| `article.html` — *longform* | Letterpress reading page with a pull quote, a scroll progress hairline and an embedded variation in the body |
+
+Registered as `Site_V01_GameNewsDesk`, `Site_V02_GameNewsSections`, `Site_V03_GameNewsLongform`
+under the new **Full Sites / سایت‌های کامل** discipline (topics `news`, `article`) — so the
+catalogue's own browse tree now shows them next to the components they are built from.
+
+**The handbook (shipped).** `docs/guide/index.html`, generated from `guides/using-the-elements.json`
+by the same sync (eight sections: what the catalog is, how to run it, how to take one element, how
+to re-skin it, how to add your own, the gates, the blueprint, the download). Bilingual, dual-theme,
+bypasses no gate: it is sampled by `verify:site` at two viewports and both skins. Its Persian body
+is rich text — inline `<code>` and emphasis survive the language round trip through
+`data-i18n-fa-html`, because swapping `textContent` showed readers literal backticks and `**`.
 
 **Batch 4 — commerce** · `Shop_V01_…` physical storefront, `Shop_V02_…` digital storefront,
 `Product_V01_…` / `Product_V02_…` detail pages.
@@ -321,6 +354,16 @@ drawer/orbital nav is still open.
   filesystem, no horizontal overflow in either direction, localised headings and HUD labels, a
   stable component mounts its stage while a planned one never does, and same page / other theme
   must not paint the same background — the check that caught the light ramp being overridden).
+- composed-site gate — `npm run verify:site` (shipped: the newsroom, the handbook and the orbital
+  variation, each in both languages × both themes × desktop and phone. It asserts direction, theme
+  and canvas colour, no horizontal overflow, a localised headline, **no `data-i18n-fa` node still
+  showing English on a Persian page** (and no Persian leaking onto an English one), every internal
+  link resolving against the real filesystem, every banner slot either mounting a variation or
+  saying why it cannot, the article's progress hairline, the guide's eight sections — and that no
+  two items of the open nav **overlap**, with nothing off screen. It paid for itself immediately:
+  it caught `translateData` never being exported, so every dynamically mounted nav item and card
+  stayed English on the Persian pages, and a guide that was 848 px wide inside a 390 px viewport
+  because a `<pre>`'s min-content width was sizing the layout grid).
 - navigation variation gate — `npm run verify:nav` (shipped: direction, theme and canvas colour are
   what the shell asked for; the trigger row never overflows and every discipline it hides is
   reachable through "More"; panels open inside the viewport with links that resolve; the phone gets

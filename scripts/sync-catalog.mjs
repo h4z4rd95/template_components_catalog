@@ -16,10 +16,11 @@ import { dirname, join, resolve } from "node:path";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 import { emitPages } from "./pages.mjs";
+import { emitGuide, emitSite } from "./site.mjs";
 const MANIFEST = join(ROOT, "catalog", "catalog.json");
 const OUT_DIR = join(ROOT, "docs", "data");
 
-const ID_RE = /^(Hero|Nav|Loader|Scroll|Footer|UX|Dashboard|Commerce)_V\d{2}_[A-Za-z0-9]+$/;
+const ID_RE = /^(Hero|Nav|Loader|Scroll|Footer|UX|Dashboard|Commerce|Site)_V\d{2}_[A-Za-z0-9]+$/;
 const STATUSES = new Set(["stable", "beta", "planned"]);
 const REQUIRED = ["id", "discipline", "title", "stack", "vibe", "interaction", "href", "source", "status", "accent", "tags"];
 // A shipped variation must exist in both languages. The plan is explicit about this: a bilingual
@@ -344,6 +345,11 @@ async function main() {
   // navigates (discipline → topic → variation) and the page each variation owns.
   const pages = await emitPages({ root: ROOT, manifest, variations });
 
+  // The composed deliverables: a full newsroom assembled from these parts, and the guide that
+  // explains how to use them. Both are generated, both are bilingual, both are wiped and rebuilt.
+  const site = await emitSite({ root: ROOT, manifest, variations });
+  const guide = await emitGuide({ root: ROOT });
+
   // ---- report -------------------------------------------------------------
   const vendored = await vendorAssets();
   vendored.push(await emitFontStylesheet());
@@ -366,7 +372,9 @@ async function main() {
     process.exit(1);
   }
   console.log(`  ✓ wrote docs/data/catalog.json + docs/data/catalog.js`);
-  console.log(`  ✓ generated ${pages.written.length} pages under docs/browse/** and docs/component/**\n`);
+  console.log(`  ✓ generated ${pages.written.length} pages under docs/browse/** and docs/component/**`);
+  console.log(`  ✓ generated ${site.written.length} pages under docs/sites/gaming-news/** (the newsroom blueprint)`);
+  console.log(`  ✓ generated ${guide.written.length} page (${guide.sections} sections) under docs/guide/** — handbook, both languages\n`);
 }
 
 main().catch((err) => {

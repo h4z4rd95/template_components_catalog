@@ -100,6 +100,17 @@
         "product",
         "cart"
       ]
+    },
+    {
+      "id": "Site",
+      "label": "Full Sites",
+      "labelFa": "سایت‌های کامل",
+      "blurb": "Complete products assembled from the catalogue's own parts — navigation, heroes, cards and footer, in both languages and both themes.",
+      "blurbFa": "محصول‌های کامل که از قطعه‌های خودِ کاتالوگ ساخته شده‌اند — ناوبری، هیرو، کارت‌ها و فوتر، در دو زبان و دو تم.",
+      "topics": [
+        "news",
+        "article"
+      ]
     }
   ],
   "variations": [
@@ -491,6 +502,40 @@
       }
     },
     {
+      "id": "Nav_V02_VanillaOrbitalDrawer",
+      "discipline": "Nav",
+      "batch": 3,
+      "topic": "motion",
+      "title": "Vanilla Orbital Drawer",
+      "titleFa": "دراور مداری وانیلا",
+      "stack": [
+        "Vanilla HTML5",
+        "CSS transforms",
+        "Motion One (vendored)",
+        "Pointer + keyboard"
+      ],
+      "vibe": "Cyberpunk · Radial HUD",
+      "vibeFa": "سایبرپانک · HUD شعاعی",
+      "interaction": "One trigger opens an arc of sections around it, the ring mirrors itself for RTL, arrows move a roving selection, Enter travels and Escape folds it away — and on a phone the same items become a list rather than a shrunken ring.",
+      "interactionFa": "یک تریگر کمانی از بخش‌ها را دور خودش باز می‌کند، حلقه برای راست‌به‌چپ آینه می‌شود، کلیدهای جهت‌دار انتخاب را می‌چرخانند، Enter می‌برد و Escape می‌بندد — و روی موبایل همان آیتم‌ها به فهرست تبدیل می‌شوند، نه حلقه‌ای کوچک‌شده.",
+      "href": "vanilla/orbital-nav/",
+      "source": "docs/vanilla/orbital-nav/",
+      "status": "stable",
+      "accent": "#5BFFC8",
+      "tags": [
+        "nav",
+        "radial",
+        "buildless",
+        "keyboard",
+        "bilingual",
+        "dual-theme"
+      ],
+      "perf": {
+        "webgl": false,
+        "assetWeight": "light"
+      }
+    },
+    {
       "id": "Commerce_V01_HoloStorefront",
       "discipline": "Commerce",
       "batch": 4,
@@ -702,6 +747,103 @@
       "perf": {
         "webgl": false
       }
+    },
+    {
+      "id": "Site_V01_GameNewsDesk",
+      "discipline": "Site",
+      "batch": 6,
+      "topic": "news",
+      "title": "Gaming News Desk",
+      "titleFa": "میز خبر گیمینگ",
+      "stack": [
+        "Vanilla HTML5",
+        "Shared orbital nav",
+        "Live hero slot",
+        "Wire ticker"
+      ],
+      "vibe": "Cyberpunk · Newsroom",
+      "vibeFa": "سایبرپانک · اتاق‌خبر",
+      "interaction": "A newsroom front page where the lead story plays a catalogue hero live behind its headline, a wire ticker runs the day's headlines, and every card is real markup that opens a full story.",
+      "interactionFa": "صفحهٔ اول یک اتاق‌خبر: خبر اصلی یک هیروی کاتالوگ را زنده پشت تیترش اجرا می‌کند، نوار خبر سرفصل‌های روز را می‌چرخاند و هر کارت مارک‌آپ واقعی است که یک خبر کامل را باز می‌کند.",
+      "href": "sites/gaming-news/index.html",
+      "source": "sites/gaming-news.json",
+      "status": "stable",
+      "accent": "#5CE1FF",
+      "tags": [
+        "site",
+        "news",
+        "bilingual",
+        "dual-theme",
+        "vanilla"
+      ],
+      "perf": {
+        "webgl": false,
+        "assetWeight": "light"
+      }
+    },
+    {
+      "id": "Site_V02_GameNewsSections",
+      "discipline": "Site",
+      "batch": 6,
+      "topic": "news",
+      "title": "Gaming News Sections",
+      "titleFa": "بخش‌های خبر گیمینگ",
+      "stack": [
+        "Vanilla HTML5",
+        "CSS grid",
+        "Progressive filtering"
+      ],
+      "vibe": "Cyberpunk · Editorial Index",
+      "vibeFa": "سایبرپانک · فهرست ادیتوریال",
+      "interaction": "A section index that works before any script runs — the chips are buttons, the rows are markup — and gains instant filtering, with a catalogue hero mounted live as the section banner.",
+      "interactionFa": "فهرست بخش‌ها که پیش از اجرای هر اسکریپتی کار می‌کند — چیپ‌ها دکمه‌اند و ردیف‌ها مارک‌آپ — و بعد فیلتر لحظه‌ای می‌گیرد، با یک هیروی کاتالوگ که زنده به‌عنوان بنر بخش سوار شده.",
+      "href": "sites/gaming-news/category.html",
+      "source": "sites/gaming-news.json",
+      "status": "stable",
+      "accent": "#B48CFF",
+      "tags": [
+        "site",
+        "news",
+        "filter",
+        "bilingual",
+        "dual-theme"
+      ],
+      "perf": {
+        "webgl": false,
+        "assetWeight": "light"
+      }
+    },
+    {
+      "id": "Site_V03_GameNewsLongform",
+      "discipline": "Site",
+      "batch": 6,
+      "topic": "article",
+      "title": "Gaming News Long-form",
+      "titleFa": "بلندخوان خبر گیمینگ",
+      "stack": [
+        "Vanilla HTML5",
+        "Scroll progress",
+        "Live cover spread"
+      ],
+      "vibe": "Editorial · Immersive",
+      "vibeFa": "ادیتوریال · غرق‌کننده",
+      "interaction": "A single story given room: a reading-progress hairline that fills in the direction of the language, a catalogue hero used as the cover spread, and a pull quote that carries the argument.",
+      "interactionFa": "یک خبر با فضای کافی: خط پیشرفت خواندن که در جهت زبان پر می‌شود، یک هیروی کاتالوگ به‌عنوان صفحهٔ جلد، و نقل‌قولی که استدلال را حمل می‌کند.",
+      "href": "sites/gaming-news/article.html",
+      "source": "sites/gaming-news.json",
+      "status": "stable",
+      "accent": "#D8B472",
+      "tags": [
+        "site",
+        "news",
+        "longform",
+        "scroll",
+        "bilingual"
+      ],
+      "perf": {
+        "webgl": false,
+        "assetWeight": "light"
+      }
     }
   ],
   "locales": [
@@ -784,6 +926,20 @@
       "labelFa": "سبد و پرداخت",
       "blurb": "Adding, removing, and paying without friction.",
       "blurbFa": "افزودن، حذف و پرداخت بدون اصطکاک."
+    },
+    {
+      "id": "news",
+      "label": "News desk",
+      "labelFa": "میز خبر",
+      "blurb": "A newsroom front page: a live lead, a wire ticker and a generated story grid.",
+      "blurbFa": "صفحهٔ اول یک اتاق‌خبر: خبر اصلی زنده، نوار خبر و شبکهٔ خبریِ تولیدشده."
+    },
+    {
+      "id": "article",
+      "label": "Long-form",
+      "labelFa": "بلندخوان",
+      "blurb": "A single story given room: reading progress, a cover spread and a pull quote.",
+      "blurbFa": "یک خبر با فضای کافی: نوار پیشرفت خواندن، صفحهٔ جلد و نقل‌قول برجسته."
     }
   ],
   "ui": {
@@ -889,7 +1045,12 @@
       "next": "Next",
       "inThisTopic": "in this topic",
       "noVariations": "No variation has landed in this topic yet.",
-      "batch": "Batch"
+      "batch": "Batch",
+      "guide": "Guide",
+      "showHud": "Show HUD (H)",
+      "hideHud": "Hide HUD (H)",
+      "sections": "Sections",
+      "siteNews": "Gaming news desk"
     },
     "fa": {
       "brand": "کاتالوگ",
@@ -993,7 +1154,12 @@
       "next": "پسین",
       "inThisTopic": "در این موضوع",
       "noVariations": "هنوز نمونه‌ای در این موضوع ننشسته است.",
-      "batch": "بچ"
+      "batch": "بچ",
+      "guide": "راهنما",
+      "showHud": "نمایش HUD (H)",
+      "hideHud": "پنهان کردن HUD (H)",
+      "sections": "بخش‌ها",
+      "siteNews": "میز خبر گیمینگ"
     }
   }
 }

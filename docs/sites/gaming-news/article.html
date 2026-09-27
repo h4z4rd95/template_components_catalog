@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-title-en="Hollow Vanguard is a game about weight — NIGHT SHIFT" data-title-fa="«هالو ونگارد» بازی‌ای دربارهٔ وزن است — شیفت شب">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hollow Vanguard is a game about weight — NIGHT SHIFT</title>
+    <meta name="description" content="Everything in it — the recoil, the reload, the camera lag — is tuned to one idea: that mass should be legible before it should be fun." data-desc-en="Everything in it — the recoil, the reload, the camera lag — is tuned to one idea: that mass should be legible before it should be fun." data-desc-fa="همه‌چیز در آن — لگد، خشاب‌گذاری، تأخیر دوربین — حول یک ایده تنظیم شده: اینکه جرم باید پیش از هر چیزی خوانا باشد، حتی پیش از اینکه سرگرم‌کننده باشد." />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="Hollow Vanguard is a game about weight — NIGHT SHIFT" />
+    <meta property="og:description" content="Everything in it — the recoil, the reload, the camera lag — is tuned to one idea: that mass should be legible before it should be fun." />
+
+    <!-- Same pre-paint bootstrap as the rest of the catalogue: the first paint already knows the
+         language, the direction and the theme, so nothing flashes the wrong way round. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try { return localStorage.getItem(k); } catch (e) { return null; }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../assets/fonts.css" />
+    <link rel="stylesheet" href="../../assets/hub.css" />
+    <link rel="stylesheet" href="../../assets/theme.css" />
+    <link rel="stylesheet" href="../../assets/chrome.css" />
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../vanilla/shared/orbital-nav.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+
+    <script>
+      window.__CATALOG_BASE__ = "../../";
+    </script>
+    <script src="../../data/catalog.js" defer></script>
+    <script src="../../assets/chrome.js" defer></script>
+    <script src="../../vanilla/shared/orbital-nav.js" defer></script>
+    <script src="../../assets/site.js" defer></script>
+  </head>
+
+  <body>
+    <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
+    <header class="site__bar">
+      <div class="site__bar-row">
+        <a class="site__brand" href="../../index.html">
+          <span class="site__brand-dot" aria-hidden="true"></span>
+          <span class="site__brand-name" data-i18n-fa="شیفت شب">NIGHT SHIFT</span>
+        </a>
+
+        <!-- The orbital nav mount: the same buildless component the catalogue's Nav_V02 variation
+             ships, so the demo and the variation cannot disagree about how a section menu behaves. -->
+        <div class="site__nav" id=""></div>
+
+        <div class="site__bar-actions">
+          <div class="lang-switch" role="group" data-i18n-aria="language">
+            <button type="button" class="lang-switch__button" data-lang="en">EN</button>
+            <button type="button" class="lang-switch__button" data-lang="fa">فا</button>
+          </div>
+          <div class="theme-switch" role="group" data-i18n-aria="theme">
+            <button type="button" class="theme-switch__button" data-theme-set="light">
+              <span class="theme-switch__glyph" aria-hidden="true">☀</span><span data-i18n="light">Light</span>
+            </button>
+            <button type="button" class="theme-switch__button" data-theme-set="dark">
+              <span class="theme-switch__glyph" aria-hidden="true">☾</span><span data-i18n="dark">Dark</span>
+            </button>
+          </div>
+          <a class="masthead__cta" href="../../guide/index.html"><span data-i18n="guide">Guide</span> ↗</a>
+          <a class="masthead__cta" href="../../download/catalog-source.zip" download><span data-i18n="download">Download</span> ⤓</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="site__progress" aria-hidden="true"><span data-progress></span></div>
+
+    <main id="main" class="site__article">
+      <article>
+        <header class="site__page-head">
+          <p class="site__kicker" data-i18n-fa="خواندنی بلند · نقد">Long read · review</p>
+          <h1 class="site__page-title site__page-title--long" data-i18n-fa="«هالو ونگارد» بازی‌ای دربارهٔ وزن است">Hollow Vanguard is a game about weight</h1>
+          <p class="site__standfirst" data-i18n-fa="همه‌چیز در آن — لگد، خشاب‌گذاری، تأخیر دوربین — حول یک ایده تنظیم شده: اینکه جرم باید پیش از هر چیزی خوانا باشد، حتی پیش از اینکه سرگرم‌کننده باشد.">Everything in it — the recoil, the reload, the camera lag — is tuned to one idea: that mass should be legible before it should be fun.</p>
+          <p class="site__page-meta">
+            <span data-i18n-fa="نوشتهٔ میرا هالورسن">By Mira Halvorsen</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span class="force-ltr">13 Min 2026 · 9 min read</span>
+          </p>
+        </header>
+
+      <figure class="site__embed" data-embed data-src="../../framework/next/hero/brutal-stamp-press/index.html" style="--embed-h: 50svh">
+        <div class="site__embed-frame" data-embed-frame>
+          <p class="site__embed-note" data-i18n-fa="صفحهٔ جلد: هیروی لترپرسِ کاتالوگ، زنده سوار شده.">Cover spread: the letterpress hero from the catalogue, mounted live.</p>
+        </div>
+        <figcaption class="site__embed-caption" data-i18n-fa="طرح جلد: هیروی لترپرسِ کاتالوگ، اینجا به‌عنوان صفحهٔ آغاز نقد.">Cover treatment: the letterpress hero from the catalogue, used here as the review's opening spread.</figcaption>
+      </figure>
+
+        <div class="site__prose" data-prose>
+        <p data-i18n-fa="اولین کاری که «هالو ونگارد» می‌کند گرفتن دست‌های شماست. نه به‌معنای واقعی — کنترل‌ها معمولی‌اند — اما ده دقیقهٔ اول صرف این می‌شود که ثابت کند بدنِ شخصیت خودش نظر دارد. شما ایست می‌خواهید و دو فریم بعد، همراه با یک خم شدن، ایست می‌گیرید.">The first thing Hollow Vanguard does is take away your hands. Not literally — the controls are ordinary — but the first ten minutes are spent proving that the character's body has opinions of its own. You ask for a stop and get a stop, two frames later, with a lean.</p>
+        <p data-i18n-fa="این تأخیر در نمایش اول شبیه ادعا به نظر می‌رسد و در مسابقه شبیه امضای سازنده. تا ساعت چهارم، دیگر با بازی نمی‌جنگید؛ برایش بودجه می‌بندید، همان‌طور که برای یک کولهٔ سنگین در راهی طولانی بودجه می‌بندید.">That lag reads as pretension in a demo and as authorship in a match. By the fourth hour you are not fighting the game; you are budgeting for it, the way you budget for a heavy bag on a long walk.</p>
+        <blockquote class="site__pull" data-i18n-fa="«دیگر نپرسیدیم افکت گران به نظر می‌رسد یا نه؛ پرسیدیم سنگین به نظر می‌رسد یا نه.»">“We stopped asking whether an effect looked expensive and started asking whether it looked heavy.”</blockquote>
+        <p data-i18n-fa="داستان فنی زیر آن هم به‌همین اندازه آگاهانه است: بودجهٔ فریمِ ۸ میلی‌ثانیه‌ای که تیم هنری آن را محدودیت طراحی می‌داند، نه سقف سخت‌افزار. هر افکتی که از این صافی رد می‌شود، به این دلیل مانده که چیزی دربارهٔ وزن خودتان می‌گوید.">The technical story underneath is just as deliberate: an 8 ms frame budget that the art team treats as a design constraint, not a hardware limit. Every effect that survives the cut survives because it tells you something about your own weight.</p>
+        </div>
+
+        <ul class="site__tags">
+            <li class="site__tag force-ltr">review</li>
+            <li class="site__tag force-ltr">shooter</li>
+            <li class="site__tag force-ltr">engine</li>
+            <li class="site__tag force-ltr">8ms</li>
+        </ul>
+
+        <nav class="site__article-nav" aria-label="More">
+          <a href="index.html" data-i18n-fa="بازگشت به میز">Back to the desk</a>
+          <a href="category.html" data-i18n-fa="خبرهای بیشتر">More stories</a>
+        </nav>
+      </article>
+    </main>
+
+    <footer class="site__foot">
+      <p data-i18n-fa="یک طرحِ اتاق‌خبر که از قطعه‌های خودِ کاتالوگ ساخته شده: خبر اصلی یک هیروی زنده اجرا می‌کند، نوار خبر مارک‌آپ واقعی است، شبکه به‌صورت تولیدی ساخته می‌شود و هر کارت یک خبر کامل را باز می‌کند.">A newsroom blueprint built from the catalogue's own parts: the lead story runs a live hero, the ticker is real markup, the grid is generated, and every card opens a full story.</p>
+      <p class="site__foot-meta">
+        <a href="../../component/game-news-longform/index.html" data-i18n="componentPage">Component page</a>
+      </p>
+    </footer>
+
+    <div data-drawer-host></div>
+
+  </body>
+</html>

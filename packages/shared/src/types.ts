@@ -8,7 +8,8 @@ export type DisciplineId =
   | "Footer"
   | "UX"
   | "Dashboard"
-  | "Commerce";
+  | "Commerce"
+  | "Site";
 export type VariationStatus = "stable" | "beta" | "planned";
 export type LocaleId = "en" | "fa";
 
