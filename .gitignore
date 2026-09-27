@@ -10,6 +10,10 @@ node_modules/
 out/
 dist/
 build/
+# `dist/` matches the *directory*; Nuxt's build also drops a `dist` symlink beside it, and a
+# symlink is not a directory — it slipped past the rule above and was committed once, with an
+# absolute path that only ever resolved on the machine that made it.
+apps/*/dist
 .turbo/
 .vite/
 
