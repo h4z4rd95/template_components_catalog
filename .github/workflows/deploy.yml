@@ -7,6 +7,19 @@ name: Build & deploy The Catalog
 #
 # Every manifest href is relative, so the exact same output serves from
 # "/" locally and from "/<repo>/" on GitHub Pages.
+#
+# ONE-TIME SETUP, by someone with admin on the repository:
+#   Settings → Pages → Build and deployment → Source: GitHub Actions
+#
+# Until that switch is flipped, this workflow fails at `actions/configure-pages` with
+#
+#     Get Pages site failed. Error: Not Found
+#
+# and nothing here can do it instead. Creating a Pages site is POST /repos/{owner}/{repo}/pages,
+# which requires `administration: write` — a permission the Actions GITHUB_TOKEN can never be
+# granted, whatever the workflow asks for. (`enablement: true` makes the action attempt exactly that
+# call and fail the same way; see actions/configure-pages#40.) The first run of this workflow on
+# `main` failed there with every step before it green, which is the clearest way to see the shape.
 
 on:
   push:
@@ -18,9 +31,12 @@ permissions:
   pages: write
   id-token: write
 
+# A production deploy is not a CI job: cancelling one mid-flight can leave the site standing between
+# two versions. GitHub's own Pages starter workflow sets this to false for exactly that reason — the
+# newer run still wins, it just waits its turn.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
