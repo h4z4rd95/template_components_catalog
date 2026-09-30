@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-title-en="NIGHT SHIFT — Gaming news desk" data-title-fa="شیفت شب — میز خبر گیمینگ">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NIGHT SHIFT — Gaming news desk</title>
+    <meta name="description" content="A newsroom blueprint built from the catalogue's own parts: the lead story runs a live hero, the ticker is real markup, the grid is generated, and every card opens a full story." data-desc-en="A newsroom blueprint built from the catalogue's own parts: the lead story runs a live hero, the ticker is real markup, the grid is generated, and every card opens a full story." data-desc-fa="یک طرحِ اتاق‌خبر که از قطعه‌های خودِ کاتالوگ ساخته شده: خبر اصلی یک هیروی زنده اجرا می‌کند، نوار خبر مارک‌آپ واقعی است، شبکه به‌صورت تولیدی ساخته می‌شود و هر کارت یک خبر کامل را باز می‌کند." />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="NIGHT SHIFT — Gaming news desk" />
+    <meta property="og:description" content="A newsroom blueprint built from the catalogue's own parts: the lead story runs a live hero, the ticker is real markup, the grid is generated, and every card opens a full story." />
+
+    <!-- Same pre-paint bootstrap as the rest of the catalogue: the first paint already knows the
+         language, the direction and the theme, so nothing flashes the wrong way round. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try { return localStorage.getItem(k); } catch (e) { return null; }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../assets/fonts.css" />
+    <link rel="stylesheet" href="../../assets/hub.css" />
+    <link rel="stylesheet" href="../../assets/theme.css" />
+    <link rel="stylesheet" href="../../assets/chrome.css" />
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../vanilla/shared/orbital-nav.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+
+    <script>
+      window.__CATALOG_BASE__ = "../../";
+    </script>
+    <script src="../../data/catalog.js" defer></script>
+    <script src="../../assets/chrome.js" defer></script>
+    <script src="../../vanilla/shared/orbital-nav.js" defer></script>
+    <script src="../../assets/site.js" defer></script>
+  </head>
+
+  <body>
+    <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
+    <header class="site__bar">
+      <div class="site__bar-row">
+        <a class="site__brand" href="../../index.html">
+          <span class="site__brand-dot" aria-hidden="true"></span>
+          <span class="site__brand-name" data-i18n-fa="شیفت شب">NIGHT SHIFT</span>
+        </a>
+
+        <!-- The orbital nav mount: the same buildless component the catalogue's Nav_V02 variation
+             ships, so the demo and the variation cannot disagree about how a section menu behaves. -->
+        <div class="site__nav" id=""></div>
+
+        <div class="site__bar-actions">
+          <div class="lang-switch" role="group" data-i18n-aria="language">
+            <button type="button" class="lang-switch__button" data-lang="en">EN</button>
+            <button type="button" class="lang-switch__button" data-lang="fa">فا</button>
+          </div>
+          <div class="theme-switch" role="group" data-i18n-aria="theme">
+            <button type="button" class="theme-switch__button" data-theme-set="light">
+              <span class="theme-switch__glyph" aria-hidden="true">☀</span><span data-i18n="light">Light</span>
+            </button>
+            <button type="button" class="theme-switch__button" data-theme-set="dark">
+              <span class="theme-switch__glyph" aria-hidden="true">☾</span><span data-i18n="dark">Dark</span>
+            </button>
+          </div>
+          <a class="masthead__cta" href="../../guide/index.html"><span data-i18n="guide">Guide</span> ↗</a>
+          <a class="masthead__cta" href="../../download/catalog-source.zip" download><span data-i18n="download">Download</span> ⤓</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="site__ticker" role="marquee" aria-label="Headlines">
+        <span class="site__ticker-item" data-i18n-fa="پچ ۲.۰ «هالو ونگارد» امشب منتشر می‌شود">Hollow Vanguard ships its 2.0 patch tonight</span><span class="site__ticker-sep" aria-hidden="true">✳</span>
+        <span class="site__ticker-item" data-i18n-fa="«نئون رکوئیم» از ۴۰۰ هزار بازیکن همزمان گذشت">Neon Requiem breaks 400k concurrent players</span><span class="site__ticker-sep" aria-hidden="true">✳</span>
+        <span class="site__ticker-item" data-i18n-fa="استودیو اش‌فال تعویق تا سه‌ماههٔ دوم را تأیید کرد">Ashfall Studios confirms a delay to Q2</span><span class="site__ticker-sep" aria-hidden="true">✳</span>
+        <span class="site__ticker-item" data-i18n-fa="فریم‌کامل: چرا بودجهٔ ۸ میلی‌ثانیه دوباره مهم شد">Frame-perfect: why 8ms budgets matter again</span><span class="site__ticker-sep" aria-hidden="true">✳</span>
+    </div>
+
+    <main id="main">
+      <section class="site__lead">
+        <div class="site__lead-copy">
+          <p class="site__kicker" data-i18n-fa="خبر اصلی · موتور">Lead story · engine</p>
+          <h1 class="site__lead-title" data-i18n-fa="شوترهایی که شهرش را در ۸ میلی‌ثانیه رندر می‌کند">The shooter that renders its city at 8 ms per frame</h1>
+          <p class="site__lead-standfirst" data-i18n-fa="تیم هنری «هالو ونگارد» خط تولیدش را حول یک بودجهٔ سختِ فریم از نو ساخت — نتیجه بازی‌ای است که هرچه بیشتر نگاهش کنی سنگین‌تر حس می‌شود.">Hollow Vanguard's art team rebuilt their pipeline around a hard frame budget — and the result is a game that feels heavier the more you look at it.</p>
+          <p class="site__lead-meta">
+            <span data-i18n-fa="میرا هالورسن · میز موتور">Mira Halvorsen · Engine desk</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span class="force-ltr">13 Min 2026</span>
+          </p>
+        </div>
+      <figure class="site__embed" data-embed data-src="../../framework/next/hero/cyber-scanner-hud/index.html" style="--embed-h: 58svh">
+        <div class="site__embed-frame" data-embed-frame>
+          <p class="site__embed-note" data-i18n-fa="خبر اصلی یک هیروی زنده از کاتالوگ اجرا می‌کند — نمونهٔ اسکنر HUD، در همان جای خود.">The lead runs a live hero from the catalogue — the scanner HUD variation, mounted in place.</p>
+        </div>
+        <figcaption class="site__embed-caption" data-i18n-fa="خبر اصلی یک هیروی زنده از کاتالوگ اجرا می‌کند — نمونهٔ اسکنر HUD، در همان جای خود.">The lead runs a live hero from the catalogue — the scanner HUD variation, mounted in place.</figcaption>
+      </figure>
+      </section>
+
+      <section class="site__section" aria-labelledby="site-latest">
+        <header class="site__section-head">
+          <h2 class="site__section-title" id="site-latest" data-i18n-fa="تازه‌ها">Latest</h2>
+          <a class="site__section-link" href="category.html" data-i18n-fa="همهٔ خبرها">All stories →</a>
+        </header>
+        <div class="site__grid">
+        <article class="site__card" style="--card-accent: #5CE1FF">
+          <p class="site__card-cat">
+            <span data-i18n-fa="یادداشت پچ">Patch notes</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span class="force-ltr">5 min</span>
+          </p>
+          <h3 class="site__card-title" data-i18n-fa="هالو ونگارد ۲.۰ آن کمک‌نشانه‌ای را برمی‌دارد که کسی نخواسته بود">Hollow Vanguard 2.0 removes the aim assist nobody asked for</h3>
+          <p class="site__card-excerpt" data-i18n-fa="یازده صفحه یادداشت، یک تغییر سیستمی: منحنی کمک‌نشانه در رنکد حذف شده و نردبان همین حالا جابه‌جا می‌شود.">Eleven pages of notes, one systemic change: the assist curve is gone in ranked, and the ladder is already reshuffling.</p>
+          <p class="site__card-meta">
+            <span class="force-ltr">T. Okonkwo</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span data-i18n-fa="امروز">Today</span>
+          </p>
+        </article>
+        <article class="site__card" style="--card-accent: #FF3BD4">
+          <p class="site__card-cat">
+            <span data-i18n-fa="عرضه">Launch</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span class="force-ltr">4 min</span>
+          </p>
+          <h3 class="site__card-title" data-i18n-fa="شب اول «نئون رکوئیم»: ۴۰۰ هزار بازیکن، صفر خطای صف">Neon Requiem's first night: 400,000 players, zero queue errors</h3>
+          <p class="site__card-excerpt" data-i18n-fa="یک بازی سرقت سایبرپانک که سرورش بی‌صدا بالا می‌آید، خودش خبر است. تمام شب نمودار را تماشا کردیم.">A cyberpunk heist game launching with a quiet server is news in itself. We watched the graph all night.</p>
+          <p class="site__card-meta">
+            <span class="force-ltr">L. Bergström</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span data-i18n-fa="دیروز">Yesterday</span>
+          </p>
+        </article>
+        <article class="site__card" style="--card-accent: #D8B472">
+          <p class="site__card-cat">
+            <span data-i18n-fa="استودیو">Studio</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span class="force-ltr">3 min</span>
+          </p>
+          <h3 class="site__card-title" data-i18n-fa="اش‌فال به سه‌ماههٔ دوم می‌رود و دلیلش را در یک پاراگراف می‌گوید">Ashfall moves to Q2 and gives the reason in one paragraph</h3>
+          <p class="site__card-excerpt" data-i18n-fa="بدون نمایش نقشهٔ راه و بدون «پالایش» مبهم: یک زیرسیستم مشخص، یک گلوگاه مشخص، یک تاریخ مشخص.">No roadmap theatre, no vague &quot;polish&quot;: a specific subsystem, a specific bottleneck, a specific date.</p>
+          <p class="site__card-meta">
+            <span class="force-ltr">R. Ilves</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span data-i18n-fa="۲ روز پیش">2 days ago</span>
+          </p>
+        </article>
+        <article class="site__card" style="--card-accent: #B48CFF">
+          <p class="site__card-cat">
+            <span data-i18n-fa="فناوری">Tech</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span class="force-ltr">9 min</span>
+          </p>
+          <h3 class="site__card-title" data-i18n-fa="بودجهٔ ۸ میلی‌ثانیه برگشته و مسیر هنری را عوض می‌کند">The 8 ms budget is back, and it is changing art direction</h3>
+          <p class="site__card-excerpt" data-i18n-fa="سه استودیو، یک صفحهٔ مشترک: وقتی فریم فقط ۸ میلی‌ثانیه فرصت دارد، واقعاً چه چیزی حذف می‌شود.">Three studios, one shared spreadsheet: what actually gets cut when the frame has 8 ms to spend.</p>
+          <p class="site__card-meta">
+            <span class="force-ltr">M. Halvorsen</span>
+            <span class="site__card-dot" aria-hidden="true">·</span>
+            <span data-i18n-fa="۳ روز پیش">3 days ago</span>
+          </p>
+        </article>
+        </div>
+      </section>
+
+      <section class="site__section site__section--split" id="live">
+        <div>
+          <header class="site__section-head">
+            <h2 class="site__section-title" data-i18n-fa="تابلوی زنده">Live board</h2>
+          </header>
+          <ul class="site__live">
+          <li class="site__live-row">
+            <span class="site__live-event" data-i18n-fa="اینویتیشن ونگارد · نقشهٔ ۳">Vanguard Invitational · Map 3</span>
+            <span class="site__live-score force-ltr">13 – 11</span>
+            <span class="site__live-status" data-status="live" data-i18n-fa="زنده">live</span>
+          </li>
+          <li class="site__live-row">
+            <span class="site__live-event" data-i18n-fa="نردبان رکوئیم · اروپا">Requiem Ladder · EU</span>
+            <span class="site__live-score force-ltr">02 : 41</span>
+            <span class="site__live-status" data-status="queued" data-i18n-fa="در صف">queued</span>
+          </li>
+          <li class="site__live-row">
+            <span class="site__live-event" data-i18n-fa="نمایش‌مسابقهٔ اش‌فال">Ashfall Showmatch</span>
+            <span class="site__live-score force-ltr">—</span>
+            <span class="site__live-status" data-status="tonight" data-i18n-fa="امشب">tonight</span>
+          </li>
+          </ul>
+        </div>
+        <div>
+          <header class="site__section-head">
+            <h2 class="site__section-title" data-i18n-fa="میز نقدها">Reviews desk</h2>
+          </header>
+          <ul class="site__reviews">
+          <li class="site__review" style="--card-accent: #5CE1FF">
+            <span class="site__review-score force-ltr">9.1</span>
+            <span class="site__review-title" data-i18n-fa="هالو ونگارد">Hollow Vanguard</span>
+            <span class="site__review-verdict" data-i18n-fa="سنگین، دقیق، بی‌رحم.">Heavy, exact, unkind.</span>
+          </li>
+          <li class="site__review" style="--card-accent: #FF3BD4">
+            <span class="site__review-score force-ltr">8.4</span>
+            <span class="site__review-title" data-i18n-fa="نئون رکوئیم">Neon Requiem</span>
+            <span class="site__review-verdict" data-i18n-fa="شهری با نبض.">A city with a pulse.</span>
+          </li>
+          <li class="site__review" style="--card-accent: #D8B472">
+            <span class="site__review-score force-ltr">7.9</span>
+            <span class="site__review-title" data-i18n-fa="اش‌فال">Ashfall</span>
+            <span class="site__review-verdict" data-i18n-fa="زیبا، منتظر پچش.">Beautiful, waiting for its patch.</span>
+          </li>
+          <li class="site__review" style="--card-accent: #B48CFF">
+            <span class="site__review-score force-ltr">8.8</span>
+            <span class="site__review-title" data-i18n-fa="استاتیک بلوم">Static Bloom</span>
+            <span class="site__review-verdict" data-i18n-fa="آن آرامی که می‌ماند.">The quiet one that stays.</span>
+          </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site__foot">
+      <p data-i18n-fa="یک طرحِ اتاق‌خبر که از قطعه‌های خودِ کاتالوگ ساخته شده: خبر اصلی یک هیروی زنده اجرا می‌کند، نوار خبر مارک‌آپ واقعی است، شبکه به‌صورت تولیدی ساخته می‌شود و هر کارت یک خبر کامل را باز می‌کند.">A newsroom blueprint built from the catalogue's own parts: the lead story runs a live hero, the ticker is real markup, the grid is generated, and every card opens a full story.</p>
+      <p class="site__foot-meta">
+        <a href="../../index.html" data-i18n="backToHub">Back to the hub</a>
+        <span aria-hidden="true">·</span>
+        <a href="../../guide/index.html" data-i18n="guide">Guide</a>
+        <span aria-hidden="true">·</span>
+        <a href="../../component/game-news-desk/index.html" data-i18n="componentPage">Component page</a>
+      </p>
+    </footer>
+
+    <div data-drawer-host></div>
+
+  </body>
+</html>

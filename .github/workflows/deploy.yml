@@ -1,0 +1,73 @@
+name: Build & deploy The Catalog
+
+# The Pages site is a *build artifact*, not a committed bundle:
+#   · apps/*            are real framework projects
+#   · docs/             is the buildless showroom shell (committed)
+#   · docs/framework/*  is generated here, then published (never committed)
+#
+# Every manifest href is relative, so the exact same output serves from
+# "/" locally and from "/<repo>/" on GitHub Pages.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Verify & build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install workspaces
+        run: npm ci
+
+      - name: Verify (manifest sync · CSS-module integrity · typecheck · hub smoke test)
+        run: npm test
+
+      - name: Build framework exports into docs/
+        run: npm run build
+        env:
+          # e.g. /template_components_catalog → /template_components_catalog/framework/next
+          PAGES_BASE_PATH: /${{ github.event.repository.name }}
+
+      - name: Report artifact
+        run: |
+          echo "### The Catalog" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "| app | basePath |" >> "$GITHUB_STEP_SUMMARY"
+          echo "| --- | --- |" >> "$GITHUB_STEP_SUMMARY"
+          cat docs/framework/.build-info.json >> "$GITHUB_STEP_SUMMARY"
+          du -sh docs | sed 's/^/docs size: /' >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

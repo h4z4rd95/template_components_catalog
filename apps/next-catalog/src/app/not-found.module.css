@@ -1,0 +1,143 @@
+/* not-found.module.css — the 404, styled from the app's own tokens.
+ *
+ * Same rules as everywhere else in the catalogue: ink from the ramp (never a literal white), one
+ * accent used as ink, and no dependency on a theme attribute — this page has to look right whether
+ * or not the shell managed to run. Both ramps are handled by preferring the tokens and falling back
+ * to the dark values the app defines in globals.css.
+ */
+
+.page {
+  min-block-size: 100svh;
+  display: grid;
+  align-content: center;
+  gap: 1.1rem;
+  max-inline-size: 46rem;
+  margin-inline: auto;
+  padding: 12svh 1.4rem 4rem;
+}
+
+.kicker {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent-brutal);
+}
+
+.title {
+  margin: 0;
+  font-size: clamp(2rem, 1.2rem + 3.4vw, 3.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ink-700);
+}
+
+.title em {
+  font-family: var(--font-serif);
+  font-style: italic;
+  color: var(--ink-500);
+}
+
+.body {
+  margin: 0;
+  max-inline-size: 60ch;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--ink-600);
+}
+
+.body code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 6px;
+  color: var(--ink-700);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-block-start: 0.6rem;
+}
+
+.primary,
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.62rem 1.05rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.primary {
+  /* Ink on the page: legible in both ramps without knowing which one is active. */
+  background: var(--ink-700);
+  color: var(--ink-000);
+}
+
+.secondary {
+  border-color: var(--ink-300);
+  color: var(--ink-600);
+}
+
+.secondary:hover,
+.secondary:focus-visible {
+  color: var(--ink-700);
+  border-color: var(--ink-500);
+}
+
+.facts {
+  margin: 1.4rem 0 0;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--ink-300);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.8rem;
+}
+
+.facts div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.facts dt {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.facts dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-600);
+}
+
+.foot {
+  margin-block-start: 2.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  line-height: 1.7;
+  color: var(--ink-500);
+}
+
+.link {
+  color: var(--ink-600);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

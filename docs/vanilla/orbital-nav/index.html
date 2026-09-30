@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <title>Nav_V02_VanillaOrbitalDrawer — Vanilla Orbital Drawer | The Catalog</title>
+    <meta
+      name="description"
+      content="A buildless radial navigation: one trigger opens an arc of sections, the whole ring is keyboard-driven, and the same file powers the gaming-news blueprint. Vanilla HTML5, no bundler, no CDN."
+    />
+
+    <!-- Same pre-paint bootstrap as every page in the catalogue: language, direction and theme are
+         known before the first paint. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try { return localStorage.getItem(k); } catch (e) { return null; }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../assets/fonts.css" />
+    <link rel="stylesheet" href="../../assets/hub.css" />
+    <link rel="stylesheet" href="../../assets/theme.css" />
+    <link rel="stylesheet" href="../../assets/chrome.css" />
+    <!-- The nav's own stylesheet, shared with the gaming-news site: one implementation, so the
+         variation and the blueprint cannot disagree about how the ring looks or behaves. -->
+    <link rel="stylesheet" href="../shared/orbital-nav.css" />
+    <link rel="stylesheet" href="./orbital.css" />
+    <script>
+      window.__CATALOG_BASE__ = "../../";
+    </script>
+    <script src="../../data/catalog.js" defer></script>
+    <script src="../../assets/chrome.js" defer></script>
+    <script src="../shared/orbital-nav.js" defer></script>
+    <script src="./orbital.js" defer></script>
+  </head>
+
+  <body class="orb-page">
+    <!-- The catalogue shell owns language, direction and theme, and this page opts into it, so the
+         variation behaves exactly like it does inside the hub's frame. -->
+    <header class="orb-bar">
+      <div class="orb-bar__row">
+        <a class="orb-bar__brand" href="../../index.html">
+          <span class="orb-bar__dot" aria-hidden="true"></span>
+          <span data-i18n="brand">THE CATALOG</span>
+        </a>
+        <div class="orb-bar__mount" id="orb-mount"></div>
+        <div class="orb-bar__actions">
+          <div class="lang-switch" role="group" data-i18n-aria="language">
+            <button type="button" class="lang-switch__button" data-lang="en">EN</button>
+            <button type="button" class="lang-switch__button" data-lang="fa">فا</button>
+          </div>
+          <div class="theme-switch" role="group" data-i18n-aria="theme">
+            <button type="button" class="theme-switch__button" data-theme-set="light">
+              <span class="theme-switch__glyph" aria-hidden="true">☀</span><span data-i18n="light">Light</span>
+            </button>
+            <button type="button" class="theme-switch__button" data-theme-set="dark">
+              <span class="theme-switch__glyph" aria-hidden="true">☾</span><span data-i18n="dark">Dark</span>
+            </button>
+          </div>
+          <a class="orb-bar__link" href="../../component/vanilla-orbital-drawer/index.html" data-i18n="componentPage">Component page</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- The metadata HUD, exactly what the catalogue promises every variation carries. `H` collapses
+         it, and it collapses itself on small viewports so it can never sit on top of the work. -->
+    <aside class="orb-hud" id="hud">
+      <button type="button" class="orb-hud__toggle" id="hud-toggle" aria-expanded="true">
+        <span class="orb-hud__show" data-i18n="showHud">Show HUD (H)</span>
+        <span class="orb-hud__hide" data-i18n="hideHud">Hide HUD (H)</span>
+      </button>
+      <p class="orb-hud__id force-ltr">Nav_V02_VanillaOrbitalDrawer</p>
+      <h1 class="orb-hud__title" data-i18n-fa="دراور مداری وانیلا">Vanilla Orbital Drawer</h1>
+      <dl class="orb-hud__spec">
+        <div>
+          <dt data-i18n="stack">Stack</dt>
+          <dd>Vanilla HTML5 · CSS transforms · Pointer + keyboard</dd>
+        </div>
+        <div>
+          <dt data-i18n="vibe">Vibe</dt>
+          <dd data-i18n-fa="سایبرپانک · HUD شعاعی">Cyberpunk · Radial HUD</dd>
+        </div>
+        <div>
+          <dt data-i18n="interaction">Interaction</dt>
+          <dd data-i18n-fa="یک ضربه، یک کمان: حلقه از تریگر باز می‌شود، با کلیدهای جهت‌دار می‌چرخد، Enter انتخاب می‌کند و Escape می‌بندد — همان فایلی که سایت خبری گیمینگ هم استفاده می‌کند.">
+            One trigger, one arc: the ring opens from the trigger, arrows move a roving selection,
+            Enter activates it and Escape closes — the same file the gaming-news site mounts.
+          </dd>
+        </div>
+      </dl>
+      <p class="orb-hud__links">
+        <a href="../../browse/nav/index.html" data-i18n="backToHub">Back to the hub</a>
+        <span aria-hidden="true">·</span>
+        <a href="../../browse/nav/motion/index.html" data-i18n="siblingTopics">Topics in this discipline</a>
+      </p>
+    </aside>
+
+    <main class="orb-stage">
+      <p class="orb-stage__kicker" data-i18n-fa="ناوبری · بدون باندلر، بدون CDN">Navigation · no bundler, no CDN</p>
+      <h2 class="orb-stage__title" data-i18n-fa="حلقه‌ای که باز می‌شود، می‌چرخد و می‌بندد">
+        A ring that opens, travels and closes
+      </h2>
+      <p class="orb-stage__lede" data-i18n-fa="همان فایلِ جاوااسکریپت، دو مصرف‌کننده: این نمونه و سایت خبری گیمینگ در docs/sites/gaming-news/. یک پیاده‌سازی، پس نمی‌توانند دربارهٔ رفتار یک منو اختلاف پیدا کنند.">
+        One JavaScript file, two consumers: this variation and the gaming-news blueprint in
+        <code>docs/sites/gaming-news/</code>. One implementation — so the two cannot disagree about
+        how a section menu behaves.
+      </p>
+
+      <ul class="orb-stage__points">
+        <li data-i18n-fa="با کلیک باز می‌شود، نه با هاور: منویی که روی کل صفحه باز می‌شود نباید با تصادفِ اشاره‌گر باز شود.">
+          Opens on click, not hover: a menu that covers the page must not open by accident as the
+          pointer crosses it.
+        </li>
+        <li data-i18n-fa="کمان با مثلثات ساده چیده می‌شود و در RTL آینه می‌شود، پس حلقه با جهت خواندن حرکت می‌کند نه برخلافش.">
+          The arc is placed with plain trigonometry and mirrored for RTL, so the ring sweeps with the
+          reading direction, not against it.
+        </li>
+        <li data-i18n-fa="زیر ۷۲۰ پیکسل همان آیتم‌ها به فهرست تبدیل می‌شوند: پاسخ صادقانه به موبایل، نه حلقهٔ کوچک‌شده.">
+          Below 720 px the same items become a list: the honest phone answer, not a shrunken ring.
+        </li>
+        <li data-i18n-fa="با prefers-reduced-motion محو می‌ماند و سفر حذف می‌شود؛ ناوبری کار می‌کند، فقط پرواز نمی‌کند.">
+          With <code>prefers-reduced-motion</code> the fade stays and the travel goes: the nav still
+          works, it just does not fly.
+        </li>
+      </ul>
+
+      <div class="orb-stage__specs">
+        <span class="orb-stage__spec force-ltr">02 disciplines · 08 sections</span>
+        <span class="orb-stage__spec force-ltr">keyboard: ↑ ↓ ← → home end esc</span>
+        <span class="orb-stage__spec force-ltr">no dependencies · 0 KB gzipped extra</span>
+      </div>
+    </main>
+
+    <footer class="orb-foot">
+      <p data-i18n-fa="این نمونه بخشی از کاتالوگ است: هر نمونه یک صفحهٔ واقعی دارد، با HUD متادیتا، استیج زنده و لینک سورس.">
+        This variation is part of the catalogue: every variation has a real page, with a metadata
+        HUD, a live stage and a source link.
+      </p>
+      <p class="orb-foot__meta">
+        <a href="../../guide/index.html" data-i18n="guide">Guide</a>
+        <span aria-hidden="true">·</span>
+        <a href="../../sites/gaming-news/index.html" data-i18n-fa="طرحِ اتاق‌خبر">The newsroom blueprint</a>
+        <span aria-hidden="true">·</span>
+        <a href="../../download/catalog-source.zip" download data-i18n="downloadSource">Project source (ZIP)</a>
+      </p>
+    </footer>
+  </body>
+</html>

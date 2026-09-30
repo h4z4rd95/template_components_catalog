@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-title-en="The Long Table — Field Supply" data-title-fa="میز بلند — فیلد ساپلای">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Long Table — Field Supply</title>
+    <meta name="description" content="A reading on an object: what it is made of, why the joint is where it is, and what the surface does after five years. The buy panel stays with you, because a decision takes longer than a scroll." data-desc-en="A reading on an object: what it is made of, why the joint is where it is, and what the surface does after five years. The buy panel stays with you, because a decision takes longer than a scroll." data-desc-fa="خوانشی دربارهٔ یک شیء: از چه ساخته شده، چرا اتصال همان‌جاست، و سطحش بعد از پنج سال چه می‌کند. پنل خرید همراه شما می‌مانَد، چون تصمیم از یک اسکرول طولانی‌تر است." />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="The Long Table — Field Supply" />
+    <meta property="og:description" content="A reading on an object: what it is made of, why the joint is where it is, and what the surface does after five years. The buy panel stays with you, because a decision takes longer than a scroll." />
+
+    <!-- Same pre-paint bootstrap as the rest of the catalogue: the first paint already knows the
+         language, the direction and the theme, so nothing flashes the wrong way round. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try { return localStorage.getItem(k); } catch (e) { return null; }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../assets/fonts.css" />
+    <link rel="stylesheet" href="../../assets/hub.css" />
+    <link rel="stylesheet" href="../../assets/theme.css" />
+    <link rel="stylesheet" href="../../assets/chrome.css" />
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/shop.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+
+    <script>
+      window.__CATALOG_BASE__ = "../../";
+    </script>
+    <script src="../../data/catalog.js" defer></script>
+    <script src="../../assets/chrome.js" defer></script>
+    <script src="../../assets/site.js" defer></script>
+    <script src="../../assets/shop.js" defer></script>
+  </head>
+
+  <body class="shop-page" style="--site-accent: #c6a15b">
+    <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
+    <header class="shop__bar">
+      <div class="shop__bar-row">
+        <a class="shop__brand" href="index.html">
+          <span class="shop__brand-dot" aria-hidden="true"></span>
+          <span class="shop__brand-name" data-i18n-fa="فیلد ساپلای">Field Supply</span>
+        </a>
+        <nav class="shop__nav" aria-label="Shop">
+          <a class="shop__nav-link is-active" href="index.html" data-i18n-fa="فیزیکی">Physical</a>
+          <a class="shop__nav-link" href="digital.html" data-i18n-fa="دیجیتال">Digital</a>
+          <a class="shop__nav-link" href="cart.html" data-i18n-fa="سبد">Cart</a>
+          <a class="shop__nav-link" href="checkout.html" data-i18n-fa="پرداخت">Checkout</a>
+        </nav>
+        <div class="shop__bar-actions">
+          <div class="lang-switch" data-lang-switch>
+            <button type="button" class="lang-switch__button" data-lang="en">EN</button>
+            <button type="button" class="lang-switch__button" data-lang="fa">فا</button>
+          </div>
+          <button type="button" class="theme-switch" data-theme-toggle data-i18n-aria="themeToggle" aria-label="Switch theme">
+            <span data-theme-label-icon aria-hidden="true">◐</span>
+          </button>
+          <button type="button" class="shop__cart-pill" data-cart-open>
+            <span data-i18n="shopCart">Cart</span>
+            <span class="shop__cart-count force-ltr" data-cart-count>0</span>
+          </button>
+          <a class="shop__bar-link" href="../../guide/index.html" data-i18n="guide">Guide</a>
+        </div>
+      </div>
+    </header>    <main class="shop" id="main">
+      <header class="shop__head shop__head--editorial">
+        <p class="shop__kicker force-ltr">Commerce_V04_EditorialProduct</p>
+        <h1 class="shop__title" data-i18n-fa="میز بلند">The Long Table</h1>
+        <p class="shop__lede" data-i18n-fa="خوانشی دربارهٔ یک شیء: از چه ساخته شده، چرا اتصال همان‌جاست، و سطحش بعد از پنج سال چه می‌کند. پنل خرید همراه شما می‌مانَد، چون تصمیم از یک اسکرول طولانی‌تر است.">A reading on an object: what it is made of, why the joint is where it is, and what the surface does after five years. The buy panel stays with you, because a decision takes longer than a scroll.</p>
+      </header>
+
+      <div class="shop__editorial">
+        <article class="shop__longform">
+          <section class="shop__chapter">
+            <h2 data-i18n-fa="یک تخته، یک تصمیم">One board, one decision</h2>
+            <p data-i18n-fa="با یک تختهٔ بلوط اروپایی شروع می‌شود که سه سال در هوای آزاد خشک شده است. سه سال رمانتیک نیست: زیر آن، تخته بعد از میز شدن هم حرکت می‌کند و میزی که حرکت کند، درز می‌اندازد. کارگاه سالی یک بار خرید می‌کند و به ترتیب برش از پشته می‌سازد.">It starts as a single European oak board, air-dried for three years. Three years is not romance: below that, the board keeps moving after it is a table, and a table that moves is a table that gaps. The workshop buys once a year and builds from the stack in the order it was milled.</p>
+          </section>
+          <blockquote class="shop__pull" data-i18n-fa="این میز محصولی نیست که داستانی به آن چسبانده باشند. داستانی است که می‌توانید پشتش بنشینید.">The table is not a product with a story attached. It is a story you can sit at.</blockquote>
+
+          <section class="shop__chapter">
+            <h2 data-i18n-fa="اتصالی که دیده نمی‌شود">The joint where you cannot see it</h2>
+            <p data-i18n-fa="تیر طولی و پایه با کام‌وزبانهٔ نشسته به هم می‌رسند، دست‌کنده و با گوه محکم‌شده. در این میز پیچی نیست. این فخرفروشی دربارهٔ صناعت نیست — دلیلش این است که ده سال بعد یک نفر با پتک می‌تواند پایه را محکم کند، نه اینکه کارخانه تعویضش کند.">The apron meets the leg in a housed mortise, cut by hand and driven with a wedge. There is no screw in this table. That is not a boast about craft — it is the reason the leg can be tightened by a person with a mallet in ten years rather than replaced by a factory.</p>
+          </section>
+
+          <section class="shop__chapter">
+            <h2 data-i18n-fa="روغن، نه لاک">Oil, not lacquer</h2>
+            <p data-i18n-fa="با روغن واکس سخت پرداخت شده تا سطح در همان محل قابل ترمیم باشد. خش یک مشکل موضعی است: همان نقطه را سنباده بزنید، روغن بزنید و ترمیم در یک فصل با بقیه هم‌سن می‌شود. لاک همان خش را تبدیل می‌کرد به تصمیمی دربارهٔ تعویض کل صفحه.">Finished with a hardwax oil so the surface can be repaired in place. A scratch is a local problem: sand one patch, oil it, and the repair ages into the rest within a season. Lacquer would have made that same scratch a decision about replacing the top.</p>
+          </section>
+
+        </article>
+
+        <aside class="shop__buy-panel shop__buy-panel--sticky">
+          <p class="shop__sku force-ltr">Commerce_V04_EditorialProduct</p>
+          <h2 class="shop__buy-title" data-i18n-fa="میز بلند">The Long Table</h2>
+          <p class="shop__price shop__price--large">
+            <span class="shop__price-now">1 840 €</span>
+            <span class="shop__price-was">2 100 €</span>
+          </p>
+          <dl class="shop__specs shop__specs--panel">
+            <div><dt data-i18n-fa="چوب">Timber</dt><dd data-i18n-fa="بلوط اروپایی، ۳ سال خشک‌شده">European oak, 3-year air-dried</dd></div>
+            <div><dt data-i18n-fa="اندازه">Size</dt><dd data-i18n-fa="۲۱۰۰ × ۹۰۰ میلی‌متر">2100 × 900 mm</dd></div>
+            <div><dt data-i18n-fa="ارتفاع">Height</dt><dd data-i18n-fa="۷۴۰ میلی‌متر">740 mm</dd></div>
+            <div><dt data-i18n-fa="زمان آماده‌سازی">Lead time</dt><dd data-i18n-fa="۶ تا ۸ هفته">6–8 weeks</dd></div>
+          </dl>
+          <div class="shop__buy">
+            <div class="shop__qty" role="group" aria-label="Quantity">
+              <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+              <span class="shop__qty-value" data-qty-value>1</span>
+              <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+            </div>
+            <button type="button" class="shop__add" data-add data-good
+              data-id="P-LONGTABLE" data-sku="FS-770" data-price="1840"
+              data-kind="physical" data-name-en="The Long Table" data-name-fa="میز بلند"
+              data-i18n="addToCart">Add to cart</button>
+          </div>
+          <p class="shop__panel-note" data-i18n="shopLeadTime">Made to order — six to eight weeks.</p>
+        </aside>
+      </div>
+      <section class="shop__assurance">
+        <article class="shop__assure">
+          <h3 data-i18n="shopA1">Every total is computed</h3>
+          <p data-i18n="shopA1b">Prices, quantities and tax are calculated in the page, from the same records the cart uses.</p>
+        </article>
+        <article class="shop__assure">
+          <h3 data-i18n="shopA2">No dark patterns</h3>
+          <p data-i18n="shopA2b">No countdown timers, no fake scarcity, no pre-ticked boxes.</p>
+        </article>
+        <article class="shop__assure">
+          <h3 data-i18n="shopA3">Bilingual and dual-theme</h3>
+          <p data-i18n="shopA3b">Persian and English, day and night — every control checked in all four.</p>
+        </article>
+      </section>
+    </main>
+    <div data-drawer-host></div>
+
+  </body>
+</html>

@@ -1,0 +1,182 @@
+{
+  "site": {
+    "name": { "en": "NIGHT SHIFT", "fa": "شیفت شب" },
+    "tagline": { "en": "Gaming news desk", "fa": "میز خبر گیمینگ" },
+    "edition": { "en": "Edition 07 · Rotterdam", "fa": "شماره ۰۷ · روتردام" },
+    "lede": {
+      "en": "A newsroom blueprint built from the catalogue's own parts: the lead story runs a live hero, the ticker is real markup, the grid is generated, and every card opens a full story.",
+      "fa": "یک طرحِ اتاق‌خبر که از قطعه‌های خودِ کاتالوگ ساخته شده: خبر اصلی یک هیروی زنده اجرا می‌کند، نوار خبر مارک‌آپ واقعی است، شبکه به‌صورت تولیدی ساخته می‌شود و هر کارت یک خبر کامل را باز می‌کند."
+    }
+  },
+  "nav": [
+    { "id": "news", "label": { "en": "News", "fa": "اخبار" }, "href": "index.html", "meta": { "en": "desk", "fa": "میز" } },
+    { "id": "reviews", "label": { "en": "Reviews", "fa": "نقدها" }, "href": "category.html", "meta": { "en": "long form", "fa": "بلند" } },
+    { "id": "features", "label": { "en": "Features", "fa": "ویژه‌ها" }, "href": "article.html", "meta": { "en": "essay", "fa": "جستار" } },
+    { "id": "live", "label": { "en": "Live", "fa": "زنده" }, "href": "category.html#live", "meta": { "en": "scoreboard", "fa": "جدول" } }
+  ],
+  "ticker": [
+    { "en": "Hollow Vanguard ships its 2.0 patch tonight", "fa": "پچ ۲.۰ «هالو ونگارد» امشب منتشر می‌شود" },
+    { "en": "Neon Requiem breaks 400k concurrent players", "fa": "«نئون رکوئیم» از ۴۰۰ هزار بازیکن همزمان گذشت" },
+    { "en": "Ashfall Studios confirms a delay to Q2", "fa": "استودیو اش‌فال تعویق تا سه‌ماههٔ دوم را تأیید کرد" },
+    { "en": "Frame-perfect: why 8ms budgets matter again", "fa": "فریم‌کامل: چرا بودجهٔ ۸ میلی‌ثانیه دوباره مهم شد" }
+  ],
+  "lead": {
+    "kicker": { "en": "Lead story · engine", "fa": "خبر اصلی · موتور" },
+    "title": { "en": "The shooter that renders its city at 8 ms per frame", "fa": "شوترهایی که شهرش را در ۸ میلی‌ثانیه رندر می‌کند" },
+    "standfirst": {
+      "en": "Hollow Vanguard's art team rebuilt their pipeline around a hard frame budget — and the result is a game that feels heavier the more you look at it.",
+      "fa": "تیم هنری «هالو ونگارد» خط تولیدش را حول یک بودجهٔ سختِ فریم از نو ساخت — نتیجه بازی‌ای است که هرچه بیشتر نگاهش کنی سنگین‌تر حس می‌شود."
+    },
+    "byline": { "en": "Mira Halvorsen · Engine desk", "fa": "میرا هالورسن · میز موتور" },
+    "date": { "en": "13 Min 2026", "fa": "۱۳ دقیقه ۲۰۲۶" },
+    "embed": "framework/next/hero/cyber-scanner-hud/index.html",
+    "embedAlt": {
+      "en": "The lead runs a live hero from the catalogue — the scanner HUD variation, mounted in place.",
+      "fa": "خبر اصلی یک هیروی زنده از کاتالوگ اجرا می‌کند — نمونهٔ اسکنر HUD، در همان جای خود."
+    }
+  },
+  "stories": [
+    {
+      "id": "hollow-vanguard-patch",
+      "category": { "en": "Patch notes", "fa": "یادداشت پچ" },
+      "title": { "en": "Hollow Vanguard 2.0 removes the aim assist nobody asked for", "fa": "هالو ونگارد ۲.۰ آن کمک‌نشانه‌ای را برمی‌دارد که کسی نخواسته بود" },
+      "excerpt": {
+        "en": "Eleven pages of notes, one systemic change: the assist curve is gone in ranked, and the ladder is already reshuffling.",
+        "fa": "یازده صفحه یادداشت، یک تغییر سیستمی: منحنی کمک‌نشانه در رنکد حذف شده و نردبان همین حالا جابه‌جا می‌شود."
+      },
+      "author": "T. Okonkwo",
+      "date": { "en": "Today", "fa": "امروز" },
+      "read": { "en": "5 min", "fa": "۵ دقیقه" },
+      "accent": "#5CE1FF",
+      "tag": { "en": "shooter", "fa": "شوتر" }
+    },
+    {
+      "id": "neon-requiem-launch",
+      "category": { "en": "Launch", "fa": "عرضه" },
+      "title": { "en": "Neon Requiem's first night: 400,000 players, zero queue errors", "fa": "شب اول «نئون رکوئیم»: ۴۰۰ هزار بازیکن، صفر خطای صف" },
+      "excerpt": {
+        "en": "A cyberpunk heist game launching with a quiet server is news in itself. We watched the graph all night.",
+        "fa": "یک بازی سرقت سایبرپانک که سرورش بی‌صدا بالا می‌آید، خودش خبر است. تمام شب نمودار را تماشا کردیم."
+      },
+      "author": "L. Bergström",
+      "date": { "en": "Yesterday", "fa": "دیروز" },
+      "read": { "en": "4 min", "fa": "۴ دقیقه" },
+      "accent": "#FF3BD4",
+      "tag": { "en": "launch", "fa": "عرضه" }
+    },
+    {
+      "id": "ashfall-delay",
+      "category": { "en": "Studio", "fa": "استودیو" },
+      "title": { "en": "Ashfall moves to Q2 and gives the reason in one paragraph", "fa": "اش‌فال به سه‌ماههٔ دوم می‌رود و دلیلش را در یک پاراگراف می‌گوید" },
+      "excerpt": {
+        "en": "No roadmap theatre, no vague \"polish\": a specific subsystem, a specific bottleneck, a specific date.",
+        "fa": "بدون نمایش نقشهٔ راه و بدون «پالایش» مبهم: یک زیرسیستم مشخص، یک گلوگاه مشخص، یک تاریخ مشخص."
+      },
+      "author": "R. Ilves",
+      "date": { "en": "2 days ago", "fa": "۲ روز پیش" },
+      "read": { "en": "3 min", "fa": "۳ دقیقه" },
+      "accent": "#D8B472",
+      "tag": { "en": "industry", "fa": "صنعت" }
+    },
+    {
+      "id": "frame-budget",
+      "category": { "en": "Tech", "fa": "فناوری" },
+      "title": { "en": "The 8 ms budget is back, and it is changing art direction", "fa": "بودجهٔ ۸ میلی‌ثانیه برگشته و مسیر هنری را عوض می‌کند" },
+      "excerpt": {
+        "en": "Three studios, one shared spreadsheet: what actually gets cut when the frame has 8 ms to spend.",
+        "fa": "سه استودیو، یک صفحهٔ مشترک: وقتی فریم فقط ۸ میلی‌ثانیه فرصت دارد، واقعاً چه چیزی حذف می‌شود."
+      },
+      "author": "M. Halvorsen",
+      "date": { "en": "3 days ago", "fa": "۳ روز پیش" },
+      "read": { "en": "9 min", "fa": "۹ دقیقه" },
+      "accent": "#B48CFF",
+      "tag": { "en": "engine", "fa": "موتور" }
+    },
+    {
+      "id": "handheld-fps",
+      "category": { "en": "Hardware", "fa": "سخت‌افزار" },
+      "title": { "en": "Handheld mode now ships with its own draw-distance preset", "fa": "حالت دستی حالا تنظیم فاصلهٔ رندر خودش را دارد" },
+      "excerpt": {
+        "en": "The default is no longer \"low\": it is a curve tuned for a 7-inch screen at arm's length.",
+        "fa": "پیش‌فرض دیگر «کم» نیست: منحنی‌ای است که برای صفحهٔ ۷ اینچی در فاصلهٔ یک دست تنظیم شده."
+      },
+      "author": "S. Kade",
+      "date": { "en": "4 days ago", "fa": "۴ روز پیش" },
+      "read": { "en": "6 min", "fa": "۶ دقیقه" },
+      "accent": "#00F0A8",
+      "tag": { "en": "hardware", "fa": "سخت‌افزار" }
+    },
+    {
+      "id": "speedrun-rule",
+      "category": { "en": "Community", "fa": "کامیونیتی" },
+      "title": { "en": "A 12-year-old record falls because of one frame of animation", "fa": "رکوردی ۱۲ ساله با یک فریم انیمیشن می‌شکند" },
+      "excerpt": {
+        "en": "The community found a one-frame window in the reload, and the leaderboard has been rebuilt twice since.",
+        "fa": "کامیونیتی یک پنجرهٔ یک‌فریمی در خشاب‌گذاری پیدا کرد و از آن زمان جدول رکوردها دو بار بازسازی شده."
+      },
+      "author": "J. Prado",
+      "date": { "en": "5 days ago", "fa": "۵ روز پیش" },
+      "read": { "en": "7 min", "fa": "۷ دقیقه" },
+      "accent": "#FF6FA8",
+      "tag": { "en": "community", "fa": "کامیونیتی" }
+    }
+  ],
+  "reviews": [
+    { "title": { "en": "Hollow Vanguard", "fa": "هالو ونگارد" }, "score": 9.1, "verdict": { "en": "Heavy, exact, unkind.", "fa": "سنگین، دقیق، بی‌رحم." }, "accent": "#5CE1FF" },
+    { "title": { "en": "Neon Requiem", "fa": "نئون رکوئیم" }, "score": 8.4, "verdict": { "en": "A city with a pulse.", "fa": "شهری با نبض." }, "accent": "#FF3BD4" },
+    { "title": { "en": "Ashfall", "fa": "اش‌فال" }, "score": 7.9, "verdict": { "en": "Beautiful, waiting for its patch.", "fa": "زیبا، منتظر پچش." }, "accent": "#D8B472" },
+    { "title": { "en": "Static Bloom", "fa": "استاتیک بلوم" }, "score": 8.8, "verdict": { "en": "The quiet one that stays.", "fa": "آن آرامی که می‌ماند." }, "accent": "#B48CFF" }
+  ],
+  "live": [
+    { "event": { "en": "Vanguard Invitational · Map 3", "fa": "اینویتیشن ونگارد · نقشهٔ ۳" }, "score": "13 – 11", "status": { "en": "live", "fa": "زنده" } },
+    { "event": { "en": "Requiem Ladder · EU", "fa": "نردبان رکوئیم · اروپا" }, "score": "02 : 41", "status": { "en": "queued", "fa": "در صف" } },
+    { "event": { "en": "Ashfall Showmatch", "fa": "نمایش‌مسابقهٔ اش‌فال" }, "score": "—", "status": { "en": "tonight", "fa": "امشب" } }
+  ],
+  "article": {
+    "kicker": { "en": "Long read · review", "fa": "خواندنی بلند · نقد" },
+    "title": { "en": "Hollow Vanguard is a game about weight", "fa": "«هالو ونگارد» بازی‌ای دربارهٔ وزن است" },
+    "standfirst": {
+      "en": "Everything in it — the recoil, the reload, the camera lag — is tuned to one idea: that mass should be legible before it should be fun.",
+      "fa": "همه‌چیز در آن — لگد، خشاب‌گذاری، تأخیر دوربین — حول یک ایده تنظیم شده: اینکه جرم باید پیش از هر چیزی خوانا باشد، حتی پیش از اینکه سرگرم‌کننده باشد."
+    },
+    "byline": { "en": "By Mira Halvorsen", "fa": "نوشتهٔ میرا هالورسن" },
+    "date": { "en": "13 Min 2026 · 9 min read", "fa": "۱۳ دقیقه ۲۰۲۶ · ۹ دقیقه خواندن" },
+    "embed": "framework/next/hero/brutal-stamp-press/index.html",
+    "embedCaption": {
+      "en": "Cover treatment: the letterpress hero from the catalogue, used here as the review's opening spread.",
+      "fa": "طرح جلد: هیروی لترپرسِ کاتالوگ، اینجا به‌عنوان صفحهٔ آغاز نقد."
+    },
+    "body": [
+      {
+        "en": "The first thing Hollow Vanguard does is take away your hands. Not literally — the controls are ordinary — but the first ten minutes are spent proving that the character's body has opinions of its own. You ask for a stop and get a stop, two frames later, with a lean.",
+        "fa": "اولین کاری که «هالو ونگارد» می‌کند گرفتن دست‌های شماست. نه به‌معنای واقعی — کنترل‌ها معمولی‌اند — اما ده دقیقهٔ اول صرف این می‌شود که ثابت کند بدنِ شخصیت خودش نظر دارد. شما ایست می‌خواهید و دو فریم بعد، همراه با یک خم شدن، ایست می‌گیرید."
+      },
+      {
+        "en": "That lag reads as pretension in a demo and as authorship in a match. By the fourth hour you are not fighting the game; you are budgeting for it, the way you budget for a heavy bag on a long walk.",
+        "fa": "این تأخیر در نمایش اول شبیه ادعا به نظر می‌رسد و در مسابقه شبیه امضای سازنده. تا ساعت چهارم، دیگر با بازی نمی‌جنگید؛ برایش بودجه می‌بندید، همان‌طور که برای یک کولهٔ سنگین در راهی طولانی بودجه می‌بندید."
+      },
+      {
+        "en": "The technical story underneath is just as deliberate: an 8 ms frame budget that the art team treats as a design constraint, not a hardware limit. Every effect that survives the cut survives because it tells you something about your own weight.",
+        "fa": "داستان فنی زیر آن هم به‌همین اندازه آگاهانه است: بودجهٔ فریمِ ۸ میلی‌ثانیه‌ای که تیم هنری آن را محدودیت طراحی می‌داند، نه سقف سخت‌افزار. هر افکتی که از این صافی رد می‌شود، به این دلیل مانده که چیزی دربارهٔ وزن خودتان می‌گوید."
+      }
+    ],
+    "pull": {
+      "en": "“We stopped asking whether an effect looked expensive and started asking whether it looked heavy.”",
+      "fa": "«دیگر نپرسیدیم افکت گران به نظر می‌رسد یا نه؛ پرسیدیم سنگین به نظر می‌رسد یا نه.»"
+    },
+    "tags": [
+      { "en": "review", "fa": "نقد" },
+      { "en": "shooter", "fa": "شوتر" },
+      { "en": "engine", "fa": "موتور" },
+      { "en": "8ms", "fa": "۸ms" }
+    ]
+  },
+  "categories": [
+    { "id": "all", "label": { "en": "Everything", "fa": "همه‌چیز" }, "count": 6 },
+    { "id": "tech", "label": { "en": "Tech", "fa": "فناوری" }, "count": 2 },
+    { "id": "launch", "label": { "en": "Launches", "fa": "عرضه‌ها" }, "count": 1 },
+    { "id": "industry", "label": { "en": "Industry", "fa": "صنعت" }, "count": 1 },
+    { "id": "community", "label": { "en": "Community", "fa": "کامیونیتی" }, "count": 1 },
+    { "id": "hardware", "label": { "en": "Hardware", "fa": "سخت‌افزار" }, "count": 1 }
+  ]
+}

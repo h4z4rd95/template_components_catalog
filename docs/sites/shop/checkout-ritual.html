@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-title-en="The four-step checkout — Field Supply" data-title-fa="پرداخت چهارمرحله‌ای — فیلد ساپلای">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The four-step checkout — Field Supply</title>
+    <meta name="description" content="Four steps, each one checked before it lets you leave, and a summary that follows the whole way. Backwards is always allowed; forwards has to be earned." data-desc-en="Four steps, each one checked before it lets you leave, and a summary that follows the whole way. Backwards is always allowed; forwards has to be earned." data-desc-fa="چهار مرحله، هر کدام پیش از عبور بررسی می‌شود، و خلاصه‌ای که تا آخر همراه است. بازگشت همیشه آزاد است؛ رفتن به جلو باید به دست بیاید." />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="The four-step checkout — Field Supply" />
+    <meta property="og:description" content="Four steps, each one checked before it lets you leave, and a summary that follows the whole way. Backwards is always allowed; forwards has to be earned." />
+
+    <!-- Same pre-paint bootstrap as the rest of the catalogue: the first paint already knows the
+         language, the direction and the theme, so nothing flashes the wrong way round. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try { return localStorage.getItem(k); } catch (e) { return null; }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../assets/fonts.css" />
+    <link rel="stylesheet" href="../../assets/hub.css" />
+    <link rel="stylesheet" href="../../assets/theme.css" />
+    <link rel="stylesheet" href="../../assets/chrome.css" />
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/shop.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+
+    <script>
+      window.__CATALOG_BASE__ = "../../";
+    </script>
+    <script src="../../data/catalog.js" defer></script>
+    <script src="../../assets/chrome.js" defer></script>
+    <script src="../../assets/site.js" defer></script>
+    <script src="../../assets/shop.js" defer></script>
+  </head>
+
+  <body class="shop-page" style="--site-accent: #c6a15b">
+    <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
+    <header class="shop__bar">
+      <div class="shop__bar-row">
+        <a class="shop__brand" href="index.html">
+          <span class="shop__brand-dot" aria-hidden="true"></span>
+          <span class="shop__brand-name" data-i18n-fa="فیلد ساپلای">Field Supply</span>
+        </a>
+        <nav class="shop__nav" aria-label="Shop">
+          <a class="shop__nav-link" href="index.html" data-i18n-fa="فیزیکی">Physical</a>
+          <a class="shop__nav-link" href="digital.html" data-i18n-fa="دیجیتال">Digital</a>
+          <a class="shop__nav-link" href="cart.html" data-i18n-fa="سبد">Cart</a>
+          <a class="shop__nav-link is-active" href="checkout.html" data-i18n-fa="پرداخت">Checkout</a>
+        </nav>
+        <div class="shop__bar-actions">
+          <div class="lang-switch" data-lang-switch>
+            <button type="button" class="lang-switch__button" data-lang="en">EN</button>
+            <button type="button" class="lang-switch__button" data-lang="fa">فا</button>
+          </div>
+          <button type="button" class="theme-switch" data-theme-toggle data-i18n-aria="themeToggle" aria-label="Switch theme">
+            <span data-theme-label-icon aria-hidden="true">◐</span>
+          </button>
+          <button type="button" class="shop__cart-pill" data-cart-open>
+            <span data-i18n="shopCart">Cart</span>
+            <span class="shop__cart-count force-ltr" data-cart-count>0</span>
+          </button>
+          <a class="shop__bar-link" href="../../guide/index.html" data-i18n="guide">Guide</a>
+        </div>
+      </div>
+    </header>    <main class="shop" id="main">
+      <header class="shop__head">
+        <p class="shop__kicker force-ltr" data-i18n-fa="پرداخت · Commerce_V07_RitualCheckout">Checkout · Commerce_V07_RitualCheckout</p>
+        <h1 class="shop__title" data-i18n-fa="پرداخت چهارمرحله‌ای">The four-step checkout</h1>
+        <p class="shop__lede" data-i18n-fa="چهار مرحله، هر کدام پیش از عبور بررسی می‌شود، و خلاصه‌ای که تا آخر همراه است. بازگشت همیشه آزاد است؛ رفتن به جلو باید به دست بیاید.">Four steps, each one checked before it lets you leave, and a summary that follows the whole way. Backwards is always allowed; forwards has to be earned.</p>
+      </header>
+
+      <div class="shop__ritual" data-ritual data-step="0">
+        <ol class="shop__steps" data-steps>
+          <li class="shop__step is-current" data-step-item="0">
+            <span class="shop__step-index force-ltr">01</span>
+            <span class="shop__step-text">
+              <span class="shop__step-label" data-i18n-fa="سبد">Cart</span>
+              <span class="shop__step-note" data-i18n-fa="چه می‌خرید">What you are buying</span>
+            </span>
+          </li>
+          <li class="shop__step" data-step-item="1">
+            <span class="shop__step-index force-ltr">02</span>
+            <span class="shop__step-text">
+              <span class="shop__step-label" data-i18n-fa="نشانی">Address</span>
+              <span class="shop__step-note" data-i18n-fa="کجا می‌رود">Where it goes</span>
+            </span>
+          </li>
+          <li class="shop__step" data-step-item="2">
+            <span class="shop__step-index force-ltr">03</span>
+            <span class="shop__step-text">
+              <span class="shop__step-label" data-i18n-fa="ارسال">Delivery</span>
+              <span class="shop__step-note" data-i18n-fa="چقدر سریع، چقدر">How fast, how much</span>
+            </span>
+          </li>
+          <li class="shop__step" data-step-item="3">
+            <span class="shop__step-index force-ltr">04</span>
+            <span class="shop__step-text">
+              <span class="shop__step-label" data-i18n-fa="پرداخت">Payment</span>
+              <span class="shop__step-note" data-i18n-fa="و تمام">And done</span>
+            </span>
+          </li>
+        </ol>
+
+        <form class="shop__ritual-form" data-ritual-form novalidate>
+          <section class="shop__ritual-panel" data-step-panel="0">
+            <h2 class="shop__panel-title" data-i18n="shopReviewCart">Review your cart</h2>
+            <p class="shop__cart-empty" data-cart-empty hidden data-i18n-fa="هنوز چیزی اینجا نیست. قفسه یک کلیک فاصله دارد.">Nothing here yet. The shelf is one click away.</p>
+            <ul class="shop__lines" data-cart-lines data-lines-variant="full"></ul>
+          </section>
+
+          <section class="shop__ritual-panel" data-step-panel="1" hidden>
+            <h2 class="shop__panel-title" data-i18n="shopWhereItGoes">Where it goes</h2>
+            <div class="shop__fields">
+            <label class="shop__field">
+              <span class="shop__field-label" data-i18n-fa="نام کامل">Full name</span>
+              <input type="text" name="name" class="shop__input" autocomplete="name" data-validate="name" />
+              <span class="shop__field-error" data-error-for="name" hidden></span>
+            </label>
+            <label class="shop__field">
+              <span class="shop__field-label" data-i18n-fa="ایمیل">Email</span>
+              <input type="email" name="email" class="shop__input" autocomplete="email" data-validate="email" />
+              <span class="shop__field-error" data-error-for="email" hidden></span>
+            </label>
+            <label class="shop__field">
+              <span class="shop__field-label" data-i18n-fa="نشانی">Address</span>
+              <input type="text" name="address" class="shop__input" autocomplete="street-address" data-validate="address" />
+              <span class="shop__field-error" data-error-for="address" hidden></span>
+            </label>
+            <label class="shop__field">
+              <span class="shop__field-label" data-i18n-fa="شهر">City</span>
+              <input type="text" name="city" class="shop__input" autocomplete="address-level2" data-validate="city" />
+              <span class="shop__field-error" data-error-for="city" hidden></span>
+            </label>
+            <label class="shop__field">
+              <span class="shop__field-label" data-i18n-fa="کد پستی">Postcode</span>
+              <input type="text" name="postcode" class="shop__input" autocomplete="postal-code" data-validate="postcode" />
+              <span class="shop__field-error" data-error-for="postcode" hidden></span>
+            </label>
+            <label class="shop__field">
+              <span class="shop__field-label" data-i18n-fa="کشور">Country</span>
+              <input type="text" name="country" class="shop__input" autocomplete="country-name" data-validate="country" />
+              <span class="shop__field-error" data-error-for="country" hidden></span>
+            </label>
+            </div>
+          </section>
+
+          <section class="shop__ritual-panel" data-step-panel="2" hidden>
+            <h2 class="shop__panel-title" data-i18n="shopHowFast">How fast</h2>
+            <div class="shop__radios" data-delivery-group>
+              <label class="shop__radio">
+                <input type="radio" name="delivery" value="standard" data-price="6" checked />
+                <span class="shop__radio-label" data-i18n-fa="معمولی — ۲ تا ۴ روز">Standard — 2–4 days</span>
+                <span class="shop__radio-price force-ltr">6 €</span>
+              </label>
+              <label class="shop__radio">
+                <input type="radio" name="delivery" value="express" data-price="18" />
+                <span class="shop__radio-label" data-i18n-fa="سریع — فردا">Express — tomorrow</span>
+                <span class="shop__radio-price force-ltr">18 €</span>
+              </label>
+              <label class="shop__radio">
+                <input type="radio" name="delivery" value="pickup" data-price="0" />
+                <span class="shop__radio-label" data-i18n-fa="تحویل حضوری در روتردام">Collect in Rotterdam</span>
+                <span class="shop__radio-price force-ltr"></span>
+              </label>
+            </div>
+          </section>
+
+          <section class="shop__ritual-panel" data-step-panel="3" hidden>
+            <h2 class="shop__panel-title" data-i18n="shopPayment">Payment</h2>
+            <div class="shop__fields">
+            <label class="shop__field shop__field--wide">
+              <span class="shop__field-label" data-i18n-fa="شمارهٔ کارت">Card number</span>
+              <input type="text" name="card" class="shop__input force-ltr" inputmode="numeric" autocomplete="cc-number" data-validate="card" placeholder="4242 4242 4242 4242" />
+              <span class="shop__field-error" data-error-for="card" hidden></span>
+            </label>
+            <label class="shop__field">
+              <span class="shop__field-label" data-i18n-fa="انقضا">Expiry</span>
+              <input type="text" name="expiry" class="shop__input force-ltr" inputmode="numeric" autocomplete="cc-exp" placeholder="04/29" data-validate="expiry" />
+              <span class="shop__field-error" data-error-for="expiry" hidden></span>
+            </label>
+            <label class="shop__field">
+              <span class="shop__field-label" data-i18n-fa="CVC">CVC</span>
+              <input type="text" name="cvc" class="shop__input force-ltr" inputmode="numeric" autocomplete="cc-csc" placeholder="123" data-validate="cvc" />
+              <span class="shop__field-error" data-error-for="cvc" hidden></span>
+            </label>
+            <p class="shop__panel-note shop__field--wide" data-i18n-fa="هیچ مبلغی برداشت نمی‌شود — این یک کاتالوگ است، نه مغازه.">Nothing is charged — this is a catalogue, not a shop.</p>
+            </div>
+          </section>
+
+          <p class="shop__form-error" data-form-error hidden role="alert"></p>
+          <div class="shop__ritual-actions">
+            <button type="button" class="shop__cta shop__cta--ghost" data-step-back data-i18n="shopBack" hidden>Back</button>
+            <button type="button" class="shop__cta" data-step-next data-i18n="shopContinue">Continue</button>
+            <button type="submit" class="shop__cta" data-step-finish data-i18n="shopFinish" hidden>Pay and finish</button>
+          </div>
+          <p class="shop__success" data-success hidden data-i18n-fa="پرداخت شد. چهار مرحله، بدون غافلگیری — و سبد دوباره خالی است.">Paid. Four steps, no surprises — and the cart is empty again.</p>
+        </form>
+
+        <aside class="shop__totals shop__totals--sticky">
+          <h2 class="shop__totals-title" data-i18n="shopYourOrder">Your order</h2>
+          <ul class="shop__lines shop__lines--compact" data-cart-lines data-lines-variant="compact"></ul>
+          <dl class="shop__totals-rows">
+            <div><dt data-i18n="shopSubtotal">Subtotal</dt><dd class="force-ltr" data-total="subtotal">—</dd></div>
+            <div data-discount-row hidden><dt data-i18n="shopDiscount">Discount</dt><dd class="force-ltr" data-total="discount">—</dd></div>
+            <div><dt data-i18n="shopShipping">Shipping</dt><dd class="force-ltr" data-total="shipping">—</dd></div>
+            <div><dt data-i18n="shopTax">VAT (21%)</dt><dd class="force-ltr" data-total="tax">—</dd></div>
+            <div class="shop__totals-grand"><dt data-i18n="shopTotal">Total</dt><dd class="force-ltr" data-total="total">—</dd></div>
+          </dl>
+        </aside>
+      </div>
+    </main>
+    <div data-drawer-host></div>
+
+  </body>
+</html>

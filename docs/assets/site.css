@@ -1,0 +1,984 @@
+/* ============================================================================
+   The Catalog — composed pages (gaming-news site, guide)
+
+   These pages are not the catalogue shell: they are sites built *from* it. So they
+   keep its tokens (the ink ramp in hub.css, day/night in theme.css, the Catalog
+   font stack in fonts.css) and write their own layout on top — a newsroom's
+   rhythm, not a catalogue's. Direction is logical everywhere; the only physical
+   values are the accent gradients, and they are marked.
+   ========================================================================= */
+
+.site__bar {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 40;
+  background: color-mix(in oklab, var(--ink-000) 86%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-block-end: 1px solid var(--ink-300);
+}
+
+.site__bar-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  /* Sticky bars that can wrap are sticky bars that eat the viewport on a phone; this one keeps
+     its place and lets the nav take the width it needs. */
+  flex-wrap: wrap;
+  padding: 0.7rem clamp(0.9rem, 0.4rem + 2vw, 2.5rem);
+}
+
+.site__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--ink-700);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site__brand-dot {
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: var(--site-accent, var(--accent));
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--site-accent, var(--accent)) 20%, transparent);
+}
+
+.site__brand-name {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.site__nav {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: flex-end;
+  min-inline-size: 0;
+}
+
+.site__bar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-inline-start: auto;
+}
+
+/* ------------------------------------------------------------------- ticker --- */
+
+.site__ticker {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.5rem clamp(0.9rem, 0.4rem + 2vw, 2.5rem);
+  border-block-end: 1px solid var(--ink-300);
+  background: var(--ink-050);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  color: var(--ink-600);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.site__ticker-item {
+  flex: 0 0 auto;
+}
+
+.site__ticker-sep {
+  flex: 0 0 auto;
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+}
+
+/* The belt moves only where motion is welcome; the content is identical either way. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 761px) {
+  .site__ticker {
+    mask-image: linear-gradient(to right, transparent, #000 6%, #000 94%, transparent);
+  }
+
+  .site__ticker-item,
+  .site__ticker-sep {
+    animation: site-belt 42s linear infinite;
+  }
+}
+
+@keyframes site-belt {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    /* A physical direction on purpose: a news belt travels the same way in every locale. */
+    transform: translateX(-50%);
+  }
+}
+
+/* --------------------------------------------------------------------- lead --- */
+
+.site__lead {
+  display: grid;
+  gap: clamp(1.2rem, 0.8rem + 2vw, 2.4rem);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: start;
+  padding: clamp(1.6rem, 1rem + 3vw, 3.4rem) clamp(0.9rem, 0.4rem + 2vw, 2.5rem) 0;
+  max-inline-size: 92rem;
+  margin-inline: auto;
+}
+
+.site__kicker {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+}
+
+.site__lead-title {
+  margin: 0;
+  font-size: clamp(2.1rem, 1.2rem + 4.4vw, 4.6rem);
+  font-weight: 800;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  color: var(--ink-700);
+  text-wrap: balance;
+}
+
+[lang="fa"] .site__lead-title,
+[lang="fa"] .site__page-title {
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.site__lead-standfirst {
+  max-inline-size: 46ch;
+  margin: 1rem 0 0;
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.12rem);
+  line-height: 1.8;
+  color: var(--ink-600);
+}
+
+.site__lead-meta,
+.site__page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1.1rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+/* ------------------------------------------------------------------- embeds --- */
+
+.site__embed {
+  margin: 0;
+  border: 1px solid var(--ink-300);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--ink-050);
+}
+
+.site__embed-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  block-size: var(--embed-h, 56svh);
+  background: var(--ink-000);
+}
+
+.site__embed iframe {
+  inline-size: 100%;
+  block-size: 100%;
+  border: 0;
+  opacity: 0;
+  transition: opacity 420ms var(--ease-editorial, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.site__embed iframe.is-live {
+  opacity: 1;
+}
+
+.site__embed-note,
+.site__embed-missing {
+  max-inline-size: 44ch;
+  margin: 0;
+  padding: 1.2rem;
+  font-size: 0.84rem;
+  line-height: 1.75;
+  color: var(--ink-500);
+  text-align: center;
+}
+
+.site__embed-missing code {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-600);
+}
+
+.site__embed-missing a {
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+}
+
+.site__embed-caption {
+  padding: 0.6rem 0.8rem;
+  border-block-start: 1px solid var(--ink-300);
+  background: var(--ink-050);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+/* ----------------------------------------------------------------- sections --- */
+
+.site__section {
+  max-inline-size: 92rem;
+  margin-inline: auto;
+  padding: clamp(2rem, 1.4rem + 3vw, 3.6rem) clamp(0.9rem, 0.4rem + 2vw, 2.5rem) 0;
+}
+
+.site__section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+  margin-block-end: 1.1rem;
+  padding-block-end: 0.6rem;
+  border-block-end: 1px solid var(--ink-300);
+}
+
+.site__section-title {
+  margin: 0;
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.8rem);
+  letter-spacing: -0.02em;
+  color: var(--ink-700);
+}
+
+.site__section-link {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-600);
+  text-decoration: none;
+}
+
+.site__section-link:hover,
+.site__section-link:focus-visible {
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+}
+
+.site__section--split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.4rem, 1rem + 3vw, 3rem);
+}
+
+/* -------------------------------------------------------------------- cards --- */
+
+.site__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+  gap: 1rem;
+}
+
+.site__card {
+  position: relative;
+  display: grid;
+  gap: 0.55rem;
+  align-content: start;
+  padding: 1.1rem 1.15rem 1.25rem;
+  border: 1px solid var(--ink-300);
+  border-block-start: 3px solid var(--card-accent, var(--accent));
+  border-radius: var(--radius);
+  background: var(--ink-100);
+}
+
+.site__card-cat,
+.site__card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.site__card-dot {
+  opacity: 0.6;
+}
+
+.site__card-title {
+  margin: 0;
+  font-size: 1.08rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--ink-700);
+}
+
+.site__card-excerpt {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--ink-600);
+}
+
+.site__card-meta {
+  margin-block-start: auto;
+}
+
+/* --------------------------------------------------------------- live · desk --- */
+
+.site__live,
+.site__reviews {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site__live-row,
+.site__review {
+  display: grid;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--ink-300);
+  border-radius: var(--radius);
+  background: var(--ink-050);
+}
+
+.site__live-row {
+  grid-template-columns: minmax(0, 1fr) auto auto;
+}
+
+.site__live-event,
+.site__review-title {
+  color: var(--ink-700);
+  font-size: 0.9rem;
+}
+
+.site__live-score {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+}
+
+.site__live-status {
+  padding: 0.15rem 0.45rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.site__live-status[data-status="live"] {
+  border-color: color-mix(in oklab, var(--accent-4) 60%, var(--ink-300));
+  color: color-mix(in oklab, var(--accent-4) var(--accent-weight, 100%), var(--ink-700));
+}
+
+.site__review {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.site__review-score {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: color-mix(in oklab, var(--card-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+}
+
+.site__review-verdict {
+  font-size: 0.78rem;
+  color: var(--ink-500);
+}
+
+/* --------------------------------------------------------- category listing --- */
+
+.site__page-head {
+  max-inline-size: 92rem;
+  margin-inline: auto;
+  padding: clamp(1.6rem, 1rem + 3vw, 3rem) clamp(0.9rem, 0.4rem + 2vw, 2.5rem) clamp(1rem, 0.6rem + 2vw, 2rem);
+}
+
+.site__page-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 1.2rem + 3.4vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ink-700);
+}
+
+.site__page-title--long {
+  max-inline-size: 30ch;
+}
+
+.site__page-lede,
+.site__standfirst {
+  max-inline-size: 62ch;
+  margin: 1rem 0 0;
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  line-height: 1.8;
+  color: var(--ink-600);
+}
+
+.site__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-block-end: 1.2rem;
+}
+
+.site__chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  background: var(--ink-050);
+  color: var(--ink-600);
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.site__chip:hover,
+.site__chip:focus-visible {
+  border-color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+  color: var(--ink-700);
+}
+
+.site__chip.is-active {
+  border-color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+  background: color-mix(in oklab, var(--site-accent, var(--accent)) 14%, transparent);
+  color: var(--ink-700);
+}
+
+.site__chip-count {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-500);
+}
+
+.site__rows {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site__row {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1.3fr) minmax(0, 1.4fr) auto;
+  gap: 0.9rem;
+  align-items: baseline;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--ink-300);
+  border-inline-start: 2px solid var(--card-accent, var(--accent));
+  border-radius: var(--radius);
+  background: var(--ink-100);
+}
+
+.site__row[hidden] {
+  display: none;
+}
+
+.site__row-cat {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+
+.site__row-title {
+  font-size: 0.98rem;
+  color: var(--ink-700);
+}
+
+.site__row-excerpt {
+  font-size: 0.84rem;
+  line-height: 1.7;
+  color: var(--ink-600);
+}
+
+.site__row-meta {
+  justify-self: end;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--ink-500);
+  white-space: nowrap;
+}
+
+.site__empty {
+  margin: 1rem 0 0;
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--ink-300);
+  border-radius: var(--radius);
+  font-size: 0.86rem;
+  color: var(--ink-500);
+}
+
+/* ------------------------------------------------------------------ article --- */
+
+.site__progress {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 50;
+  block-size: 2px;
+  background: color-mix(in oklab, var(--site-accent, var(--accent)) 12%, transparent);
+}
+
+.site__progress span {
+  display: block;
+  block-size: 100%;
+  inline-size: 100%;
+  background: var(--site-accent, var(--accent));
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+[dir="rtl"] .site__progress span {
+  /* A progress bar fills the way the language reads, so RTL fills from the right. */
+  transform-origin: right center;
+}
+
+.site__article {
+  max-inline-size: 92rem;
+  margin-inline: auto;
+}
+
+.site__prose {
+  max-inline-size: 62ch;
+  margin-inline: auto;
+  padding: clamp(1.6rem, 1rem + 3vw, 3rem) clamp(0.9rem, 0.4rem + 2vw, 2.5rem) 0;
+}
+
+.site__prose p {
+  margin: 0 0 1.3rem;
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.14rem);
+  line-height: 1.9;
+  color: var(--ink-700);
+}
+
+/* The first paragraph earns the "lede" treatment: larger, with a rule on the reading side. */
+.site__prose p:first-of-type {
+  font-size: clamp(1.05rem, 1rem + 0.5vw, 1.3rem);
+  border-inline-start: 2px solid var(--site-accent, var(--accent));
+  padding-inline-start: 1rem;
+}
+
+.site__pull {
+  margin: 2rem 0;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid var(--ink-300);
+  border-inline-start: 4px solid var(--site-accent, var(--accent));
+  border-radius: var(--radius);
+  background: var(--ink-100);
+  font-family: var(--font-serif);
+  font-size: clamp(1.2rem, 1rem + 1.2vw, 1.7rem);
+  line-height: 1.5;
+  color: var(--ink-700);
+}
+
+.site__pull::before {
+  content: "“";
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+  font-size: 2.4rem;
+  line-height: 0;
+  vertical-align: -0.35em;
+  margin-inline-end: 0.15rem;
+}
+
+.site__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  max-inline-size: 62ch;
+  margin: 2rem auto 0;
+  padding: 0 clamp(0.9rem, 0.4rem + 2vw, 2.5rem);
+  list-style: none;
+}
+
+.site__tag {
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  color: var(--ink-500);
+}
+
+.site__article-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  max-inline-size: 62ch;
+  margin: 2rem auto 0;
+  padding: 1.4rem clamp(0.9rem, 0.4rem + 2vw, 2.5rem) 0;
+  border-block-start: 1px solid var(--ink-300);
+}
+
+.site__article-nav a {
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  color: var(--ink-700);
+  font-size: 0.84rem;
+  text-decoration: none;
+}
+
+.site__article-nav a:hover,
+.site__article-nav a:focus-visible {
+  border-color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+}
+
+/* --------------------------------------------------------------------- foot --- */
+
+.site__foot {
+  display: grid;
+  gap: 0.8rem;
+  max-inline-size: 92rem;
+  margin: 3rem auto 0;
+  padding: 1.6rem clamp(0.9rem, 0.4rem + 2vw, 2.5rem) 3.4rem;
+  border-block-start: 1px solid var(--ink-300);
+}
+
+.site__foot p {
+  max-inline-size: 62ch;
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.8;
+  color: var(--ink-500);
+}
+
+.site__foot-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.site__foot a {
+  color: var(--ink-600);
+}
+
+.site__foot a:hover,
+.site__foot a:focus-visible {
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
+}
+
+/* ==================================================================== guide === */
+
+.guide {
+  max-inline-size: 78rem;
+  margin-inline: auto;
+  padding: clamp(1.8rem, 1.2rem + 3vw, 3.4rem) clamp(0.9rem, 0.4rem + 2vw, 2.5rem) clamp(4rem, 8vh, 7rem);
+}
+
+.guide__head {
+  max-inline-size: 62ch;
+  padding-block-end: 1.6rem;
+  border-block-end: 1px solid var(--ink-300);
+}
+
+.guide__kicker {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
+}
+
+.guide__title {
+  margin: 0;
+  font-size: clamp(2rem, 1.2rem + 3.6vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ink-700);
+}
+
+[lang="fa"] .guide__title {
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.guide__lede {
+  margin: 1rem 0 0;
+  font-size: clamp(0.95rem, 0.9rem + 0.3vw, 1.1rem);
+  line-height: 1.85;
+  color: var(--ink-600);
+}
+
+.guide__updated {
+  margin: 0.9rem 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  color: var(--ink-500);
+}
+
+.guide__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  gap: clamp(1.4rem, 1rem + 3vw, 3.4rem);
+  margin-block-start: 2rem;
+}
+
+.guide__toc {
+  align-self: start;
+  position: sticky;
+  inset-block-start: 5rem;
+}
+
+.guide__toc ul {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guide__toc a {
+  display: block;
+  padding: 0.45rem 0.6rem;
+  border-inline-start: 2px solid var(--ink-300);
+  color: var(--ink-600);
+  font-size: 0.86rem;
+  text-decoration: none;
+}
+
+.guide__toc a:hover,
+.guide__toc a:focus-visible {
+  border-color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
+  color: var(--ink-700);
+}
+
+.guide__body {
+  display: grid;
+  gap: 2.6rem;
+  min-inline-size: 0;
+}
+
+.guide__section {
+  scroll-margin-block-start: 5.5rem;
+  /* A grid item's automatic minimum size is its min-content contribution, and a `<pre>` of long
+     command lines has a very wide one — without this the guide is 848px wide inside a 390px
+     viewport and every paragraph is clipped. Letting the item shrink to the track is the fix;
+     the code block then scrolls on its own, which is what `overflow-x: auto` is for. */
+  min-inline-size: 0;
+}
+
+.guide__section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin-block-end: 0.9rem;
+}
+
+.guide__index {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
+}
+
+.guide__section-title {
+  margin: 0;
+  font-size: clamp(1.2rem, 1rem + 1vw, 1.7rem);
+  letter-spacing: -0.02em;
+  color: var(--ink-700);
+}
+
+.guide__section p {
+  max-inline-size: 68ch;
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: var(--ink-600);
+}
+
+.guide__section p strong {
+  color: var(--ink-700);
+}
+
+.guide__section :not(pre) > code {
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 3px;
+  background: var(--ink-050);
+  font-family: var(--font-mono);
+  font-size: 0.84em;
+  color: var(--ink-700);
+}
+
+.guide__steps {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0 0 1.2rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: guide-step;
+}
+
+.guide__steps li {
+  position: relative;
+  max-inline-size: 68ch;
+  padding-inline-start: 2.2rem;
+  font-size: 0.94rem;
+  line-height: 1.8;
+  color: var(--ink-600);
+}
+
+.guide__steps li::before {
+  counter-increment: guide-step;
+  content: counter(guide-step, decimal-leading-zero);
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0.15rem;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
+}
+
+.guide__code {
+  margin: 0;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--ink-300);
+  border-radius: var(--radius);
+  background: var(--ink-050);
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--ink-700);
+  direction: ltr;
+  text-align: left;
+}
+
+.guide__foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-block-start: 3rem;
+  padding-block-start: 1.4rem;
+  border-block-start: 1px solid var(--ink-300);
+}
+
+.guide__foot a {
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  color: var(--ink-700);
+  font-size: 0.84rem;
+  text-decoration: none;
+}
+
+.guide__foot a:hover,
+.guide__foot a:focus-visible {
+  border-color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
+}
+
+/* ------------------------------------------------------------------ responsive --- */
+
+@media (max-width: 1080px) {
+  .site__lead {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .site__section--split {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .site__row {
+    grid-template-columns: 7rem minmax(0, 1fr) auto;
+  }
+
+  .site__row-excerpt {
+    grid-column: 1 / -1;
+  }
+
+  .guide__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .guide__toc {
+    position: static;
+  }
+
+  .guide__toc ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .guide__toc a {
+    border: 1px solid var(--ink-300);
+    border-radius: 999px;
+  }
+}
+
+@media (max-width: 720px) {
+  .site__nav {
+    order: 3;
+    flex-basis: 100%;
+    justify-content: flex-start;
+  }
+
+  .site__bar-actions .masthead__cta {
+    display: none;
+  }
+
+  .site__row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .site__row-cat {
+    grid-column: 1 / -1;
+  }
+
+  .site__live-row,
+  .site__review {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .site__review-verdict {
+    grid-column: 1 / -1;
+  }
+
+  /* Inline code cannot wrap while it is `nowrap`, and a command name is longer than a phone. */
+  .guide__section :not(pre) > code {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .guide__code {
+    max-inline-size: 100%;
+  }
+}

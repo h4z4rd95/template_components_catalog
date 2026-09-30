@@ -1,0 +1,64 @@
+.skeleton {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 0.9rem;
+  justify-items: center;
+  background: #050506;
+}
+
+.skeletonBar {
+  width: min(28rem, 70vw);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #ff4fd8, transparent);
+  animation: sweep 1.4s var(--ease-snap) infinite;
+  transform-origin: center;
+}
+
+@keyframes sweep {
+  0% {
+    transform: scaleX(0.05);
+    opacity: 0.4;
+  }
+  50% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(0.05);
+    opacity: 0.4;
+  }
+}
+
+.skeletonText {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.missing {
+  min-height: 100svh;
+  display: grid;
+  place-content: center;
+  gap: 1rem;
+  padding: 4rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  color: #fff;
+}
+.missing h1 {
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+.missing p {
+  max-width: 40ch;
+  font-size: 0.75rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.6);
+}
+.missing code {
+  color: #ff4fd8;
+}

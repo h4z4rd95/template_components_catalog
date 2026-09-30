@@ -1,0 +1,126 @@
+{
+  "meta": {
+    "title": { "en": "Using the elements", "fa": "راهنمای استفاده از المان‌ها" },
+    "lede": {
+      "en": "How to run this catalogue, lift a single element out of it, make a variation bilingual and dual-theme, add your own, and check it before you ship it.",
+      "fa": "چگونه این کاتالوگ را اجرا کنید، یک المان را جداگانه بردارید، یک نمونه را دوزبانه و دو-تمی کنید، نمونهٔ خودتان را اضافه کنید و پیش از انتشار بررسی‌اش کنید."
+    },
+    "updated": "2026-09-27"
+  },
+  "sections": [
+    {
+      "id": "what",
+      "title": { "en": "What this repository is", "fa": "این مخزن چیست" },
+      "body": [
+        {
+          "en": "A visual catalogue of production-ready web elements: hero sections, navigation systems, loaders, scroll effects, footers, dashboards and commerce pages, each one a real page rather than a screenshot. One manifest — `catalog/catalog.json` — describes every variation, and everything else in the project is generated from it: the hub, the browse and component pages, the menus, the metadata HUD, the downloadable archive.",
+          "fa": "کاتالوگی دیداری از المان‌های آمادهٔ وب: بخش‌های قهرمان، سیستم‌های ناوبری، لودرها، افکت‌های اسکرول، فوترها، داشبوردها و صفحه‌های فروشگاهی؛ هر کدام یک صفحهٔ واقعی، نه اسکرین‌شات. یک مانیفست — `catalog/catalog.json` — همهٔ نمونه‌ها را توصیف می‌کند و بقیهٔ پروژه از آن ساخته می‌شود: هاب، صفحه‌های مرور و کامپوننت، منوها، HUD متادیتا و فایل دانلودی."
+        },
+        {
+          "en": "Everything is bilingual (English and Persian, LTR and RTL) and ships in both a day and a night theme. That is not a translation layer bolted on at the end: each variation states its own copy in both languages and its own palette for both themes.",
+          "fa": "همه‌چیز دوزبانه است (انگلیسی و فارسی، چپ‌به‌راست و راست‌به‌چپ) و در دو تم روز و شب ارائه می‌شود. این یک لایهٔ ترجمهٔ الحاقی نیست: هر نمونه متن خودش را در هر دو زبان و پالت خودش را برای هر دو تم اعلام می‌کند."
+        }
+      ]
+    },
+    {
+      "id": "run",
+      "title": { "en": "Run it", "fa": "اجرا کنید" },
+      "code": "npm install          # workspaces: the catalogue, two framework apps, the shared package\nnpm run dev          # sync the manifest, then run the Next.js app with hot reload\nnpm run preview      # serve docs/ as it is — the buildless showroom, no bundler\nnpm run build        # sync → static-export both framework apps → splice into docs/ → rebuild the ZIP",
+      "steps": [
+        { "en": "`npm run preview` is the honest one: it serves exactly the files a browser gets, so what you see is what a visitor sees.", "fa": "`npm run preview` صادق‌ترین راه است: دقیقاً همان فایل‌هایی را سرو می‌کند که مرورگر می‌گیرد؛ پس آنچه می‌بینید همان چیزی است که بازدیدکننده می‌بیند." },
+        { "en": "Framework variations need `npm run build` once: their exported pages live in `docs/framework/**`, which is generated and never committed.", "fa": "نمونه‌های فریم‌ورکی یک‌بار به `npm run build` نیاز دارند: صفحه‌های خروجی‌شان در `docs/framework/**` می‌نشینند که تولیدی است و هرگز کامیت نمی‌شود." },
+        { "en": "Serve it over HTTP rather than opening `docs/index.html` from disk: the hub fetches its manifest, and `file://` blocks that. There is a fallback, but a server is the real path.", "fa": "آن را با HTTP سرو کنید، نه با باز کردن دستیِ `docs/index.html`: هاب مانیفست را fetch می‌کند و `file://` جلوی آن را می‌گیرد. یک مسیر جایگزین هست، ولی راه واقعی همان سرور است." }
+      ]
+    },
+    {
+      "id": "take-one",
+      "title": { "en": "Take one element into your own project", "fa": "یک المان را بردارید و در پروژهٔ خودتان بگذارید" },
+      "body": [
+        {
+          "en": "Every variation is self-contained. Pick it from the catalogue, open its component page, and follow the route it names — the element is one folder plus its dependencies, with no catalogue code inside it beyond the shared helpers it imports.",
+          "fa": "هر نمونه خودکفاست. از کاتالوگ انتخابش کنید، صفحهٔ کامپوننتش را باز کنید و مسیری که نشان می‌دهد را دنبال کنید — المان یک پوشه به‌همراه وابستگی‌هایش است و جز کمک‌تابع‌های مشترکی که import می‌کند، هیچ کد کاتالوگی درونش نیست."
+        },
+        { "en": "**Next.js** — copy `src/heroes/<slug>/` (or `src/nav/<slug>/`) into your app, add the dependencies the component page lists, and render it from a client component with `ssr: false`.", "fa": "**Next.js** — پوشهٔ `src/heroes/<slug>/` (یا `src/nav/<slug>/`) را در اپ خود کپی کنید، وابستگی‌هایی که صفحهٔ کامپوننت فهرست می‌کند را نصب کنید و آن را در یک کلاینت کامپوننت با `ssr: false` رندر کنید." },
+        { "en": "**Nuxt** — the Vue variations are ordinary SFCs; copy the folder into `app/components/` and import the TresJS or GSAP packages they name.", "fa": "**Nuxt** — نمونه‌های Vue کامپوننت‌های معمولی‌اند؛ پوشه را در `app/components/` کپی کنید و پکیج‌های TresJS یا GSAP را که نام می‌برد نصب کنید." },
+        { "en": "**No framework at all** — the vanilla variations are single HTML files with two same-origin vendored assets and no CDN. Open one, keep the `<style>` and `<script>` blocks, delete what you do not need.", "fa": "**بدون هیچ فریم‌ورکی** — نمونه‌های وانیلا فایل‌های تک‌HTML با دو دارایی محلیِ هم‌مبدأ و بدون CDN هستند. یکی را باز کنید، بلوک‌های `<style>` و `<script>` را نگه دارید و هرچه لازم ندارید پاک کنید." }
+      ],
+      "code": "// src/app/hero/<slug>/page.tsx — the three lines that actually matter\nexport function generateStaticParams() {\n  return catalog.variations.filter((v) => v.status !== \"planned\").map((v) => ({ slug: v.slug }));\n}\nexport const dynamicParams = false;"
+    },
+    {
+      "id": "skin",
+      "title": { "en": "Make an element bilingual and dual-theme", "fa": "یک المان را دوزبانه و دو-تمی کنید" },
+      "body": [
+        {
+          "en": "The catalogue shell owns language, direction and theme. Because variations render inside an iframe, the shell hands that state over twice: through the `localStorage` keys it persists (`catalog:locale`, `catalog:theme`) plus `?lang=` / `?theme=`, which is what makes a reload of the frame land correctly; and through `postMessage({ type: \"catalog:skin\" })` on every change, which is what makes it instant.",
+          "fa": "پوستهٔ کاتالوگ مالک زبان، جهت و تم است. چون نمونه‌ها داخل iframe رندر می‌شوند، پوسته این وضعیت را دو بار تحویل می‌دهد: از طریق کلیدهای `localStorage` که ذخیره می‌کند (`catalog:locale` و `catalog:theme`) به‌همراه `?lang=` و `?theme=` که باعث می‌شود ریلودِ فریم درست بنشیند؛ و از طریق `postMessage({ type: \"catalog:skin\" })` در هر تغییر، که لحظه‌ای بودن را ممکن می‌کند."
+        },
+        { "en": "Import the hook, spread the attributes, and read copy through `lex()`:", "fa": "هوک را import کنید، اتریبیوت‌ها را پخش کنید و متن را با `lex()` بخوانید:" }
+      ],
+      "code": "import { lex, skinAttributes, useCatalogSkin, useSkinDocument } from \"@/lib/skin\";\n\nconst skin = useCatalogSkin();                     // { locale, theme, dir } — follows the shell live\nuseSkinDocument(skin, { dark: \"#07070c\", light: \"#f6f5f1\" });   // <html> + the canvas colour\n\n<div {...skinAttributes(skin)}>                    // scoped CSS: [data-theme], [dir], [data-locale]\n  <h1>{lex({ en: \"Command\", fa: \"فرمان\" }, skin.locale)}</h1>\n</div>",
+      "steps": [
+        { "en": "Nothing hard-codes a language: the Persian in your component is a second string next to the English one, in the same file.", "fa": "هیچ‌چیز زبان را سخت‌کد نمی‌کند: فارسیِ کامپوننت شما یک رشتهٔ دوم در کنار انگلیسی است، در همان فایل." },
+        { "en": "Direction is CSS, not JavaScript: use logical properties (`margin-inline-start`, `inset-inline-end`) and the layout mirrors itself for RTL.", "fa": "جهت با CSS حل می‌شود، نه جاوااسکریپت: از ویژگی‌های منطقی (`margin-inline-start`، `inset-inline-end`) استفاده کنید تا چیدمان خودش برای راست‌به‌چپ آینه شود." },
+        { "en": "Test in all four combinations — English/Persian × day/night. A layout that only fits in English is the most common bug in this catalogue, and it is invisible until you measure in Persian.", "fa": "هر چهار ترکیب را تست کنید — انگلیسی/فارسی × روز/شب. چیدمانی که فقط در انگلیسی جا می‌شود شایع‌ترین باگ این کاتالوگ است و تا وقتی در فارسی اندازه نگیرید دیده نمی‌شود." }
+      ]
+    },
+    {
+      "id": "add",
+      "title": { "en": "Add your own variation", "fa": "نمونهٔ خودتان را اضافه کنید" },
+      "body": [
+        {
+          "en": "One manifest entry is the whole registration. The id has to match `{Discipline}_V##_StyleCodename`, and a shipped variation needs its Persian fields — the sync gate refuses to generate a catalogue whose Persian side is missing.",
+          "fa": "کل ثبت، همان یک ورودی مانیفست است. شناسه باید الگوی `{Discipline}_V##_StyleCodename` را رعایت کند و نمونهٔ منتشرشده به فیلدهای فارسی نیاز دارد — دروازهٔ sync اجازه نمی‌دهد کاتالوگی با سمت فارسیِ ناقص ساخته شود."
+        }
+      ],
+      "code": "{\n  \"id\": \"Nav_V02_VanillaOrbitalDrawer\",\n  \"discipline\": \"Nav\",\n  \"batch\": 3,\n  \"topic\": \"motion\",\n  \"title\": \"Vanilla Orbital Drawer\",\n  \"titleFa\": \"دراور مداری وانیلا\",\n  \"stack\": [\"Vanilla HTML5\", \"CSS transforms\", \"Pointer + keyboard\"],\n  \"vibe\": \"Cyberpunk · Radial HUD\",\n  \"vibeFa\": \"سایبرپانک · HUD شعاعی\",\n  \"interaction\": \"One sentence on what a visitor actually feels.\",\n  \"interactionFa\": \"یک جمله دربارهٔ چیزی که بازدیدکننده واقعاً حس می‌کند.\",\n  \"href\": \"vanilla/orbital-nav/\",\n  \"source\": \"docs/vanilla/orbital-nav/\",\n  \"status\": \"stable\",\n  \"accent\": \"#5BFFC8\",\n  \"tags\": [\"nav\", \"radial\", \"buildless\"]\n}",
+      "steps": [
+        { "en": "`npm run catalog:sync` — validates the entry, vendors what the variation needs, and regenerates the pages, menus and metadata.", "fa": "`npm run catalog:sync` — ورودی را اعتبارسنجی می‌کند، دارایی‌های لازم را کنار هم می‌گذارد و صفحه‌ها، منوها و متادیتا را از نو می‌سازد." },
+        { "en": "`npm run build` — exports the framework apps and rebuilds the downloadable archive.", "fa": "`npm run build` — اپ‌های فریم‌ورکی را خروجی می‌گیرد و فایل دانلودی را از نو می‌سازد." },
+        { "en": "The new variation now has a card on the hub, a component page, entries in every menu, and a place in the browse tree — none of which you wrote.", "fa": "نمونهٔ جدید حالا یک کارت در هاب، یک صفحهٔ کامپوننت، ورودی در همهٔ منوها و جای خودش در درخت مرور دارد — هیچ‌کدام را شما ننوشته‌اید." }
+      ]
+    },
+    {
+      "id": "gates",
+      "title": { "en": "Check it before you ship it", "fa": "پیش از انتشار بررسی کنید" },
+      "body": [
+        {
+          "en": "Five gates, each one written after a real bug that pixels caught and a DOM assertion had passed. They need a preview server (`npm run preview`) except for `npm test`.",
+          "fa": "پنج دروازه، هرکدام پس از یک باگ واقعی نوشته شده‌اند؛ باگی که پیکسل‌ها گرفته بودند و یک بررسی DOM از کنارش رد شده بود. به‌جز `npm test`، بقیه به سرور پیش‌نمایش (`npm run preview`) نیاز دارند."
+        }
+      ],
+      "steps": [
+        { "en": "`npm test` — manifest sync, CSS-module integrity, typecheck, and a jsdom smoke test of the whole shell.", "fa": "`npm test` — سینک مانیفست، سلامت CSS-module ها، typecheck و آزمون دود jsdom روی کل پوسته." },
+        { "en": "`npm run verify:cards` — every card on the hub, in four skins: a plan card must never promise a live preview.", "fa": "`npm run verify:cards` — همهٔ کارت‌های هاب در چهار اسکین: کارتِ در برنامه نباید هرگز وعدهٔ پیش‌نمایش زنده بدهد." },
+        { "en": "`npm run verify:pages` — that every generated page loads its assets, that *every internal link exists on disk*, and that a page does not paint the same background in both themes.", "fa": "`npm run verify:pages` — اینکه هر صفحهٔ تولیدی دارایی‌هایش را بار می‌کند، هر لینک داخلی روی دیسک وجود دارد و یک صفحه در دو تم رنگ یکسان نمی‌گیرد." },
+        { "en": "`npm run verify:header` — the masthead on a phone, a tablet and a desktop: nothing clipped, nothing wrapped, the download panel inside the viewport.", "fa": "`npm run verify:header` — هدر روی موبایل، تبلت و دسکتاپ: چیزی بریده نشود، چیزی دو خط نشود و پنل دانلود داخل ویوپورت بماند." },
+        { "en": "`npm run verify:nav` — the navigation variation: direction, theme, canvas colour, a trigger row that never clips, and the phone sheet.", "fa": "`npm run verify:nav` — نمونهٔ ناوبری: جهت، تم، رنگ بوم، ردیفی که هرگز بریده نمی‌شود و شیت موبایل." }
+      ]
+    },
+    {
+      "id": "blueprint",
+      "title": { "en": "The gaming-news blueprint", "fa": "طرحِ سایت خبری گیمینگ" },
+      "body": [
+        {
+          "en": "`docs/sites/gaming-news/` is a complete newsroom assembled from the catalogue's own parts: the same tokens, the same Persian fonts, the same day/night and RTL behaviour, and three of the variations reused as its banner slots.",
+          "fa": "`docs/sites/gaming-news/` یک اتاق‌خبر کامل است که از قطعه‌های خودِ کاتالوگ ساخته شده: همان توکن‌ها، همان فونت‌های فارسی، همان رفتار روز/شب و راست‌به‌چپ، و سه نمونه از واریاسیون‌ها که به‌عنوان بنرهایش بازاستفاده شده‌اند."
+        },
+        { "en": "The lead story runs the scanner-HUD hero live in an iframe; the reviews desk runs the letterpress hero as its cover spread; the live page runs the raymarched nebula as its banner. If a framework build is missing, each slot says so instead of showing an empty rectangle.", "fa": "خبر اصلی، هیروی اسکنر-HUD را زنده در یک iframe اجرا می‌کند؛ میز نقدها هیروی لترپرس را به‌عنوان صفحهٔ جلد دارد؛ صفحهٔ زنده، سحابیِ رِی‌مارچ‌شده را به‌عنوان بنرش اجرا می‌کند. اگر بیلدِ فریم‌ورک موجود نباشد، هر جایگاه این را می‌گوید، نه یک مستطیل خالی." },
+        { "en": "To fork it: copy `sites/gaming-news.json`, point `scripts/site.mjs` at your file, and the newsroom is yours — content in JSON, layout in one generator, everything else from the catalogue.", "fa": "برای فورک کردنش: فایل `sites/gaming-news.json` را کپی کنید، `scripts/site.mjs` را به فایل خودتان وصل کنید و اتاق‌خبر مالِ شماست — محتوا در JSON، چیدمان در یک تولیدکننده و بقیه از کاتالوگ." }
+      ]
+    },
+    {
+      "id": "download",
+      "title": { "en": "Download and licence", "fa": "دانلود و مجوز" },
+      "body": [
+        {
+          "en": "The masthead's **Download** button hands over the whole project as one archive, rebuilt by `npm run build` from `git ls-files` so it is exactly what the repository tracks at that revision. The generated motion reel (~26 MB) and the framework build output are excluded; everything else — both apps, the vanilla track, the shared package, the scripts, the docs and these pages — is inside.",
+          "fa": "دکمهٔ **دانلود** در هدر کل پروژه را در یک فایل تحویل می‌دهد؛ این فایل را `npm run build` از `git ls-files` می‌سازد، پس دقیقاً همان چیزی است که مخزن در آن نسخه نگه می‌دارد. گالری حرکتیِ تولیدشده (حدود ۲۶ مگابایت) و خروجی بیلد فریم‌ورک‌ها بیرون می‌مانند؛ بقیه — هر دو اپ، مسیر وانیلا، پکیج مشترک، اسکریپت‌ها، مستندات و همین صفحه‌ها — داخلش هستند."
+        },
+        {
+          "en": "The code is yours to learn from and build with. The fonts are open-source (SIL Open Font License): Vazirmatn for the Persian UI, Lalezar for display, Readex Pro for editorial, plus Inter, JetBrains Mono, Archivo Black and Instrument Serif for the Latin roles.",
+          "fa": "کد برای یادگیری و ساختن در اختیار شماست. فونت‌ها متن‌باز هستند (مجوز SIL Open Font License): وزیرمتن برای رابط فارسی، لاله‌زار برای تیتر، Readex Pro برای متون ادیتوریال، به‌همراه Inter، JetBrains Mono، Archivo Black و Instrument Serif برای نقش‌های لاتین."
+        }
+      ]
+    }
+  ]
+}
