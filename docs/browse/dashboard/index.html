@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>App &amp; Dashboards — variations, topics and stacks</title>
-    <meta name="description" content="Glassmorphic tables, live telemetry, interactive node graphs. 0 variations across 3 topics." data-desc-en="Glassmorphic tables, live telemetry, interactive node graphs. 0 variations across 3 topics." data-desc-fa="جدول‌های شیشه‌ای، تلمتری زنده و گراف گره‌های تعاملی. 0 نمونه در 3 موضوع." />
+    <meta name="description" content="Glassmorphic tables, live telemetry, interactive node graphs. 1 variations across 3 topics." data-desc-en="Glassmorphic tables, live telemetry, interactive node graphs. 1 variations across 3 topics." data-desc-fa="جدول‌های شیشه‌ای، تلمتری زنده و گراف گره‌های تعاملی. 1 نمونه در 3 موضوع." />
     <meta name="theme-color" content="#050506" />
     <meta property="og:title" content="App &amp; Dashboards — variations, topics and stacks" />
-    <meta property="og:description" content="Glassmorphic tables, live telemetry, interactive node graphs. 0 variations across 3 topics." />
+    <meta property="og:description" content="Glassmorphic tables, live telemetry, interactive node graphs. 1 variations across 3 topics." />
     <meta property="og:type" content="website" />
     <link rel="alternate" hreflang="en" href="?lang=en" />
     <link rel="alternate" hreflang="fa" href="?lang=fa" />
@@ -61,7 +61,7 @@
     <script src="../../assets/page.js" defer></script>
   </head>
 
-  <body class="pg" style="--accent: #ff4fd8">
+  <body class="pg pg--accented" style="--accent: #5bd7ff">
     <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
 
     <header class="masthead pg__masthead">
@@ -81,7 +81,7 @@
         <h1 class="pg__title" data-i18n-fa="اپ و داشبورد">App &amp; Dashboards</h1>
         <p class="pg__lede" data-i18n-fa="جدول‌های شیشه‌ای، تلمتری زنده و گراف گره‌های تعاملی.">Glassmorphic tables, live telemetry, interactive node graphs.</p>
         <ul class="pg__stats">
-          <li><span class="pg__stat"><span class="force-ltr">00</span> <span data-i18n="variations">variations</span></span></li>
+          <li><span class="pg__stat"><span class="force-ltr">01</span> <span data-i18n="variations">variations</span></span></li>
           <li><span class="pg__stat"><span class="force-ltr">03</span> <span data-i18n="topics">topics</span></span></li>
         </ul>
       </header>
@@ -100,14 +100,32 @@
               </a>
             </li>
             <li>
-              <a class="pg__chip" href="gpu/index.html" data-empty="1">
+              <a class="pg__chip" href="gpu/index.html">
                 <span class="pg__chip-label" data-i18n-fa="پردازش‌گرافیکی و شیدر">GPU &amp; Shaders</span>
-                <span class="pg__chip-count force-ltr">00</span>
+                <span class="pg__chip-count force-ltr">01</span>
               </a>
             </li>
         </ul>
       </nav>
-      <p class="pg__empty" data-i18n="noVariations">No variation has landed in this topic yet.</p>
+      <section class="pg__block">
+        <div class="pg__block-head">
+          <h2 class="pg__block-title">
+            <a href="gpu/index.html" data-i18n-fa="پردازش‌گرافیکی و شیدر">GPU &amp; Shaders</a>
+          </h2>
+          <p class="pg__block-blurb" data-i18n-fa="گل‌اس‌ال خام، نمونه‌سازی، ذرات و پرتوتابی.">Raw GLSL, instancing, particles, raymarching.</p>
+        </div>
+          <ul class="pg__rows">
+            <li>
+              <a class="pg__row" href="../../component/realtime-wall/index.html" style="--row-accent: #5bd7ff" data-status="planned">
+                <span class="pg__row-id force-ltr">Dashboard_V02_RealtimeWall</span>
+                <span class="pg__row-title" data-i18n-fa="دیوار بلادرنگ">Realtime Wall</span>
+                <span class="pg__row-vibe" data-i18n-fa="سایبرپانک · رابط پرتراکم">Cyberpunk · High-Density UI</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Nuxt 4</span><span class="pg__row-chip">Vue 3</span><span class="pg__row-chip">TresJS</span><span class="pg__row-chip">WebGL2</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+          </ul>
+      </section>
       <section class="pg__block pg__block--aside">
         <h2 class="pg__block-title" data-i18n="disciplines">Disciplines</h2>
         <ul class="pg__chips">

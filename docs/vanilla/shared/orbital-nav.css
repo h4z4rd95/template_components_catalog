@@ -24,8 +24,10 @@
   padding: 0.45rem 0.85rem;
   border: 1px solid var(--orb-line, rgba(255, 255, 255, 0.16));
   border-radius: 999px;
-  background: var(--orb-surface, rgba(12, 12, 20, 0.72));
-  color: var(--orb-ink, #f2f2f7);
+  background: var(--orb-surface, rgb(var(--bg-rgb, 12 12 20) / 0.82));
+  /* Read the catalogue's ink triplet when the shell is present (so the trigger is ink on paper in
+     daylight), and keep the original light-on-dark value when this file is used on its own. */
+  color: var(--orb-ink, rgb(var(--fg-rgb, 242 242 247)));
   font: inherit;
   font-size: 0.72rem;
   letter-spacing: 0.12em;
@@ -213,7 +215,7 @@
     padding: 0.8rem;
     border: 1px solid var(--orb-line, rgba(255, 255, 255, 0.16));
     border-radius: 12px;
-    background: var(--orb-surface, rgba(10, 10, 18, 0.98));
+    background: var(--orb-surface, rgb(var(--bg-rgb, 10 10 18) / 0.98));
     box-shadow: 0 30px 60px -40px rgba(0, 0, 0, 0.85);
     transform: translateY(10px);
     transition: opacity 200ms linear, transform 320ms cubic-bezier(0.16, 1, 0.3, 1);

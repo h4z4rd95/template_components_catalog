@@ -935,3 +935,138 @@ Persian items, sheet scrolls inside the viewport; newsroom fa/light 390 — capt
 storefront, then `Product_V01_…` / `Product_V02_…` detail pages, then Batch 5's cart and checkout —
 all inside the same bilingual / dual-theme / dual-direction shell, each added to the manifest so the
 browse tree covers it. Still open from earlier: `apps/next-catalog/src/app/not-found.tsx`.
+
+## [2026-09-27 09:40 UTC] · Light theme fixed · Batch 4 — the commerce track
+
+**The instruction had two halves.** «نسخه light تم درست نیست و خیلی اشکال داره المان‌ها و باید فیکس
+بشه و فونت‌ها هم invert color بشن نسبت به نسخه دارک» + «فاز بعدی رو هم بساز». Both are done, in
+that order, and the light-theme half was the load-bearing one: the shop is built on the same tokens,
+so fixing the ramp first meant the commerce track was readable in day mode from its first render.
+
+### Part 1 — day mode, measured
+
+The report was accurate. `hub.css` was authored dark and hardcoded white in **68 places**; `theme.css`
+patched only what someone had noticed, so the hub's discipline menus rendered white-on-white, the
+kickers were neon on paper, the search placeholder was washed out and the framework HUD stayed dark
+inside a paper page.
+
+| Fix | Why it generalises |
+| --- | --- |
+| `--fg-rgb` / `--bg-rgb` ink-and-surface triplets | Ten years of `rgba(255,255,255,α)` styling inverts in one declaration instead of 39 patches that go stale one at a time. Dark is byte-identical (`255 255 255`) |
+| `--accent-weight` (100% night / **42%** day, measured) | Accents come from the manifest and cannot be swapped per theme, so accent-as-text mixes into the ink until it passes |
+| `--fill-mix` (100% / **38%**) | Accent *fills* deepen so the page-coloured text on a badge or an active chip stays readable |
+| `--muted-alpha`, `--label-alpha`, `--ghost-alpha` | Per-theme floors for muted copy, small uppercase labels and the planned-card watermark. The *dark* ramp's `--ink-500` was itself only 3.6:1 and is now `#8f8f9e` |
+| The frame HUD follows the skin | It is catalogue chrome, not artwork — and the **Nuxt track had no skin system at all**, so it gained `useCatalogSkin` (the twin of the React hook) plus day tokens in `main.css` and `HeroStage` painting paper instead of `#050506` |
+
+**New gate: `npm run verify:theme`** — 19 pages × 2 themes × 2 viewports. It resolves each painted
+text layer's *effective* backdrop and computes WCAG contrast. Two bugs in the gate itself were found
+and fixed before it could be trusted: it read `color(srgb …)`/`oklab()` values as garbage (now
+colours are painted into a canvas), and it returned the first translucent layer instead of
+compositing the stack (which reported ink-on-paper at 1.2:1). `aria-hidden` decoration is exempt,
+per WCAG 1.4.3. It now passes on every page in both ramps.
+
+### Part 2 — the commerce track (7 pages, one engine)
+
+`sites/shop.json` + `scripts/shop.mjs` + `docs/assets/shop.{css,js}`. Storefronts for physical and
+digital goods, two product pages that are deliberately *not* shop templates (the chroma page's
+product **is** a live variation, the editorial page is an essay with a pinned buy rail), a cart with
+the add flight and an animated removal, and one-step **and** four-step checkout — all bilingual,
+RTL-mirrored, dual-theme, validated per field, with a real `localStorage` cart whose totals the
+storefronts, cart and checkouts all read from one place.
+
+The seven `framework/next/commerce/*` manifest entries were **phantom routes** (no such app folder
+existed, no such variation would have been built). They now point at the pages that really exist,
+which is also why the catalogue has zero planned entries no more: the next batch's
+`Loader_V01_CinematicCurtain`, `Loader_V02_ShutterReveal` and `Dashboard_V02_RealtimeWall` are
+registered as planned again, so the browse tree shows where the catalogue is going and the
+"planned" path in the gates has a live sample.
+
+**Catalogue now:** 25 variations (22 stable + 3 planned) · 9 disciplines · **170 `ui` keys** per
+locale · 55 browse/component pages + 3 newsroom + 1 handbook + **7 shop pages** · archive
+**186 files · 2924 KB → 1148 KB**.
+
+### Verification
+
+| Gate | Result |
+| --- | --- |
+| `npm test` | sync + styles + typecheck + hub smoke ✓ |
+| `npm run verify:theme` | **new** — 19 pages × 2 themes × 2 widths, WCAG AA ✓ |
+| `npm run verify:shop` | **new** — adds (incl. the second one), pill/storage agreement, totals vs computed arithmetic, quantity, removal, promo, empty-vs-valid checkout, step gating, card validation ✓ |
+| `npm run verify:cards` | 25 cards complete in all 4 skins ✓ |
+| `npm run verify:pages` | 58 pages: assets, links, overflow, locale, staged ✓ |
+| `npm run verify:site` | newsroom, handbook and orbital nav ✓ (its stray-Persian scan now excludes `data-*-fa` machine strings) |
+| `npm run verify:header` | 6 viewports ✓ |
+| `npm run build` | 2 apps spliced; archive rebuilt ✓ |
+
+Screenshots read: storefront en/light at 1440 (shelf, chips with counts, badge colours, the campaign
+panel mounting the live hero), cart en/light (44 € + 6 € shipping + 9.24 € VAT = 59.24 €), chroma
+product en/light (finish swatches driving the 248 € price and the stage tint), ritual checkout
+fa/light at 390 (four steps as cards, "سبدتان را ببینید" panel, the empty state, "ادامه").
+
+**NEXT:** Batch 5 — the three planned loaders/dashboard above, then Batch 3b's remaining work:
+teaching the hero variations their own day palettes now that the shell's contract is proven.
+Still open: `apps/next-catalog/src/app/not-found.tsx`.
+
+---
+
+## [2026-09-30 04:30 UTC] · Phase 5 — the downloadable archive, and every demo loaded for real
+
+The brief: *build the downloadable project file, and verify all demos are what they should be and
+load without problems — so the user can push to GitHub.* Both halves are now done, and the second
+one is what produced this batch: a gate that asks the only question no existing gate asked.
+
+### 1. The archive
+
+`npm run build` → **`docs/download/catalog-source.zip` · 206 files · 3,315,146 → 1,267,343 bytes**
+(1.21 MB), rebuilt from the **git index** so it can never contain a file that is not committed, an
+untracked experiment, `node_modules`, or its own previous copy. Verified by parsing the archive:
+206 entries, CRC check clean, `scripts/verify-demos.mjs` / `docs/404.html` / both framework 404 pages
+present, zero entries under `docs/vision`, `docs/framework`, `docs/download`, `.shots` or `.git`.
+`docs/data/download.json` matches the file byte-for-byte, which is what the header's download control
+reads to print the size and count.
+
+### 2. The new gate: `npm run verify:demos`
+
+`scripts/verify-demos.mjs` loads **every** `docs/**/*.html` (96 pages, minus the vision reel and the
+archive) in a real browser at **1440 and 390** and fails on: HTTP ≥ 400 (assets included), an uncaught
+page error, an error-level console message, a missing `<title>`, under 40 characters of visible text,
+over 1 px of horizontal overflow, or a `[data-embed]` slot that mounted neither a frame nor its built
+notice. Per-page table; ≈10 minutes; needs `npm run preview` (it says so, and exits 2, instead of
+printing ninety-six `ECONNREFUSED`).
+
+**Result: 96 pages · 192 loads · 56 with a live frame — 0 problems, exit 0.**
+
+### 3. What it found (all fixed at the cause)
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| `[NUXT_E1005]` on every Nuxt route; Nuxt's 404 inside a 200 | `<route>/index.html` is a path the client router does not match | Framework routes are addressed as **directories** — raw links, stage `data-src`, probes, audit; `pages.mjs` emits `${base}${href}` verbatim |
+| `component/{editorial-chapter-rail,tres-instanced-shards,tres-liquid-terrain}` 26/19/5 px too wide at 390 | Latin file paths in RTL pages are unbreakable | `.force-ltr { overflow-wrap: anywhere }` |
+| Next served its built-in 33-character apology as the track 404 | `not-found.tsx` never written | Real page: `apps/next-catalog/src/app/not-found.tsx` + module CSS (587 visible chars) |
+| The hub had **no** 404 — GitHub Pages used its own generic page | Never written | `docs/404.html`: hand-written chrome, the shared shell bar, the requested path printed back, three routes in; 8 new `ui` keys in both languages |
+| Nuxt's error screen (102 chars, framework type) | No `error.vue` | `apps/nuxt-catalog/app/error.vue` in the track's tokens, in the visitor's restored skin (335 chars) |
+| `framework/nuxt/dashboard/realtime-wall/` was an error page posing as a dashboard | `trackRoutes()` prerendered every manifest href, including planned variations with no page | Prerender only routes with a matching page pattern in `app/pages` |
+| The local preview 404'd with a bespoke dark page | Hardcoded in `serve.mjs` | Serves `docs/404.html` — the file GitHub Pages serves; the build hint moved to the terminal |
+
+### 4. Verification (all after the final rebuild)
+
+| Gate | Result |
+| --- | --- |
+| `npm test` | sync + styles + typecheck + hub smoke (jsdom, 22 assertions) ✓ |
+| `npm run verify:demos` | **new** — 96 pages · 192 loads · 56 frames · 0 problems ✓ |
+| `npm run verify:theme` | 19 pages × 2 themes × 2 widths, WCAG AA ✓ |
+| `npm run verify:header` | 6 viewports, every control reachable ✓ |
+| `npm run verify:pages` / `verify:cards` / `verify:site` / `verify:nav` | ✓ |
+| `npm run build` | 2 apps spliced; archive rebuilt ✓ |
+
+Screenshots read (not just produced): `.shots/nf-hub-dark.png`, `nf-hub-light-fa.png`,
+`nf-hub-fa-390.png`, `nf-nuxt-dark.png`, `nf-nuxt-light-390.png`.
+
+Also fixed while in there: the planned-variation copy promised a page "in the commerce batch", which
+had already shipped — it now says the next batch.
+
+**NEXT:** Batch 5 — the three planned variations (`Loader_V01_CinematicCurtain`,
+`Loader_V02_ShutterReveal`, `Dashboard_V02_RealtimeWall`). `Dashboard_V02` reserves
+`framework/nuxt/dashboard/realtime-wall/`; the route starts prerendering the moment its page file
+lands, which is by construction. Then Batch 3b's remainder: hero variations get their own day palettes.
+`apps/next-catalog/src/app/not-found.tsx` is **closed**.

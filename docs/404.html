@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Catalog — that page is not in the manifest</title>
+    <meta
+      name="description"
+      content="The address you asked for is not part of The Catalog. Every page it has is generated from a manifest — here is the way back in."
+    />
+    <meta name="theme-color" content="#050506" />
+    <meta name="robots" content="noindex" />
+
+    <!-- GitHub Pages serves this file for any path it cannot resolve, so it has to stand on its own:
+         no build step, no manifest fetch, no dependency on the page that was requested. The inline
+         bootstrap below is the same one every other page runs, so a visitor's language and theme
+         survive the detour. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try {
+              return localStorage.getItem(k);
+            } catch (e) {
+              return null;
+            }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="assets/fonts.css" />
+    <link rel="stylesheet" href="assets/hub.css" />
+    <link rel="stylesheet" href="assets/theme.css" />
+    <link rel="stylesheet" href="assets/chrome.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E"
+    />
+    <!-- The same three scripts every generated page loads, so the shell bar builds itself here too
+         (page.js is what hands the manifest to chrome.js) and the copy follows the visitor's language.
+         If none of them run — a stripped-down host, a blocked script — the English text below is a
+         complete page on its own. -->
+    <script src="data/catalog.js" defer></script>
+    <script src="assets/chrome.js" defer></script>
+    <script src="assets/page.js" defer></script>
+  </head>
+
+  <body class="nf-body">
+    <a class="skip" href="#nf" data-i18n="skip">Skip to the catalog</a>
+
+    <!-- The shell bar is built by chrome.js exactly as it is on every other page, so the language
+         switch and the theme switch keep working here. -->
+    <nav class="masthead__bar" data-shell-bar data-i18n-aria="primaryNav"></nav>
+
+    <main class="nf" id="nf">
+      <p class="nf__code" data-i18n="notFoundCode">ERROR 404</p>
+
+      <h1 class="nf__title" data-i18n="notFoundTitle">This route is not in the manifest.</h1>
+
+      <p class="nf__lede" data-i18n="notFoundLede">
+        The catalogue is generated from a manifest, so every page it has is listed there — and this
+        address is not one of them. A slug lost a hyphen, or an old link outlived a rename.
+      </p>
+
+      <div class="nf__actions">
+        <a class="nf__primary" href="index.html" data-i18n="notFoundHome">Back to the catalogue</a>
+        <a class="nf__secondary" href="browse/index.html" data-i18n="notFoundBrowse"
+          >Browse by discipline</a
+        >
+        <a class="nf__secondary" href="guide/index.html" data-i18n="notFoundGuide">Read the guide</a>
+      </div>
+
+      <dl class="nf__facts">
+        <div>
+          <dt data-i18n="requestedPath">Requested path</dt>
+          <dd class="force-ltr" id="nf-path">—</dd>
+        </div>
+        <div>
+          <dt data-i18n="stack">Stack</dt>
+          <dd>Next.js · Nuxt · vanilla HTML5</dd>
+        </div>
+        <div>
+          <dt data-i18n="vibe">Aesthetic vibe</dt>
+          <dd>Kinetic · Editorial · WebGL-first · Cyberpunk · Chromatic</dd>
+        </div>
+      </dl>
+
+      <p class="nf__foot" data-i18n="notFoundFoot">
+        Every variation in the catalogue is reachable from the hub: one page each, bilingual, in both
+        themes.
+      </p>
+    </main>
+
+    <!-- The requested path, printed for the visitor to check against the address bar. Kept in a
+         `noscript`-safe inline script that fails silently: this page must never throw. -->
+    <script>
+      (function () {
+        try {
+          var target = document.getElementById("nf-path");
+          if (target) target.textContent = decodeURIComponent(location.pathname) || "/";
+        } catch (e) {
+          /* a 404 page that raises an error is worse than one that shows a dash */
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -248,6 +248,9 @@ for (const file of tree) {
     .replace(/<style[\s\S]*?<\/style>/g, "")
     .replace(/<(pre|code|kbd|samp|textarea)[\s\S]*?<\/\1>/g, "")
     .replace(/data-i18n-fa(-html)?="[^"]*"/g, "")
+    // Any `data-*-fa` attribute is a machine-readable Persian string (the shop's cart records
+    // carry `data-name-fa` so a row can be built in either language) — not visible copy.
+    .replace(/data-[a-z-]*fa[a-z-]*="[^"]*"/g, "")
     .replace(/data-title-fa="[^"]*"/g, "")
     .replace(/data-desc-fa="[^"]*"/g, "")
     .replace(/<button[^>]*data-lang="fa"[^>]*>[^<]*<\/button>/g, "");

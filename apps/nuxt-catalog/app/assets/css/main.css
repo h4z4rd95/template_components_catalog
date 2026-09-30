@@ -31,6 +31,22 @@
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ------------------------------------------------------------------ daylight ---
+
+   The dark ramp above is the authored one; day mode re-states the same tokens. They are re-stated
+   rather than computed because the shell, the hero canvases and the HUD all read them by name, and
+   a name that resolves to nothing in one theme is how a page ends up with invisible text. */
+:root[data-theme="light"] {
+  --bg: #f7f4ec;
+  --bg-raise: #ffffff;
+  --ink: #17140f;
+  --ink-dim: rgba(23, 20, 15, 0.66);
+  --ink-faint: rgba(23, 20, 15, 0.4);
+  --line: rgba(23, 20, 15, 0.14);
+  --accent: #2f5cf0;
+  color-scheme: light;
+}
+
 html {
   background: var(--bg);
   color: var(--ink);
@@ -194,7 +210,8 @@ button {
 
 .cat-hud {
   position: fixed;
-  left: clamp(0.75rem, 2.5vw, 1.6rem);
+  /* Pinned to the inline start, so an RTL variation gets the panel on the right. */
+  inset-inline-start: clamp(0.75rem, 2.5vw, 1.6rem);
   bottom: clamp(0.75rem, 2.5vw, 1.6rem);
   z-index: var(--z-hud);
   width: min(30rem, calc(100vw - 1.5rem));
@@ -202,7 +219,8 @@ button {
   border-radius: 0.85rem;
   background: color-mix(in oklab, var(--bg-raise) 86%, transparent);
   backdrop-filter: blur(18px) saturate(150%);
-  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.55);
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.35);
+  color: var(--ink);
   overflow: hidden;
   font-family: var(--font-mono);
 }
@@ -431,4 +449,124 @@ html[data-motion-ready="true"] .cat-will-move {
   .cat-will-move {
     will-change: auto;
   }
+}
+
+/* ========================================================================== error ---
+   The 404 / runtime-error screen (app/error.vue). Nuxt's built-in error page is a bare sentence in
+   the framework's own type, which is not what a designed catalogue should hand a visitor who
+   mistyped a slug — so this is the track's own page, built from the same tokens as everything else,
+   and it flips with the theme because the tokens do. */
+
+/* Latin furniture — a file path, a stack, a framework message — reads wrong when mirrored. */
+[dir="rtl"] .force-ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.cat-error {
+  display: grid;
+  align-content: center;
+  gap: 1rem;
+  min-block-size: 100svh;
+  max-inline-size: 52rem;
+  margin-inline: auto;
+  padding: clamp(3rem, 10vh, 8rem) 1.4rem 4rem;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+.cat-error-code {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.cat-error-title {
+  font-size: clamp(1.9rem, 1.1rem + 3.6vw, 3.2rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.cat-error-lede {
+  max-inline-size: 62ch;
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--ink-dim);
+}
+
+.cat-error-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.9rem;
+  margin-block-start: 0.8rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--line);
+}
+
+.cat-error-facts div {
+  display: grid;
+  gap: 0.25rem;
+  /* A long path or message must wrap inside its column, never widen the grid. */
+  min-inline-size: 0;
+}
+
+.cat-error-facts dt {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.cat-error-facts dd {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: var(--ink-dim);
+  overflow-wrap: anywhere;
+}
+
+.cat-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-block-start: 0.6rem;
+}
+
+.cat-error-primary,
+.cat-error-secondary {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.66rem 1.1rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.cat-error-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.cat-error-secondary {
+  border-color: var(--line);
+  color: var(--ink-dim);
+}
+
+.cat-error-primary:hover,
+.cat-error-primary:focus-visible,
+.cat-error-secondary:hover,
+.cat-error-secondary:focus-visible {
+  transform: translateY(-1px);
+}
+
+.cat-error-secondary:hover,
+.cat-error-secondary:focus-visible {
+  border-color: var(--ink-faint);
+  color: var(--ink);
 }

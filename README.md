@@ -113,6 +113,7 @@ Six gates, each catching a class of defect the others structurally cannot:
 | **Generated pages (all skins)** | `npm run verify:pages` | 47 browse/component pages: assets load, every internal link exists on disk, no overflow in either direction, localised copy, stage mounted, themes paint differently |
 | **Header reachability (all skins)** | `npm run verify:header` | the bar fits, no visible control is clipped, the download panel opens inside the viewport in en/fa × day/night and on phone/tablet/desktop, and the drawer re-labels on a language switch |
 | **Real-browser audit + vision** | `npm run verify:browser` | **actual painted pixels**: 4 breakpoints, WebGL context creation, console/network, `hidden`-attribute leaks, text colliding with chrome, reduced-motion composition — plus an animated capture of every variation |
+| **Whole-site audit (every demo)** | `npm run verify:demos` | **every generated page**, 1440 and 390: HTTP status (assets included), page errors, console errors, titles, thin content, horizontal overflow, and an embed slot that mounts neither a frame nor its notice. Needs `npm run preview` running; ~10 min; prints a table of the whole site |
 
 `npm test` runs gates 1–4 (fast, no browser). The browser gate is separate because it needs a Chromium.
 

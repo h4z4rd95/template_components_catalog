@@ -17,6 +17,7 @@
 import { deflateRawSync } from "node:zlib";
 import { readFile, writeFile, mkdir, stat } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import { commitStamp } from "./site.mjs";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve, relative, sep } from "node:path";
@@ -37,7 +38,11 @@ const EXCLUDE = [
 
 function trackedFiles() {
   try {
-    const out = execFileSync("git", ["ls-files", "-z"], { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 });
+    const out = execFileSync("git", ["ls-files", "-z"], {
+      cwd: ROOT,
+      maxBuffer: 64 * 1024 * 1024,
+      stdio: ["ignore", "pipe", "ignore"],
+    });
     return out
       .toString("utf8")
       .split("\0")
@@ -207,7 +212,7 @@ async function main() {
           uncompressedBytes: raw,
           files: entries.length,
           excludes: ["docs/vision/**", "docs/framework/**", "docs/download/**"],
-          generatedAt: new Date().toISOString(),
+          generatedAt: commitStamp(),
         },
       },
       null,

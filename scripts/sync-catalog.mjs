@@ -16,7 +16,8 @@ import { dirname, join, resolve } from "node:path";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 import { emitPages } from "./pages.mjs";
-import { emitGuide, emitSite } from "./site.mjs";
+import { commitStamp, emitGuide, emitSite } from "./site.mjs";
+import { emitShop } from "./shop.mjs";
 const MANIFEST = join(ROOT, "catalog", "catalog.json");
 const OUT_DIR = join(ROOT, "docs", "data");
 
@@ -307,7 +308,7 @@ async function main() {
     ...manifest,
     variations,
     counts,
-    generatedAt: new Date().toISOString(),
+    generatedAt: commitStamp(),
   };
 
   await mkdir(OUT_DIR, { recursive: true });
@@ -349,6 +350,57 @@ async function main() {
   // explains how to use them. Both are generated, both are bilingual, both are wiped and rebuilt.
   const site = await emitSite({ root: ROOT, manifest, variations });
   const guide = await emitGuide({ root: ROOT });
+  // The commerce track: two storefronts, two product pages, a cart and two checkouts — built from
+  // the same manifest, the same shell and the same fonts as everything above.
+  const shop = await emitShop({ root: ROOT, manifest, variations });
+
+  // ---- accent contrast ------------------------------------------------------
+  //
+  // An accent is data, and it is used three ways: as text on the night canvas, as text on paper
+  // (mixed towards the ink, see theme.css `--accent-weight`), and as a *fill* under page-coloured
+  // text. A colour chosen for one of those and shipped anyway breaks the other two silently — a
+  // deep olive that reads beautifully on paper is invisible on #050506, and it did ship once. So
+  // the manifest is checked here, where the fix is a one-line data edit rather than a CSS hunt.
+  const ACCENT_INK_WEIGHT = 0.42; // must match theme.css `--accent-weight` (light ramp)
+  const luminance = (hex) => {
+    const clean = String(hex).replace("#", "");
+    const full = clean.length === 3 ? clean.split("").map((c) => c + c).join("") : clean;
+    const channels = [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16) / 255);
+    const [r, g, b] = channels.map((v) => (v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const contrast = (a, b) => {
+    const [l1, l2] = [luminance(a), luminance(b)];
+    return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+  };
+  const mix = (hex, other, weight) => {
+    const parse = (value) => {
+      const clean = String(value).replace("#", "");
+      const full = clean.length === 3 ? clean.split("").map((c) => c + c).join("") : clean;
+      return [0, 2, 4].map((i) => parseInt(full.slice(i, i + 2), 16));
+    };
+    const a = parse(hex);
+    const b = parse(other);
+    return "#" + a
+      .map((channel, i) => Math.round(channel * weight + b[i] * (1 - weight)))
+      .map((channel) => channel.toString(16).padStart(2, "0"))
+      .join("");
+  };
+  for (const variation of variations) {
+    if (!variation.accent) continue;
+    const night = contrast(variation.accent, "#050506");
+    const paper = contrast(mix(variation.accent, "#191712", ACCENT_INK_WEIGHT), "#f7f4ec");
+    const paperFill = contrast("#f7f4ec", mix(variation.accent, "#191712", 0.38)); // must match theme.css `--fill-mix`
+    if (night < 4.5) {
+      errors.push(`${variation.id}: accent ${variation.accent} is ${night.toFixed(2)}:1 on the night canvas (needs 4.5)`);
+    }
+    if (paperFill < 4.5) {
+      errors.push(`${variation.id}: accent ${variation.accent} as a fill is ${paperFill.toFixed(2)}:1 under page text (needs 4.5)`);
+    }
+    if (paper < 3) {
+      warnings.push(`${variation.id}: accent ${variation.accent} as text on paper is only ${paper.toFixed(2)}:1`);
+    }
+  }
 
   // ---- report -------------------------------------------------------------
   const vendored = await vendorAssets();
@@ -374,7 +426,8 @@ async function main() {
   console.log(`  ✓ wrote docs/data/catalog.json + docs/data/catalog.js`);
   console.log(`  ✓ generated ${pages.written.length} pages under docs/browse/** and docs/component/**`);
   console.log(`  ✓ generated ${site.written.length} pages under docs/sites/gaming-news/** (the newsroom blueprint)`);
-  console.log(`  ✓ generated ${guide.written.length} page (${guide.sections} sections) under docs/guide/** — handbook, both languages\n`);
+  console.log(`  ✓ generated ${guide.written.length} page (${guide.sections} sections) under docs/guide/** — handbook, both languages`);
+  console.log(`  ✓ generated ${shop.written.length} pages under docs/sites/shop/** — storefronts, product pages, cart, checkout\n`);
 }
 
 main().catch((err) => {

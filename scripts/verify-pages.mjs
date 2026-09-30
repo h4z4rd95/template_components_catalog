@@ -48,7 +48,7 @@ const PAGES = [
   { path: "browse/hero/gpu/index.html", kind: "topic" },
   { path: "browse/commerce/storefront/index.html", kind: "topic(planned)" },
   { path: "component/kinetic-brutal-grid/index.html", kind: "component" },
-  { path: "component/holo-storefront/index.html", kind: "component(planned)" },
+  { path: "component/cinematic-curtain/index.html", kind: "component(planned)" },
 ];
 
 const problems = [];

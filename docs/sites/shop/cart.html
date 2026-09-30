@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-title-en="Your cart — Field Supply" data-title-fa="سبد شما — فیلد ساپلای">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your cart — Field Supply</title>
+    <meta name="description" content="Add something on a storefront and watch it fly in. Remove it here and the list closes the gap: no dead row, no jump." data-desc-en="Add something on a storefront and watch it fly in. Remove it here and the list closes the gap: no dead row, no jump." data-desc-fa="در فروشگاه چیزی اضافه کنید و پروازش را ببینید. اینجا حذفش کنید و فهرست جای خالی را می‌بندد: نه ردیف مرده، نه پرش." />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="Your cart — Field Supply" />
+    <meta property="og:description" content="Add something on a storefront and watch it fly in. Remove it here and the list closes the gap: no dead row, no jump." />
+
+    <!-- Same pre-paint bootstrap as the rest of the catalogue: the first paint already knows the
+         language, the direction and the theme, so nothing flashes the wrong way round. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try { return localStorage.getItem(k); } catch (e) { return null; }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../assets/fonts.css" />
+    <link rel="stylesheet" href="../../assets/hub.css" />
+    <link rel="stylesheet" href="../../assets/theme.css" />
+    <link rel="stylesheet" href="../../assets/chrome.css" />
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/shop.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+
+    <script>
+      window.__CATALOG_BASE__ = "../../";
+    </script>
+    <script src="../../data/catalog.js" defer></script>
+    <script src="../../assets/chrome.js" defer></script>
+    <script src="../../assets/site.js" defer></script>
+    <script src="../../assets/shop.js" defer></script>
+  </head>
+
+  <body class="shop-page" style="--site-accent: #c6a15b">
+    <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
+    <header class="shop__bar">
+      <div class="shop__bar-row">
+        <a class="shop__brand" href="index.html">
+          <span class="shop__brand-dot" aria-hidden="true"></span>
+          <span class="shop__brand-name" data-i18n-fa="فیلد ساپلای">Field Supply</span>
+        </a>
+        <nav class="shop__nav" aria-label="Shop">
+          <a class="shop__nav-link" href="index.html" data-i18n-fa="فیزیکی">Physical</a>
+          <a class="shop__nav-link" href="digital.html" data-i18n-fa="دیجیتال">Digital</a>
+          <a class="shop__nav-link is-active" href="cart.html" data-i18n-fa="سبد">Cart</a>
+          <a class="shop__nav-link" href="checkout.html" data-i18n-fa="پرداخت">Checkout</a>
+        </nav>
+        <div class="shop__bar-actions">
+          <div class="lang-switch" data-lang-switch>
+            <button type="button" class="lang-switch__button" data-lang="en">EN</button>
+            <button type="button" class="lang-switch__button" data-lang="fa">فا</button>
+          </div>
+          <button type="button" class="theme-switch" data-theme-toggle data-i18n-aria="themeToggle" aria-label="Switch theme">
+            <span data-theme-label-icon aria-hidden="true">◐</span>
+          </button>
+          <button type="button" class="shop__cart-pill" data-cart-open>
+            <span data-i18n="shopCart">Cart</span>
+            <span class="shop__cart-count force-ltr" data-cart-count>0</span>
+          </button>
+          <a class="shop__bar-link" href="../../guide/index.html" data-i18n="guide">Guide</a>
+        </div>
+      </div>
+    </header>    <main class="shop" id="main">
+      <header class="shop__head">
+        <p class="shop__kicker force-ltr" data-i18n-fa="سبد · Commerce_V05_FlyToCart">Cart · Commerce_V05_FlyToCart</p>
+        <h1 class="shop__title" data-i18n-fa="سبد شما">Your cart</h1>
+        <p class="shop__lede" data-i18n-fa="در فروشگاه چیزی اضافه کنید و پروازش را ببینید. اینجا حذفش کنید و فهرست جای خالی را می‌بندد: نه ردیف مرده، نه پرش.">Add something on a storefront and watch it fly in. Remove it here and the list closes the gap: no dead row, no jump.</p>
+      </header>
+
+      <section class="shop__cart">
+        <div class="shop__cart-main" data-cart-host>
+          <p class="shop__cart-empty" data-cart-empty hidden data-i18n-fa="هنوز چیزی اینجا نیست. قفسه یک کلیک فاصله دارد.">Nothing here yet. The shelf is one click away.</p>
+          <ul class="shop__lines" data-cart-lines></ul>
+        </div>
+
+        <aside class="shop__totals" aria-labelledby="totals-title">
+          <h2 class="shop__totals-title" id="totals-title" data-i18n="shopTotals">Order summary</h2>
+          <form class="shop__promo" data-promo novalidate>
+            <label class="shop__field">
+              <span class="shop__field-label" data-i18n-fa="کد تخفیف">Promo code</span>
+              <input type="text" name="promo" class="shop__input force-ltr" placeholder="STUDIO10" autocomplete="off" />
+            </label>
+            <button type="submit" class="shop__chip shop__chip--action" data-i18n="shopApply">Apply</button>
+          </form>
+          <p class="shop__promo-note" data-promo-note data-i18n-fa="STUDIO10 را امتحان کنید">Try STUDIO10</p>
+
+          <dl class="shop__totals-rows">
+            <div><dt data-i18n="shopSubtotal">Subtotal</dt><dd class="force-ltr" data-total="subtotal">—</dd></div>
+            <div data-discount-row hidden><dt data-i18n="shopDiscount">Discount</dt><dd class="force-ltr" data-total="discount">—</dd></div>
+            <div><dt data-i18n="shopShipping">Shipping</dt><dd class="force-ltr" data-total="shipping">—</dd></div>
+            <div><dt data-i18n="shopTax">VAT (21%)</dt><dd class="force-ltr" data-total="tax">—</dd></div>
+            <div class="shop__totals-grand"><dt data-i18n="shopTotal">Total</dt><dd class="force-ltr" data-total="total">—</dd></div>
+          </dl>
+
+          <a class="shop__cta" href="checkout.html" data-checkout-link data-i18n="shopToCheckout">Checkout</a>
+          <a class="shop__cta shop__cta--ghost" href="index.html" data-i18n="shopKeepShopping">Keep shopping</a>
+        </aside>
+      </section>
+    </main>
+    <div data-drawer-host></div>
+
+  </body>
+</html>

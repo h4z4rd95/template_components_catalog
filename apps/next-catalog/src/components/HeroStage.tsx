@@ -12,6 +12,7 @@ import type { ComponentType } from "react";
 import { useEffect } from "react";
 import type { Variation } from "@catalog/shared";
 import RouteFrame from "./RouteFrame";
+import { useCatalogSkin } from "@/lib/skin";
 import styles from "./HeroStage.module.css";
 
 const StageSkeleton = () => (
@@ -51,15 +52,18 @@ const HEROES: Record<string, ComponentType> = {
 
 export default function HeroStage({ variation }: { variation: Variation }) {
   const Hero = HEROES[variation.slug];
+  const skin = useCatalogSkin();
 
-  // Each variation paints its own full-bleed palette, so the document background must follow.
+  // Each variation paints its own full-bleed palette, so the document background must follow — and
+  // in day mode that background is paper, not the night canvas. Anything else shows at the seams:
+  // the overscroll edge, the strip under a short page, the moment before the canvas paints.
   useEffect(() => {
     const previous = document.body.style.background;
-    document.body.style.background = "#050506";
+    document.body.style.background = skin.theme === "light" ? "#f7f4ec" : "#050506";
     return () => {
       document.body.style.background = previous;
     };
-  }, []);
+  }, [skin.theme]);
 
   if (!Hero) {
     return (

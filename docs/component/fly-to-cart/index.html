@@ -1,13 +1,13 @@
 <!doctype html>
-<html lang="en" dir="ltr" data-page="component" data-title-en="Fly to Cart — Commerce_V05_FlyToCart · The Catalog" data-title-fa="پرواز به سبد — Commerce_V05_FlyToCart · کاتالوگ">
+<html lang="en" dir="ltr" data-page="component" data-title-en="Cart with Flight — Commerce_V05_FlyToCart · The Catalog" data-title-fa="سبد با پرواز — Commerce_V05_FlyToCart · کاتالوگ">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Fly to Cart — Commerce_V05_FlyToCart · The Catalog</title>
-    <meta name="description" content="Kinetic Typography · Micro-interaction. Adding arcs the thumbnail into the cart with a spring; removing collapses the row, reflows the list and counts the total down in place." data-desc-en="Kinetic Typography · Micro-interaction. Adding arcs the thumbnail into the cart with a spring; removing collapses the row, reflows the list and counts the total down in place." data-desc-fa="تایپوگرافی جنبشی · ریزتعامل. افزودن، تصویرک را با فنر به سمت سبد قوس می‌دهد؛ حذف، ردیف را جمع می‌کند، فهرست را بازچینش می‌کند و جمعِ کل را در همان‌جا پایین می‌آورد." />
+    <title>Cart with Flight — Commerce_V05_FlyToCart · The Catalog</title>
+    <meta name="description" content="UX Primitive · Retail. Adding sends a ghost along a curve into the pill; removing collapses the row first and closes the gap after, so the list never jumps under your cursor." data-desc-en="UX Primitive · Retail. Adding sends a ghost along a curve into the pill; removing collapses the row first and closes the gap after, so the list never jumps under your cursor." data-desc-fa="پایهٔ تجربهٔ کاربری · خرده‌فروشی. افزودن، شبحی را در یک قوس تا قرص سبد می‌فرستد؛ حذف اول ردیف را جمع می‌کند و بعد فاصله را می‌بندد، پس فهرست زیر نشانگر شما نمی‌پرد." />
     <meta name="theme-color" content="#050506" />
-    <meta property="og:title" content="Fly to Cart — Commerce_V05_FlyToCart · The Catalog" />
-    <meta property="og:description" content="Kinetic Typography · Micro-interaction. Adding arcs the thumbnail into the cart with a spring; removing collapses the row, reflows the list and counts the total down in place." />
+    <meta property="og:title" content="Cart with Flight — Commerce_V05_FlyToCart · The Catalog" />
+    <meta property="og:description" content="UX Primitive · Retail. Adding sends a ghost along a curve into the pill; removing collapses the row first and closes the gap after, so the list never jumps under your cursor." />
     <meta property="og:type" content="website" />
     <link rel="alternate" hreflang="en" href="?lang=en" />
     <link rel="alternate" hreflang="fa" href="?lang=fa" />
@@ -61,7 +61,7 @@
     <script src="../../assets/page.js" defer></script>
   </head>
 
-  <body class="pg pg--accented" style="--accent: #FF3B1F">
+  <body class="pg pg--accented" style="--accent: #00f0a8">
     <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
 
     <header class="masthead pg__masthead">
@@ -78,20 +78,20 @@
         <span aria-hidden="true">/</span>
         <a href="../../browse/commerce/cart/index.html" data-i18n-fa="سبد و پرداخت">Cart &amp; Checkout</a>
         <span aria-hidden="true">/</span>
-        <span aria-current="page" data-i18n-fa="پرواز به سبد">Fly to Cart</span>
+        <span aria-current="page" data-i18n-fa="سبد با پرواز">Cart with Flight</span>
       </nav>
       <header class="pg__hero">
         <p class="pg__kicker force-ltr">Commerce_V05_FlyToCart</p>
-        <h1 class="pg__title" data-i18n-fa="پرواز به سبد">Fly to Cart</h1>
-        <p class="pg__lede" data-i18n-fa="تایپوگرافی جنبشی · ریزتعامل">Kinetic Typography · Micro-interaction</p>
+        <h1 class="pg__title" data-i18n-fa="سبد با پرواز">Cart with Flight</h1>
+        <p class="pg__lede" data-i18n-fa="پایهٔ تجربهٔ کاربری · خرده‌فروشی">UX Primitive · Retail</p>
         <ul class="pg__stats">
-          <li><span class="pg__stat pg__stat--status" data-status="planned" data-i18n="planned">planned</span></li>
+          <li><span class="pg__stat pg__stat--status" data-status="stable" data-i18n="stable">stable</span></li>
           <li><span class="pg__stat"><span data-i18n="batch">Batch</span> <span class="force-ltr">04</span></span></li>
           <li><span class="pg__stat"><a href="../../browse/commerce/cart/index.html" data-i18n-fa="سبد و پرداخت">Cart &amp; Checkout</a></span></li>
         </ul>
       </header>
       <!-- The metadata HUD, exactly as the card carries it: id, stack, vibe, blueprint, tags. -->
-      <section class="pg__hud" aria-labelledby="pg-hud-title" style="--accent: #FF3B1F">
+      <section class="pg__hud" aria-labelledby="pg-hud-title" style="--accent: #00f0a8">
         <p class="pg__hud-title" id="pg-hud-title" data-i18n="catalogSummary">Catalog summary</p>
         <dl class="pg__spec">
           <div class="pg__spec-row">
@@ -108,37 +108,32 @@
           </div>
           <div class="pg__spec-row">
             <dt data-i18n="stack">stack</dt>
-            <dd><span class="pg__row-stack"><span class="pg__row-chip">Vanilla JS</span><span class="pg__row-chip">Canvas2D</span><span class="pg__row-chip">Web Animations API</span><span class="pg__row-chip">FLIP</span></span></dd>
+            <dd><span class="pg__row-stack"><span class="pg__row-chip">Vanilla HTML5</span><span class="pg__row-chip">CSS keyframes</span><span class="pg__row-chip">localStorage</span><span class="pg__row-chip">Shared cart engine</span></span></dd>
           </div>
           <div class="pg__spec-row">
             <dt data-i18n="vibe">vibe</dt>
-            <dd><span data-i18n-fa="تایپوگرافی جنبشی · ریزتعامل">Kinetic Typography · Micro-interaction</span></dd>
+            <dd><span data-i18n-fa="پایهٔ تجربهٔ کاربری · خرده‌فروشی">UX Primitive · Retail</span></dd>
           </div>
           <div class="pg__spec-row">
             <dt data-i18n="interaction">interaction</dt>
-            <dd><span data-i18n-fa="افزودن، تصویرک را با فنر به سمت سبد قوس می‌دهد؛ حذف، ردیف را جمع می‌کند، فهرست را بازچینش می‌کند و جمعِ کل را در همان‌جا پایین می‌آورد.">Adding arcs the thumbnail into the cart with a spring; removing collapses the row, reflows the list and counts the total down in place.</span></dd>
+            <dd><span data-i18n-fa="افزودن، شبحی را در یک قوس تا قرص سبد می‌فرستد؛ حذف اول ردیف را جمع می‌کند و بعد فاصله را می‌بندد، پس فهرست زیر نشانگر شما نمی‌پرد.">Adding sends a ghost along a curve into the pill; removing collapses the row first and closes the gap after, so the list never jumps under your cursor.</span></dd>
           </div>
           <div class="pg__spec-row">
             <dt data-i18n="tags">tags</dt>
-            <dd><ul class="pg__tags"><li class="pg__tag force-ltr">commerce</li><li class="pg__tag force-ltr">cart</li><li class="pg__tag force-ltr">phase-3</li></ul></dd>
+            <dd><ul class="pg__tags"><li class="pg__tag force-ltr">commerce</li><li class="pg__tag force-ltr">phase-4</li></ul></dd>
           </div>
         </dl>
       </section>
-      <section class="pg__stage pg__stage--planned" data-planned>
+      <section class="pg__stage" data-stage data-src="../../sites/shop/cart.html" data-id="Commerce_V05_FlyToCart" data-source="sites/shop.json" data-href="sites/shop/cart.html">
         <div class="pg__stage-bar">
           <span class="pg__stage-label" data-i18n="livePreview">Live preview</span>
-          <span class="pg__stage-badge" data-i18n="planned">planned</span>
+          <div class="pg__stage-actions">
+            <a class="pg__action" href="../../sites/shop/cart.html" target="_blank" rel="noreferrer noopener" data-i18n="raw">Raw ↗</a>
+            <a class="pg__action" href="https://github.com/h4z4rd95/template_components_catalog/tree/main/sites/shop.json" target="_blank" rel="noreferrer noopener" data-i18n="source">Source ↗</a>
+          </div>
         </div>
-        <div class="pg__blueprint">
-          <p class="card__planned-kicker" data-i18n="plannedTitle">In production</p>
-          <dl class="card__planned-row">
-            <dt class="card__planned-label" data-i18n="plannedRoute">Route reserved</dt>
-            <dd class="card__planned-value force-ltr">framework/next/commerce/flytocart/</dd>
-          </dl>
-          <p class="card__planned-note" data-i18n="pagePlan">
-            Its page ships in the commerce batch — the metadata, stack and blueprint above are already final.
-          </p>
-          <a class="pg__action" href="https://github.com/h4z4rd95/template_components_catalog/tree/main/apps/next-catalog/src/commerce/flytocart/" target="_blank" rel="noreferrer noopener" data-i18n="source">Source ↗</a>
+        <div class="pg__stage-frame" data-stage-frame>
+          <span class="pg__stage-idle" data-i18n="scrollHint">Scroll to explore</span>
         </div>
       </section>
       <section class="pg__block pg__block--aside">
@@ -147,35 +142,35 @@
           <code class="force-ltr">npm install</code>
           <code class="force-ltr">npm run dev</code>
           <span class="pg__howto-note" data-i18n="componentPage">Component page</span>
-          <code class="force-ltr">apps/next-catalog/src/commerce/flytocart/</code>
+          <code class="force-ltr">sites/shop.json</code>
         </p>
       </section>
       <section class="pg__block">
         <h2 class="pg__block-title" data-i18n="related">Related variations</h2>
           <ul class="pg__rows">
             <li>
-              <a class="pg__row" href="../../component/one-step-checkout/index.html" style="--row-accent: #00F0A8" data-status="planned">
+              <a class="pg__row" href="../../component/one-step-checkout/index.html" style="--row-accent: #7aa2ff" data-status="stable">
                 <span class="pg__row-id force-ltr">Commerce_V06_OneStepCheckout</span>
-                <span class="pg__row-title" data-i18n-fa="پرداختِ تک‌مرحله‌ای">One-Step Checkout</span>
+                <span class="pg__row-title" data-i18n-fa="پرداخت تک‌مرحله‌ای">One-step Checkout</span>
                 
-                <span class="pg__row-stack"><span class="pg__row-chip">Next.js</span><span class="pg__row-chip">React 19</span><span class="pg__row-chip">Motion</span><span class="pg__row-chip">CSS</span></span>
-                <span class="pg__row-status" data-i18n="planned">planned</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Vanilla HTML5</span><span class="pg__row-chip">Constraint validation</span><span class="pg__row-chip">Shared cart engine</span></span>
+                <span class="pg__row-status" data-i18n="stable">stable</span>
               </a>
             </li>
             <li>
-              <a class="pg__row" href="../../component/ritual-checkout/index.html" style="--row-accent: #9D7BFF" data-status="planned">
+              <a class="pg__row" href="../../component/ritual-checkout/index.html" style="--row-accent: #ff4fd8" data-status="stable">
                 <span class="pg__row-id force-ltr">Commerce_V07_RitualCheckout</span>
-                <span class="pg__row-title" data-i18n-fa="پرداختِ آیینی">Ritual Checkout</span>
+                <span class="pg__row-title" data-i18n-fa="آیین پرداخت چهارمرحله‌ای">Four-step Checkout Ritual</span>
                 
-                <span class="pg__row-stack"><span class="pg__row-chip">Nuxt 4</span><span class="pg__row-chip">Vue 3</span><span class="pg__row-chip">GSAP Timeline</span><span class="pg__row-chip">Lenis</span></span>
-                <span class="pg__row-status" data-i18n="planned">planned</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Vanilla HTML5</span><span class="pg__row-chip">Step state machine</span><span class="pg__row-chip">Shared cart engine</span></span>
+                <span class="pg__row-status" data-i18n="stable">stable</span>
               </a>
             </li>
           </ul>
       </section>
       <nav class="pg__pager" aria-label="Commerce &amp; Checkout">
-        <a class="pg__pager-link" href="../../component/editorial-product/index.html"><span class="pg__pager-dir" data-i18n="previous">Previous</span><span data-i18n-fa="محصولِ سرمقاله‌ای">Editorial Product</span></a>
-        <a class="pg__pager-link pg__pager-link--next" href="../../component/one-step-checkout/index.html"><span class="pg__pager-dir" data-i18n="next">Next</span><span data-i18n-fa="پرداختِ تک‌مرحله‌ای">One-Step Checkout</span></a>
+        <a class="pg__pager-link" href="../../component/editorial-product/index.html"><span class="pg__pager-dir" data-i18n="previous">Previous</span><span data-i18n-fa="خوانش تحریریه‌ای محصول">Editorial Product Reading</span></a>
+        <a class="pg__pager-link pg__pager-link--next" href="../../component/one-step-checkout/index.html"><span class="pg__pager-dir" data-i18n="next">Next</span><span data-i18n-fa="پرداخت تک‌مرحله‌ای">One-step Checkout</span></a>
       </nav>
 
     </main>

@@ -17,11 +17,13 @@
  * is here, and nothing is hand-edited after the fact.
  */
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
-import { join } from "node:path";
+import { execFileSync } from "node:child_process";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 /* ------------------------------------------------------------------ helpers --- */
 
-const esc = (value) =>
+export const esc = (value) =>
   String(value ?? "")
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
@@ -35,7 +37,7 @@ const esc = (value) =>
  * only pairs, and the embed captions — which pass `something.fa` — silently rendered in English in
  * a Persian page. One helper that cannot be called wrong is worth more than a stricter signature.
  */
-const fa = (value) => {
+export const fa = (value) => {
   const text = typeof value === "string" ? value : value && value.fa;
   return text ? ` data-i18n-fa="${esc(text)}"` : "";
 };
@@ -60,9 +62,45 @@ function rich(text) {
  */
 const faHtml = (pair) => (pair && pair.fa ? ` data-i18n-fa-html="${esc(rich(pair.fa))}"` : "");
 
+/**
+ * The bilingual pair attribute: `data-i18n-fa` on a node whose own text is English. Same contract as
+ * `chrome.js` swaps, used by every generator in this folder.
+ */
+export const bi = (faText) => fa(faText);
+
+/**
+ * The date of the catalogue's last change — the timestamp every generated artefact records.
+ *
+ * Two other candidates were tried and both were wrong. `new Date()` makes a *regeneration* look like
+ * a change: run the sync twice on an untouched checkout and four generated files come back dirty
+ * with a newer timestamp and nothing else. The date of `HEAD` looks better but is just as noisy one
+ * level up — every commit, including a commit of the generated files themselves, dates them anew.
+ *
+ * What the artefacts actually describe is the catalogue, so they are dated from the last commit that
+ * touched `catalog/catalog.json` (with `sites/` — the copy those pages are written from). Now a sync
+ * with nothing to say produces byte-identical output, and the date the hub prints means "the
+ * catalogue of this date" rather than "whenever someone last ran the tests". Falls back to HEAD and
+ * then to the clock: a downloaded copy of the archive has no git at all and must still build.
+ */
+export function commitStamp(...paths) {
+  const cwd = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+  const sources = paths.length ? paths : ["catalog/catalog.json", "sites"];
+  for (const args of [["log", "-1", "--format=%cI", "--", ...sources], ["log", "-1", "--format=%cI"]]) {
+    try {
+      // stderr is discarded: in a downloaded copy of the archive git is simply absent, and a
+      // "fatal: not a git repository" in the middle of a successful build reads like a failure.
+      const iso = execFileSync("git", args, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+      if (iso) return iso;
+    } catch {
+      /* no git / no history — try the next source, then the clock */
+    }
+  }
+  return new Date().toISOString();
+}
+
 const isoDate = (value) => value;
 
-function head({ base, title, titleFa, description, descriptionFa, accent, scripts, styles, bodyClass = "" }) {
+export function head({ base, title, titleFa, description, descriptionFa, accent, scripts, styles, bodyClass = "" }) {
   const icon =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E";
 
@@ -123,7 +161,7 @@ ${scripts.map((src) => `    <script src="${src}" defer></script>`).join("\n")}
 `;
 }
 
-function foot({ base, note, noteFa, scripts }) {
+export function foot({ base, note, noteFa, scripts }) {
   return `
     <div data-drawer-host></div>
 ${scripts.map((src) => `    <script src="${src}" defer></script>`).join("\n")}
@@ -178,7 +216,7 @@ function chromeBar({ base, brand, brandFa, sectionsId }) {
  * has to survive a clone that has not been built: the frame is probed first (HEAD) and, when the
  * build is absent, the slot says so and links to the source instead of showing a hole.
  */
-function embed({ base, src, alt, altFa, caption, captionFa, height }) {
+export function embed({ base, src, alt, altFa, caption, captionFa, height }) {
   return `      <figure class="site__embed" data-embed data-src="${base}${esc(src)}" style="--embed-h: ${esc(height || "62svh")}">
         <div class="site__embed-frame" data-embed-frame>
           <p class="site__embed-note"${fa(altFa)}>${esc(alt)}</p>

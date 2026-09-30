@@ -56,7 +56,7 @@
 
 .pg__crumbs a:hover,
 .pg__crumbs a:focus-visible {
-  color: var(--accent);
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .pg__crumbs [aria-current="page"] {
@@ -89,7 +89,7 @@
   font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .pg__title {
@@ -145,7 +145,7 @@
 
 .pg__stat--status {
   border-color: color-mix(in oklab, var(--accent) 45%, var(--ink-300));
-  color: var(--accent);
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .pg__stat--status[data-status="planned"] {
@@ -185,7 +185,7 @@
 
 .pg__block-title a:hover,
 .pg__block-title a:focus-visible {
-  color: var(--accent);
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .pg__block-blurb {
@@ -241,7 +241,7 @@
 
 .pg__chip:hover,
 .pg__chip:focus-visible {
-  border-color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
   color: var(--ink-700);
 }
 
@@ -251,7 +251,7 @@
 }
 
 .pg__chip.is-active {
-  border-color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
   background: color-mix(in oklab, var(--accent) 14%, transparent);
   color: var(--ink-700);
 }
@@ -345,7 +345,7 @@
 }
 
 .pg__row[data-status="stable"] .pg__row-status {
-  color: var(--accent-3);
+  color: color-mix(in oklab, var(--accent-3) var(--accent-weight, 100%), var(--ink-700));
 }
 
 /* ---------------------------------------------------------------------- HUD --- */
@@ -405,7 +405,7 @@
 
 .pg__spec-row dd a {
   color: var(--ink-700);
-  text-decoration-color: var(--accent);
+  text-decoration-color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
   text-underline-offset: 3px;
 }
 
@@ -481,7 +481,7 @@
 
 .pg__action:hover,
 .pg__action:focus-visible {
-  border-color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
   color: var(--ink-700);
 }
 
@@ -631,7 +631,7 @@
 
 .pg__pager-link:hover,
 .pg__pager-link:focus-visible {
-  border-color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .pg__pager-link.is-empty {
@@ -682,7 +682,7 @@
 
 .pg__foot-link:hover,
 .pg__foot-link:focus-visible {
-  color: var(--accent);
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 /* ------------------------------------------------------------------ responsive --- */

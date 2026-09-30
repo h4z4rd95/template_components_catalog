@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-title-en="Field Supply — The vault" data-title-fa="فیلد ساپلای — گنجینه">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Field Supply — The vault</title>
+    <meta name="description" content="Files, licences and fonts. No shipping, no weight, no waiting — the cart switches itself out of physical mode the moment a download lands in it." data-desc-en="Files, licences and fonts. No shipping, no weight, no waiting — the cart switches itself out of physical mode the moment a download lands in it." data-desc-fa="فایل‌ها، لایسنس‌ها و فونت‌ها. بدون ارسال، بدون وزن، بدون انتظار — به‌محض اینکه یک دانلود به سبد اضافه شود، سبد خودش از حالت فیزیکی خارج می‌شود." />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="Field Supply — The vault" />
+    <meta property="og:description" content="Files, licences and fonts. No shipping, no weight, no waiting — the cart switches itself out of physical mode the moment a download lands in it." />
+
+    <!-- Same pre-paint bootstrap as the rest of the catalogue: the first paint already knows the
+         language, the direction and the theme, so nothing flashes the wrong way round. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try { return localStorage.getItem(k); } catch (e) { return null; }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../assets/fonts.css" />
+    <link rel="stylesheet" href="../../assets/hub.css" />
+    <link rel="stylesheet" href="../../assets/theme.css" />
+    <link rel="stylesheet" href="../../assets/chrome.css" />
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/shop.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+
+    <script>
+      window.__CATALOG_BASE__ = "../../";
+    </script>
+    <script src="../../data/catalog.js" defer></script>
+    <script src="../../assets/chrome.js" defer></script>
+    <script src="../../assets/site.js" defer></script>
+    <script src="../../assets/shop.js" defer></script>
+  </head>
+
+  <body class="shop-page" style="--site-accent: #c6a15b">
+    <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
+    <header class="shop__bar">
+      <div class="shop__bar-row">
+        <a class="shop__brand" href="index.html">
+          <span class="shop__brand-dot" aria-hidden="true"></span>
+          <span class="shop__brand-name" data-i18n-fa="فیلد ساپلای">Field Supply</span>
+        </a>
+        <nav class="shop__nav" aria-label="Shop">
+          <a class="shop__nav-link" href="index.html" data-i18n-fa="فیزیکی">Physical</a>
+          <a class="shop__nav-link is-active" href="digital.html" data-i18n-fa="دیجیتال">Digital</a>
+          <a class="shop__nav-link" href="cart.html" data-i18n-fa="سبد">Cart</a>
+          <a class="shop__nav-link" href="checkout.html" data-i18n-fa="پرداخت">Checkout</a>
+        </nav>
+        <div class="shop__bar-actions">
+          <div class="lang-switch" data-lang-switch>
+            <button type="button" class="lang-switch__button" data-lang="en">EN</button>
+            <button type="button" class="lang-switch__button" data-lang="fa">فا</button>
+          </div>
+          <button type="button" class="theme-switch" data-theme-toggle data-i18n-aria="themeToggle" aria-label="Switch theme">
+            <span data-theme-label-icon aria-hidden="true">◐</span>
+          </button>
+          <button type="button" class="shop__cart-pill" data-cart-open>
+            <span data-i18n="shopCart">Cart</span>
+            <span class="shop__cart-count force-ltr" data-cart-count>0</span>
+          </button>
+          <a class="shop__bar-link" href="../../guide/index.html" data-i18n="guide">Guide</a>
+        </div>
+      </div>
+    </header>    <main class="shop" id="main">
+      <header class="shop__head">
+        <p class="shop__kicker force-ltr" data-i18n-fa="کالای دیجیتال · Commerce_V02_DigitalVault">Digital goods · Commerce_V02_DigitalVault</p>
+        <h1 class="shop__title" data-i18n-fa="گنجینه">The vault</h1>
+        <p class="shop__lede" data-i18n-fa="فایل‌ها، لایسنس‌ها و فونت‌ها. بدون ارسال، بدون وزن، بدون انتظار — به‌محض اینکه یک دانلود به سبد اضافه شود، سبد خودش از حالت فیزیکی خارج می‌شود.">Files, licences and fonts. No shipping, no weight, no waiting — the cart switches itself out of physical mode the moment a download lands in it.</p>
+      </header>
+
+
+
+      <section class="shop__shelf" aria-labelledby="shelf-title">
+        <div class="shop__shelf-head">
+          <h2 class="shop__shelf-title" id="shelf-title" data-i18n="shopShelf">In the vault</h2>
+          <p class="shop__shelf-meta"><span data-shelf-count>6</span> <span data-i18n="shopItems">items</span></p>
+        </div>
+        <div class="shop__filters" role="group" aria-label="Filter">
+          <button type="button" class="shop__chip is-active" data-filter="all" aria-pressed="true"><span data-i18n-fa="همه">Everything</span><span class="shop__chip-count" data-count="all">0</span></button>
+          <button type="button" class="shop__chip" data-filter="type" aria-pressed="false"><span data-i18n-fa="تایپ">Type</span><span class="shop__chip-count" data-count="type">0</span></button>
+          <button type="button" class="shop__chip" data-filter="code" aria-pressed="false"><span data-i18n-fa="کد">Code</span><span class="shop__chip-count" data-count="code">0</span></button>
+          <button type="button" class="shop__chip" data-filter="asset" aria-pressed="false"><span data-i18n-fa="سه‌بعدی و دارایی‌ها">3D &amp; assets</span><span class="shop__chip-count" data-count="asset">0</span></button>
+        </div>
+        <p class="shop__empty" data-empty hidden data-i18n="shopEmpty">Nothing in this filter.</p>
+        <div class="shop__grid" data-grid>
+        <article class="shop__good" data-good data-id="D-01" data-sku="DV-TYPE-01" data-price="140" data-kind="digital" data-material="type" data-name-en="Field Display — 3 weights" data-name-fa="فیلد دیسپلی — ۳ وزن">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">DV-TYPE-01</span>
+            <span class="shop__badge" data-i18n="badgeinstant">instant</span>
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="فیلد دیسپلی — ۳ وزن">Field Display — 3 weights</h3>
+          <p class="shop__good-blurb" data-i18n-fa="یک فونت نمایشی متغیر با فارسی و لاتین در یک فایل، تا تیتر دوزبانه به فونت جانشین و تایم‌لاین دوم نیاز نداشته باشد.">A variable display face with Persian and Latin in one file, so a bilingual headline needs no fallback and no second timeline.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="لایسنس">Licence</dt><dd data-i18n-fa="دسکتاپ + وب">Desktop + web</dd></div>
+            <div><dt data-i18n-fa="قالب">Format</dt><dd data-i18n-fa="متغیر WOFF2 + OTF">Variable WOFF2 + OTF</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">140 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="D-02" data-sku="DV-CODE-02" data-price="220" data-kind="digital" data-material="code" data-name-en="Motion primitives kit" data-name-fa="کیت پایه‌های حرکت">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">DV-CODE-02</span>
+
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="کیت پایه‌های حرکت">Motion primitives kit</h3>
+          <p class="shop__good-blurb" data-i18n-fa="کمک‌کننده‌های اسکرول، پین و پله‌ای که کاتالوگ روی آن‌ها ساخته شده، استخراج‌شده تا بدون هیچ فریم‌ورکی در هر پروژه‌ای کار کنند.">The scroll, pin and stagger helpers the catalogue is built on, extracted so they run in any project with no framework at all.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="لایسنس">Licence</dt><dd data-i18n-fa="دائمی، یک تیم">Perpetual, one team</dd></div>
+            <div><dt data-i18n-fa="حجم">Size</dt><dd data-i18n-fa="۰ کیلوبایت وابستگی">0 kB dependencies</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">220 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="D-03" data-sku="DV-ASSET-03" data-price="180" data-kind="digital" data-material="asset" data-name-en="Shader study pack" data-name-fa="بستهٔ مطالعهٔ شیدر">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">DV-ASSET-03</span>
+            <span class="shop__badge" data-i18n="badgenew">new</span>
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="بستهٔ مطالعهٔ شیدر">Shader study pack</h3>
+          <p class="shop__good-blurb" data-i18n-fa="دوازده مطالعهٔ GLSL توضیح‌دار — کرما، دانه، پاشیدگی، اسکن — هرکدام به‌قدری کوچک که در یک نشست خوانده شود.">Twelve annotated GLSL studies — chroma, grain, dispersion, scan — each one small enough to read in a sitting.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="فایل‌ها">Files</dt><dd data-i18n-fa="۱۲ مطالعه + یادداشت">12 studies + notes</dd></div>
+            <div><dt data-i18n-fa="اجرا روی">Runs on</dt><dd data-i18n-fa="WebGL2">WebGL2</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">180 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="D-04" data-sku="DV-TYPE-04" data-price="165" data-kind="digital" data-material="type" data-name-en="Editorial Serif — text family" data-name-fa="سریف تحریریه — خانوادهٔ متن">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">DV-TYPE-04</span>
+
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="سریف تحریریه — خانوادهٔ متن">Editorial Serif — text family</h3>
+          <p class="shop__good-blurb" data-i18n-fa="چهار وزن متنی و یک ایتالیک واقعی، کشیده‌شده برای خوانش طولانی. برش فارسی از نظر وزن و ریتم با لاتین هم‌خوان است.">Four text weights and a true italic, drawn for long reading. The Persian cut is matched in weight and rhythm to the Latin.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="وزن‌ها">Weights</dt><dd data-i18n-fa="۴ + ایتالیک">4 + italic</dd></div>
+            <div><dt data-i18n-fa="خطوط">Scripts</dt><dd data-i18n-fa="لاتین، فارسی">Latin, Persian</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">165 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="D-05" data-sku="DV-CODE-05" data-price="260" data-kind="digital" data-material="code" data-name-en="Commerce cart engine" data-name-fa="موتور سبد خرید">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">DV-CODE-05</span>
+            <span class="shop__badge" data-i18n="badgeinstant">instant</span>
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="موتور سبد خرید">Commerce cart engine</h3>
+          <p class="shop__good-blurb" data-i18n-fa="همان موتوری که پشت همین صفحه است: ماندگاری، پیش‌بینی حرکت، جمع‌ها، کد تخفیف و طراحی افزودن/حذف، در یک فایل بدون وابستگی.">The engine behind this very page: persistence, projections, totals, promo codes and the add/remove choreography, as one dependency-free file.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="لایسنس">Licence</dt><dd data-i18n-fa="دائمی، پروژه‌های نامحدود">Perpetual, unlimited projects</dd></div>
+            <div><dt data-i18n-fa="وابستگی‌ها">Dependencies</dt><dd data-i18n-fa="هیچ">None</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">260 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="D-06" data-sku="DV-ASSET-06" data-price="120" data-kind="digital" data-material="asset" data-name-en="Grid &amp; layout templates" data-name-fa="قالب‌های گرید و چیدمان">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">DV-ASSET-06</span>
+
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="قالب‌های گرید و چیدمان">Grid &amp; layout templates</h3>
+          <p class="shop__good-blurb" data-i18n-fa="هجده چیدمان تحریریه به‌صورت دادهٔ ساخت‌یافته — همان شکل مانیفستی که این کاتالوگ استفاده می‌کند، پس صفحهٔ جدید یک رکورد است.">Eighteen editorial layouts as structured data — the same manifest shape this catalogue uses, so a new page is one record.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="چیدمان‌ها">Layouts</dt><dd data-i18n-fa="۱۸">18</dd></div>
+            <div><dt data-i18n-fa="قالب">Format</dt><dd data-i18n-fa="JSON + فیگما">JSON + Figma</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">120 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        </div>
+      </section>
+
+      <section class="shop__assurance">
+        <article class="shop__assure">
+          <h3 data-i18n="shopA1">Every total is computed</h3>
+          <p data-i18n="shopA1b">Prices, quantities and tax are calculated in the page, from the same records the cart uses.</p>
+        </article>
+        <article class="shop__assure">
+          <h3 data-i18n="shopA2">No dark patterns</h3>
+          <p data-i18n="shopA2b">No countdown timers, no fake scarcity, no pre-ticked boxes.</p>
+        </article>
+        <article class="shop__assure">
+          <h3 data-i18n="shopA3">Bilingual and dual-theme</h3>
+          <p data-i18n="shopA3b">Persian and English, day and night — every control checked in all four.</p>
+        </article>
+      </section>
+    </main>
+    <div data-drawer-host></div>
+
+  </body>
+</html>

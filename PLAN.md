@@ -368,3 +368,101 @@ is rich text — inline `<code>` and emphasis survive the language round trip th
   what the shell asked for; the trigger row never overflows and every discipline it hides is
   reachable through "More"; panels open inside the viewport with links that resolve; the phone gets
   a full-height sheet that Escape closes; ⌘K filters instead of emptying).
+
+## 9. Phase 4 — the commerce track (in flight)
+
+### خلاصهٔ پلن (فارسی)
+
+**هدف:** یک مسیر فروش کامل و دوزبانه — دو صفحهٔ اصلی فروشگاه (کالای فیزیکی و کالای دیجیتال)، دو
+صفحهٔ جزئیات محصول که «مثل مغازه‌های معمولی» نیستند، سبد خرید با افکت افزودن/حذف، و پرداخت
+تک‌مرحله‌ای و چندمرحله‌ای.
+
+**معماری:** دقیقاً مثل بخش خبری — محتوا در `sites/shop.json`، تولید صفحات با `scripts/shop.mjs`
+در جریان `npm run catalog:sync`، استایل و رفتار در `docs/assets/shop.css` و `docs/assets/shop.js`.
+هیچ صفحه‌ای دست‌ساز و هیچ قابلیتی شبیه‌سازی‌شده نیست: سبد خرید واقعاً در `localStorage` می‌مانَد،
+جمع‌ها واقعاً محاسبه می‌شوند و پرداخت واقعاً اعتبارسنجی می‌کند.
+
+**معیار پذیرش:** هر صفحه در دو زبان، دو تم و دو بریک‌پوینت؛ افزودن به سبد با انیمیشن پرواز و
+حذف با بازآرایی و شمارش درست؛ جمع‌ها با تغییر تعداد هم‌خوان بمانند؛ پرداخت تک‌مرحله‌ای و
+چندمرحله‌ای هر دو با اعتبارسنجی واقعی؛ و همهٔ این‌ها در گیت `npm run verify:shop` اثبات شود.
+
+### The build
+
+| Page | Route | What it is |
+| --- | --- | --- |
+| Physical storefront | `sites/shop/index.html` | `Commerce_V01_HoloStorefront` — a showroom grid, not a template: hero-scale type, a live catalogue hero framed as the campaign panel, spec chips per product, quantity steppers |
+| Digital storefront | `sites/shop/digital.html` | `Commerce_V02_DigitalVault` — the same engine for licences and downloads: instant-delivery language, licence tiers, no shipping |
+| Product — chroma | `sites/shop/product-chroma.html` | `Commerce_V03_ChromaticProduct` — the product *is* the motion: a chromatic liquid stage you drag to rotate the finish, with the price re-rendering per finish |
+| Product — editorial | `sites/shop/product-editorial.html` | `Commerce_V04_EditorialProduct` — letterpress product page: an article about the object, with the buy panel pinned beside it |
+| Cart | `sites/shop/cart.html` | `Commerce_V05_FlyToCart` — the add-to-cart flight, removal that reflows and recounts, promo code, totals |
+| Checkout (one step) | `sites/shop/checkout.html` | `Commerce_V06_OneStepCheckout` — everything on one page, validated on submit, with a sticky order rail |
+| Checkout (ritual) | `sites/shop/checkout-ritual.html` | `Commerce_V07_RitualCheckout` — four steps with real validation per step, a progress rail and a summary that follows |
+
+**Status: shipped** — all seven pages, both storefronts, both product pages, the cart and both
+checkouts are generated, gated by `npm run verify:shop` (which drives them like a customer) and
+covered by `npm run verify:theme` in both ramps. The archive is rebuilt by `npm run build`.
+
+**Cart engine (one implementation, shared):** `docs/assets/shop.js` owns state
+(`catalog:cart` in `localStorage`), the fly-to-cart projection from the clicked button to the cart
+pill, the drawer, quantity changes, removal choreography (the row collapses, then the list
+reflows), promo codes, and the totals every page reads. Storefront, product and checkout pages are
+all *views* over that one state — the reason the count in the header cannot disagree with the rows
+in the cart.
+
+**Bilingual, dual-direction, dual-theme:** content lives in `sites/shop.json` with `en`/`fa` pairs,
+the pages reuse the catalogue shell (`chrome.js`, `theme.css`), and every new element is subject to
+`npm run verify:theme` — day mode is where commerce layouts usually break, because a price on a
+pale card is the first thing to disappear.
+
+**What the gate found before a customer could**
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| The second "Add to cart" did nothing | The first add opened a drawer that covered the shelf and intercepted the next click | Adds confirm **on the button** (green for 1.3 s) and the drawer stays a deliberate action — the pill already carries the running count |
+| Checkout accepted nothing at all | (probe error) the form was submitted with an empty cart and refused by design | The gate now adds items first — and asserts *that* refusal separately |
+| A wrong total after one more unit | (gate error) the test hardcoded 6 € shipping and did not model the free-from-120 € rule | The gate models the rule; the page had been right |
+| `404 framework/next/hero/liquid-chroma-glass/` on the storefront | The campaign panel passed a page-relative src instead of one rooted at `docs/` | It uses the shared `embed()` helper, which prefixes `base` |
+| Mint and olive buttons vanishing in day mode | Accents chosen on one ramp shipped anyway | The manifest now **fails the sync** when an accent is under 4.5:1 either as night-canvas text or as a fill under page text — one lever (`--fill-mix`) turned, two pre-existing accents caught with it |
+
+**Next batch, registered as planned** — `Loader_V01_CinematicCurtain`, `Loader_V02_ShutterReveal`
+and `Dashboard_V02_RealtimeWall`. A catalogue with nothing planned has no honest way to show where
+it is going, and the "planned" paths in the gates (`verify-pages`) had nothing to test.
+
+## 10. The whole-site audit — "does every demo load?"
+
+Phase 4 answered *is the shop correct*. It did not answer the question a visitor asks of the site as a
+whole: **does every page load, completely, without an error?** The other gates each own a slice
+(`verify:pages` the generated tree, `verify:site` the composed pages, `verify:shop` the commerce flow,
+`verify:theme` contrast, `verify:header` the bar), and every defect found in this round fell *between*
+the slices — which is the argument for a gate that owns no slice at all.
+
+**`npm run verify:demos`** (`scripts/verify-demos.mjs`) walks every `docs/**/*.html` except `vision/`
+and `download/` and loads each one in a real browser at **1440 and 390**, then fails on: an HTTP
+status ≥ 400 (assets included), an uncaught page error, an error-level console message, a missing
+`<title>`, fewer than 40 characters of visible text, more than 1 px of horizontal overflow, or a
+`[data-embed]` slot that mounts neither a frame nor its built notice. Output is a per-page table, so a
+green run doubles as an inventory of the site. It takes ~10 minutes and needs `npm run preview`
+running; the gate says so rather than reporting ninety-six pages of `ECONNREFUSED`.
+
+**Current state: 96 pages · 192 loads · 56 with a live frame — clean.**
+
+### What it found, and the rule behind each fix
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| `[NUXT_E1005]` on every Nuxt route, and Nuxt's own 404 rendered inside a 200 response | The export is a client-router app: `<route>/index.html` is a *path* no route matches | Framework routes are addressed as **directories** — raw links, stage `data-src`, probes, audit. `pages.mjs` emits `${base}${href}` verbatim |
+| Three component pages 5–26 px wider than a phone | Latin furniture inside an RTL page (file paths, slugs) is unbreakable | `.force-ltr { overflow-wrap: anywhere }` |
+| Next served its built-in apology as the track's 404 (33 characters) | No `not-found.tsx` | `apps/next-catalog/src/app/not-found.tsx` + module CSS |
+| The hub had no 404 at all — GitHub Pages answered with its own generic page | Never written | `docs/404.html`, hand-written chrome; eight `ui` keys, both languages |
+| Nuxt's error screen (102 characters, framework type) | No `error.vue` | `apps/nuxt-catalog/app/error.vue`, in the track's own tokens and the visitor's restored skin |
+| `framework/nuxt/dashboard/realtime-wall/` existed, and was a 102-character error page | `trackRoutes()` prerendered **every** manifest href, including planned variations whose page does not exist | Prerender only routes with a matching page pattern in `app/pages`; a reserved route is a promise, not a stub |
+| The local preview 404'd with a bespoke dark page | Hardcoded in `serve.mjs` | It serves `docs/404.html` — the file GitHub Pages serves. The "did you forget `npm run build`?" hint moved to the terminal |
+
+### Rules the audit is built on
+
+1. **A route is addressed the way a router matches it.** Directory form, everywhere.
+2. **A fallback page is exempt from the content rules, and nothing else is.** The exemption is scoped
+   to `framework/`; the hub's own 404 is held to every rule like any page.
+3. **An empty shell is a failure, not a placeholder.** A page that mounts no frame and prints no
+   notice fails the run.
+4. **Reserving an address is a promise.** Never prerender a route that has no page behind it.

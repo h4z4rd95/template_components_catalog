@@ -16,14 +16,43 @@
 
 /* ------------------------------------------------------------------ day ---- */
 
+/* The one place the theme is *asserted*, not inherited: every translucent ink in the shell —
+   text, hairlines, hover washes, the lightening pass on accent chips — is written as
+   `rgb(var(--fg-rgb) / α)` instead of `rgba(255,255,255,α)`. On the dark ramp the triplet is
+   white and nothing changes; on paper it is near-black, so a decade of white-on-dark styling
+   inverts in one declaration rather than in 39 patches that go stale one at a time. */
+:root,
+[data-theme="dark"] {
+  --fg-rgb: 255 255 255;
+  --bg-rgb: 5 5 6;
+  --accent-weight: 100%;
+  --fill-mix: 100%;
+  --muted-alpha: 0.66;
+  --label-alpha: 0.5;
+  --ghost-alpha: 16%;
+}
+
 [data-theme="light"] {
+  --fg-rgb: 24 21 15;
+  --bg-rgb: 247 244 236;
+  /* Accents are shared with the manifest, so they cannot simply be swapped per theme: instead
+     every rule that uses an accent *as text* mixes it with the ink at this weight. On the night
+     ramp the mix is a no-op (100% accent); on paper the accent is pulled towards the body colour
+     until it passes contrast — a neon that stays legible instead of a pastel that does not. */
+  --accent-weight: 42%; /* measured: 62% left accent text at 3.3:1 on paper, 48% at 3.9:1 */
+  /* Accent *fills* (badges, pills, the active chip) keep their hue but deepen on paper, so the
+     page-coloured text that sits on them stays readable instead of becoming a pastel smudge. */
+  --fill-mix: 38%; /* measured: 44% left chartreuse and mint fills at 4.1–4.5:1 on paper */
+  --label-alpha: 0.62; /* small uppercase labels: 0.34 is invisible on paper */
+  --ghost-alpha: 26%;
+  --muted-alpha: 0.66; /* muted copy must clear 4.5:1 in *both* ramps, not just on paper */
   --ink-000: #f7f4ec; /* page */
   --ink-050: #f2eee3;
   --ink-100: #ffffff; /* raised surfaces, cards, the stage frame */
   --ink-200: #fbf9f4;
   --ink-300: #e6e1d3; /* hairlines and rails */
   --ink-400: #c7c1b0; /* disabled strokes */
-  --ink-500: #8b8574; /* muted labels */
+  --ink-500: #5f5a4b; /* muted labels — darkened from #8b8574: at 3.2:1 it failed on paper */
   --ink-600: #56503f; /* secondary text */
   --ink-700: #191712; /* body text */
   --paper: #14130f; /* the "paper" accent inverts with the ramp */
@@ -31,7 +60,7 @@
   /* Accents keep their hue and lose their glow: on paper they read as ink. */
   --accent: #d81f9f;
   --accent-2: #2f5cf0;
-  --accent-3: #008f66;
+  --accent-3: #04735a;
   --accent-4: #d02a10;
   --accent-5: #8a6a24;
 
@@ -88,6 +117,13 @@
 [dir="rtl"] .force-ltr {
   direction: ltr;
   unicode-bidi: isolate;
+}
+
+/* …and because it is Latin-only furniture, it is usually an identifier or a file path: minted to
+   be unbreakable and therefore wider than a phone. Wrapping inside the token is the only honest
+   option — a single line that runs off the edge is worse than a path split across two. */
+.force-ltr {
+  overflow-wrap: anywhere;
 }
 
 /* Persian needs more leading and a touch less tracking than the Latin ramp, and the

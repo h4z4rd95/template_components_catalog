@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-title-en="Field Supply — The workshop shelf" data-title-fa="فیلد ساپلای — قفسهٔ کارگاه">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Field Supply — The workshop shelf</title>
+    <meta name="description" content="Seven objects, each one specified to the gram. Filter by material, add with a click, and the cart pill in the bar counts along with you." data-desc-en="Seven objects, each one specified to the gram. Filter by material, add with a click, and the cart pill in the bar counts along with you." data-desc-fa="هفت شیء، هر کدام با مشخصات دقیق. بر اساس جنس فیلتر کنید، با یک کلیک اضافه کنید و شمارندهٔ سبد همراه شما می‌شمارد." />
+    <meta name="theme-color" content="#050506" />
+    <meta property="og:title" content="Field Supply — The workshop shelf" />
+    <meta property="og:description" content="Seven objects, each one specified to the gram. Filter by material, add with a click, and the cart pill in the bar counts along with you." />
+
+    <!-- Same pre-paint bootstrap as the rest of the catalogue: the first paint already knows the
+         language, the direction and the theme, so nothing flashes the wrong way round. -->
+    <script>
+      (function () {
+        try {
+          var params = new URLSearchParams(location.search);
+          var stored = function (k) {
+            try { return localStorage.getItem(k); } catch (e) { return null; }
+          };
+          var theme = params.get("theme") || stored("catalog:theme");
+          if (theme !== "light" && theme !== "dark") {
+            theme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+          }
+          var locale = params.get("lang") || stored("catalog:locale") || "en";
+          if (locale !== "en" && locale !== "fa") locale = "en";
+          var root = document.documentElement;
+          root.dataset.theme = theme;
+          root.dataset.locale = locale;
+          root.lang = locale;
+          root.dir = locale === "fa" ? "rtl" : "ltr";
+        } catch (e) {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
+
+    <link rel="stylesheet" href="../../assets/fonts.css" />
+    <link rel="stylesheet" href="../../assets/hub.css" />
+    <link rel="stylesheet" href="../../assets/theme.css" />
+    <link rel="stylesheet" href="../../assets/chrome.css" />
+    <link rel="stylesheet" href="../../assets/site.css" />
+    <link rel="stylesheet" href="../../assets/shop.css" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23050506'/%3E%3Cpath d='M8 24V8h3.4v6.2h9.2V8H24v16h-3.4v-6.6h-9.2V24z' fill='%23ff4fd8'/%3E%3C/svg%3E" />
+
+    <script>
+      window.__CATALOG_BASE__ = "../../";
+    </script>
+    <script src="../../data/catalog.js" defer></script>
+    <script src="../../assets/chrome.js" defer></script>
+    <script src="../../assets/site.js" defer></script>
+    <script src="../../assets/shop.js" defer></script>
+  </head>
+
+  <body class="shop-page" style="--site-accent: #c6a15b">
+    <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
+    <header class="shop__bar">
+      <div class="shop__bar-row">
+        <a class="shop__brand" href="index.html">
+          <span class="shop__brand-dot" aria-hidden="true"></span>
+          <span class="shop__brand-name" data-i18n-fa="فیلد ساپلای">Field Supply</span>
+        </a>
+        <nav class="shop__nav" aria-label="Shop">
+          <a class="shop__nav-link is-active" href="index.html" data-i18n-fa="فیزیکی">Physical</a>
+          <a class="shop__nav-link" href="digital.html" data-i18n-fa="دیجیتال">Digital</a>
+          <a class="shop__nav-link" href="cart.html" data-i18n-fa="سبد">Cart</a>
+          <a class="shop__nav-link" href="checkout.html" data-i18n-fa="پرداخت">Checkout</a>
+        </nav>
+        <div class="shop__bar-actions">
+          <div class="lang-switch" data-lang-switch>
+            <button type="button" class="lang-switch__button" data-lang="en">EN</button>
+            <button type="button" class="lang-switch__button" data-lang="fa">فا</button>
+          </div>
+          <button type="button" class="theme-switch" data-theme-toggle data-i18n-aria="themeToggle" aria-label="Switch theme">
+            <span data-theme-label-icon aria-hidden="true">◐</span>
+          </button>
+          <button type="button" class="shop__cart-pill" data-cart-open>
+            <span data-i18n="shopCart">Cart</span>
+            <span class="shop__cart-count force-ltr" data-cart-count>0</span>
+          </button>
+          <a class="shop__bar-link" href="../../guide/index.html" data-i18n="guide">Guide</a>
+        </div>
+      </div>
+    </header>    <main class="shop" id="main">
+      <header class="shop__head">
+        <p class="shop__kicker force-ltr" data-i18n-fa="کالای فیزیکی · Commerce_V01_HoloStorefront">Physical goods · Commerce_V01_HoloStorefront</p>
+        <h1 class="shop__title" data-i18n-fa="قفسهٔ کارگاه">The workshop shelf</h1>
+        <p class="shop__lede" data-i18n-fa="هفت شیء، هر کدام با مشخصات دقیق. بر اساس جنس فیلتر کنید، با یک کلیک اضافه کنید و شمارندهٔ سبد همراه شما می‌شمارد.">Seven objects, each one specified to the gram. Filter by material, add with a click, and the cart pill in the bar counts along with you.</p>
+      </header>
+
+        <section class="shop__campaign">
+          <div class="shop__campaign-copy">
+            <p class="shop__label" data-i18n-fa="پنل کمپین">Campaign panel</p>
+            <h2 class="shop__campaign-title" data-i18n="shopCampaignTitle">The catalogue is the campaign</h2>
+            <p class="shop__campaign-body" data-i18n="shopCampaignBody">Every panel on this page is a live variation, mounted exactly as it is on its own component page.</p>
+          </div>
+      <figure class="site__embed" data-embed data-src="../../framework/next/hero/liquid-chroma-glass/index.html" style="--embed-h: 52svh">
+        <div class="site__embed-frame" data-embed-frame>
+          <p class="site__embed-note">The campaign panel</p>
+        </div>
+        <figcaption class="site__embed-caption" data-i18n-fa="پنل کمپین یکی از قهرمان‌های خود کاتالوگ را اجرا می‌کند — صحنهٔ کرومای مایع، همان‌جا نصب‌شده.">The campaign panel runs a hero from the catalogue itself — the liquid chroma stage, mounted in place.</figcaption>
+      </figure>
+        </section>
+
+      <section class="shop__shelf" aria-labelledby="shelf-title">
+        <div class="shop__shelf-head">
+          <h2 class="shop__shelf-title" id="shelf-title" data-i18n="shopShelf">On the shelf</h2>
+          <p class="shop__shelf-meta"><span data-shelf-count>7</span> <span data-i18n="shopItems">items</span></p>
+        </div>
+        <div class="shop__filters" role="group" aria-label="Filter">
+          <button type="button" class="shop__chip is-active" data-filter="all" aria-pressed="true"><span data-i18n-fa="همه">Everything</span><span class="shop__chip-count" data-count="all">0</span></button>
+          <button type="button" class="shop__chip" data-filter="metal" aria-pressed="false"><span data-i18n-fa="فلز">Metal</span><span class="shop__chip-count" data-count="metal">0</span></button>
+          <button type="button" class="shop__chip" data-filter="paper" aria-pressed="false"><span data-i18n-fa="کاغذ">Paper</span><span class="shop__chip-count" data-count="paper">0</span></button>
+          <button type="button" class="shop__chip" data-filter="glass" aria-pressed="false"><span data-i18n-fa="شیشه">Glass</span><span class="shop__chip-count" data-count="glass">0</span></button>
+        </div>
+        <p class="shop__empty" data-empty hidden data-i18n="shopEmpty">Nothing in this filter.</p>
+        <div class="shop__grid" data-grid>
+        <article class="shop__good" data-good data-id="P-01" data-sku="FS-114" data-price="68" data-kind="physical" data-material="metal" data-name-en="Cast brass rule" data-name-fa="خط‌کش برنجی ریخته‌گری">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">FS-114</span>
+            <span class="shop__badge" data-i18n="badgenew">new</span>
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="خط‌کش برنجی ریخته‌گری">Cast brass rule</h3>
+          <p class="shop__good-blurb" data-i18n-fa="خط‌کشی ۳۰۰ میلی‌متری که از یک تکه برنج تراشیده شده است. درجه‌بندی‌ها کنده‌کاری شده‌اند نه چاپ، پس بعد از ده سال کار هم خوانا می‌مانند.">A 300 mm rule milled from one piece of brass. The graduations are cut, not printed, so they stay readable after a decade of use.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="جنس">Material</dt><dd data-i18n-fa="برنج یکپارچه">Solid brass</dd></div>
+            <div><dt data-i18n-fa="طول">Length</dt><dd data-i18n-fa="۳۰۰ میلی‌متر">300 mm</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">68 €</span>
+              <span class="shop__price-was">82 €</span>
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="P-02" data-sku="FS-208" data-price="44" data-kind="physical" data-material="metal" data-name-en="Graphite square" data-name-fa="گونیا گرافیتی">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">FS-208</span>
+
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="گونیا گرافیتی">Graphite square</h3>
+          <p class="shop__good-blurb" data-i18n-fa="آلومینیوم تراش‌کاری‌شده با رویهٔ گرافیتی آنودایز. صاف می‌نشیند، صاف می‌مانَد و گوشه را بدون لرزش علامت می‌زند.">Machined aluminium with a graphite anodised face. Sits flat, stays flat, and marks the corner without a wobble.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="جنس">Material</dt><dd data-i18n-fa="آلومینیوم آنودایز">Anodised aluminium</dd></div>
+            <div><dt data-i18n-fa="زاویه">Angle</dt><dd data-i18n-fa="۹۰ درجه ± ۰٫۰۲">90° ± 0.02</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">44 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="P-03" data-sku="FS-051" data-price="26" data-kind="physical" data-material="paper" data-name-en="Studio notebook" data-name-fa="دفتر استودیو">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">FS-051</span>
+            <span class="shop__badge" data-i18n="badgelast">last</span>
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="دفتر استودیو">Studio notebook</h3>
+          <p class="shop__good-blurb" data-i18n-fa="۱۶۰ صفحه کاغذ ۱۲۰ گرمی که هم مداد و هم مرکب را می‌پذیرد. صحافی‌شده تا در هر صفحه‌ای تخت بمانَد.">160 pages of 120 gsm paper that takes both pencil and ink. Bound so it lies flat at any spread.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="کاغذ">Paper</dt><dd data-i18n-fa="۱۲۰ گرم، بدون روکش">120 gsm, uncoated</dd></div>
+            <div><dt data-i18n-fa="صفحات">Pages</dt><dd data-i18n-fa="۱۶۰، نقطه‌ای">160, dot grid</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">26 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="P-04" data-sku="FS-073" data-price="119" data-kind="physical" data-material="glass" data-name-en="Optical loupe" data-name-fa="ذره‌بین نوری">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">FS-073</span>
+
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="ذره‌بین نوری">Optical loupe</h3>
+          <p class="shop__good-blurb" data-i18n-fa="عدسی سه‌گانه در بدنهٔ برنجی. بزرگ‌نمایی ده برابر با میدان یکدست، برای بررسی برگ چاپی یا اتصال لحیم.">A triplet lens in a brass barrel. Ten times magnification with an edge-to-edge field, for inspecting a printed sheet or a solder joint.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="بزرگ‌نمایی">Magnification</dt><dd data-i18n-fa="۱۰ برابر">10×</dd></div>
+            <div><dt data-i18n-fa="میدان دید">Field</dt><dd data-i18n-fa="۲۴ میلی‌متر">24 mm</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">119 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="P-05" data-sku="FS-330" data-price="54" data-kind="physical" data-material="metal" data-name-en="Palette knife set" data-name-fa="ست کاردک رنگ">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">FS-330</span>
+
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="ست کاردک رنگ">Palette knife set</h3>
+          <p class="shop__good-blurb" data-i18n-fa="سه تیغهٔ فولاد فنری با دستهٔ چوب رزوود، حرارت‌دیده تا خم شود بی‌آنکه کج بمانَد.">Three spring-steel blades with rosewood handles, tempered to flex without taking a bend.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="تیغه‌ها">Blades</dt><dd data-i18n-fa="۳ عدد، فولاد فنری">3, spring steel</dd></div>
+            <div><dt data-i18n-fa="دسته">Handle</dt><dd data-i18n-fa="چوب رزوود">Rosewood</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">54 €</span>
+              <span class="shop__price-was">64 €</span>
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="P-06" data-sku="FS-402" data-price="39" data-kind="physical" data-material="paper" data-name-en="Risograph paper pack" data-name-fa="بستهٔ کاغذ ریسوگراف">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">FS-402</span>
+
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="بستهٔ کاغذ ریسوگراف">Risograph paper pack</h3>
+          <p class="shop__good-blurb" data-i18n-fa="پانصد برگ در چهار رنگ، برش‌خورده در اندازه‌ای که دستگاه‌ها دوست دارند. همان کاغذی که وارییشن لترپرس کاتالوگ برایش تنظیم شده است.">Five hundred sheets in four tints, cut to a size the machines actually like. The stock the catalogue's letterpress variation is tuned to.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="برگ‌ها">Sheets</dt><dd data-i18n-fa="۵۰۰، چهار رنگ">500, four tints</dd></div>
+            <div><dt data-i18n-fa="گرماژ">Weight</dt><dd data-i18n-fa="۹۰ گرم">90 gsm</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">39 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        <article class="shop__good" data-good data-id="P-07" data-sku="FS-511" data-price="92" data-kind="physical" data-material="glass" data-name-en="Glass mixing slab" data-name-fa="تختهٔ شیشه‌ای ترکیب">
+          <div class="shop__good-top">
+            <span class="shop__sku force-ltr">FS-511</span>
+            <span class="shop__badge" data-i18n="badgepreorder">preorder</span>
+          </div>
+          <h3 class="shop__good-name" data-i18n-fa="تختهٔ شیشه‌ای ترکیب">Glass mixing slab</h3>
+          <p class="shop__good-blurb" data-i18n-fa="ورق شیشهٔ فلوت ۶ میلی‌متری با لبهٔ ساییده. سرد، تخت و صادق — سطحی که رنگ روی آن صادق‌ترین خوانش را دارد.">A 6 mm float-glass plate with a ground edge. Cold, flat and honest — the surface a colour reads truest on.</p>
+          <dl class="shop__specs">
+            <div><dt data-i18n-fa="ضخامت">Thickness</dt><dd data-i18n-fa="۶ میلی‌متر">6 mm</dd></div>
+            <div><dt data-i18n-fa="اندازه">Size</dt><dd data-i18n-fa="۴۰۰ × ۳۰۰ میلی‌متر">400 × 300 mm</dd></div>
+          </dl>
+          <div class="shop__good-foot">
+            <p class="shop__price">
+              <span class="shop__price-now">92 €</span>
+              
+            </p>
+            <div class="shop__buy">
+              <div class="shop__qty" role="group" aria-label="Quantity">
+                <button type="button" class="shop__qty-step" data-qty="-1" aria-label="Fewer">−</button>
+                <span class="shop__qty-value" data-qty-value>1</span>
+                <button type="button" class="shop__qty-step" data-qty="1" aria-label="More">+</button>
+              </div>
+              <button type="button" class="shop__add" data-add data-i18n="addToCart">Add to cart</button>
+            </div>
+          </div>
+        </article>
+        </div>
+      </section>
+
+      <section class="shop__assurance">
+        <article class="shop__assure">
+          <h3 data-i18n="shopA1">Every total is computed</h3>
+          <p data-i18n="shopA1b">Prices, quantities and tax are calculated in the page, from the same records the cart uses.</p>
+        </article>
+        <article class="shop__assure">
+          <h3 data-i18n="shopA2">No dark patterns</h3>
+          <p data-i18n="shopA2b">No countdown timers, no fake scarcity, no pre-ticked boxes.</p>
+        </article>
+        <article class="shop__assure">
+          <h3 data-i18n="shopA3">Bilingual and dual-theme</h3>
+          <p data-i18n="shopA3b">Persian and English, day and night — every control checked in all four.</p>
+        </article>
+      </section>
+    </main>
+    <div data-drawer-host></div>
+
+  </body>
+</html>

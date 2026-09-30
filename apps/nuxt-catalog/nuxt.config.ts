@@ -7,25 +7,62 @@
  *     cannot be shipped without a working deep link
  *   · the shared design tokens and HUD live in one stylesheet + one component, exactly like React
  */
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { templateCompilerOptions } from "@tresjs/core";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-/** Every route this track owns — read from the manifest the catalogue sync just emitted. */
+/**
+ * The route patterns this app actually ships, collected from `app/pages`.
+ *
+ * `/hero/[slug]` is a pattern, not a path — one segment, any value — which is exactly how Nuxt's
+ * router reads the file name.
+ */
+function pagePatterns(dir = resolve(here, "app/pages"), prefix = ""): string[] {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const route = `${prefix}/${entry.name.replace(/\.vue$/, "")}`;
+    if (entry.isDirectory()) return pagePatterns(resolve(dir, entry.name), route);
+    if (!entry.name.endsWith(".vue")) return [];
+    // `index.vue` is the segment's own route, and `[slug].vue` matches any one segment.
+    return [route.replace(/\/index$/, "") || "/"];
+  });
+}
+
+function hasPage(route: string, patterns: string[]): boolean {
+  const segments = route.split("/").filter(Boolean);
+  return patterns.some((pattern) => {
+    const parts = pattern.split("/").filter(Boolean);
+    if (parts.length !== segments.length) return false;
+    return parts.every((part, index) => part.startsWith("[") || part === segments[index]);
+  });
+}
+
+/**
+ * Every route this track owns — read from the manifest the catalogue sync just emitted, then
+ * filtered to the ones this app can actually render.
+ *
+ * The filter is not cosmetic. A planned variation reserves its route in the manifest long before its
+ * page exists, and prerendering a route with no page emits a shell that renders the 404: that is how
+ * `framework/nuxt/dashboard/realtime-wall/index.html` came to be a 102-character error page sitting
+ * on GitHub Pages, claiming to be a dashboard. Reserving an address is a promise; a stub that serves
+ * an error is not how you keep it. The moment the page file lands, the route prerenders again.
+ */
 function trackRoutes(): string[] {
   const file = resolve(here, "app/generated/catalog.json");
   if (!existsSync(file)) return ["/"];
   const manifest = JSON.parse(readFileSync(file, "utf8")) as {
     variations: { href?: string }[];
   };
+  const patterns = pagePatterns();
   return [
     "/",
     ...manifest.variations
       .filter((variation) => variation.href?.startsWith("framework/nuxt/"))
-      .map((variation) => "/" + String(variation.href).replace(/^framework\/nuxt\//, "")),
+      .map((variation) => "/" + String(variation.href).replace(/^framework\/nuxt\//, ""))
+      .filter((route) => hasPage(route, patterns)),
   ];
 }
 

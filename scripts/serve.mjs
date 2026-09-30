@@ -52,6 +52,12 @@ const MIME = {
   ".md": "text/markdown; charset=utf-8",
 };
 
+/**
+ * The 404 is the *real* one: `docs/404.html`, exactly what GitHub Pages serves for an unresolvable
+ * path. A preview that answers with a page of its own — this one used to be a hardcoded dark
+ * apology — hides the page a visitor would actually see, which is the one thing a preview must not
+ * do. The fallback below only runs before that file exists.
+ */
 const NOT_FOUND = `<!doctype html><meta charset="utf-8"><title>404 — The Catalog</title>
 <style>body{background:#08080a;color:#e8e8ec;font:14px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;display:grid;place-items:center;height:100vh;margin:0}
 a{color:#FF4FD8}b{color:#fff}</style>
@@ -59,6 +65,17 @@ a{color:#FF4FD8}b{color:#fff}</style>
 <h1 style="font-size:22px;margin:.4em 0 1em">nothing mounted at <b>%PATH%</b></h1>
 <p>Is this a framework variation? Build it first: <b>npm run build</b></p>
 <p style="margin-top:2em"><a href="/">← back to the hub</a></p></div>`;
+
+let notFoundPage = null;
+async function readNotFound() {
+  if (notFoundPage !== null) return notFoundPage;
+  try {
+    notFoundPage = await readFile(join(ROOT, "404.html"));
+  } catch {
+    notFoundPage = null;
+  }
+  return notFoundPage;
+}
 
 async function resolveFile(urlPath) {
   const clean = normalize(decodeURIComponent(urlPath.split("?")[0])).replace(/^([/\\])+/, "");
@@ -95,8 +112,15 @@ const server = createServer(async (req, res) => {
   try {
     const file = await resolveFile(req.url || "/");
     if (!file) {
+      const requested = req.url || "/";
+      // The developer hint belongs in the terminal, not in the visitor's page: a missing framework
+      // route is nearly always an unbuilt app, and that is not something a guest should be told.
+      if (requested.startsWith("/framework/")) {
+        console.log(`  404 ${requested} — unbuilt framework route? try: npm run build`);
+      }
+      const page = await readNotFound();
       res.writeHead(404, { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" });
-      res.end(NOT_FOUND.replace("%PATH%", (req.url || "/").replace(/</g, "&lt;")));
+      res.end(page || NOT_FOUND.replace("%PATH%", requested.replace(/</g, "&lt;")));
       return;
     }
     const body = await readFile(file);

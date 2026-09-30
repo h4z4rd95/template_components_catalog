@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Loaders &amp; Transitions — variations, topics and stacks</title>
-    <meta name="description" content="Preloaders, curtain wipes, fluid page changes. 0 variations across 2 topics." data-desc-en="Preloaders, curtain wipes, fluid page changes. 0 variations across 2 topics." data-desc-fa="پیش‌لودرها، پرده‌های عبور و تغییر صفحهٔ سیال. 0 نمونه در 2 موضوع." />
+    <meta name="description" content="Preloaders, curtain wipes, fluid page changes. 2 variations across 2 topics." data-desc-en="Preloaders, curtain wipes, fluid page changes. 2 variations across 2 topics." data-desc-fa="پیش‌لودرها، پرده‌های عبور و تغییر صفحهٔ سیال. 2 نمونه در 2 موضوع." />
     <meta name="theme-color" content="#050506" />
     <meta property="og:title" content="Loaders &amp; Transitions — variations, topics and stacks" />
-    <meta property="og:description" content="Preloaders, curtain wipes, fluid page changes. 0 variations across 2 topics." />
+    <meta property="og:description" content="Preloaders, curtain wipes, fluid page changes. 2 variations across 2 topics." />
     <meta property="og:type" content="website" />
     <link rel="alternate" hreflang="en" href="?lang=en" />
     <link rel="alternate" hreflang="fa" href="?lang=fa" />
@@ -61,7 +61,7 @@
     <script src="../../assets/page.js" defer></script>
   </head>
 
-  <body class="pg" style="--accent: #ff4fd8">
+  <body class="pg pg--accented" style="--accent: #d8b877">
     <a class="skip" href="#main" data-i18n="skip">Skip to the catalog</a>
 
     <header class="masthead pg__masthead">
@@ -81,16 +81,16 @@
         <h1 class="pg__title" data-i18n-fa="لودر و گذارها">Loaders &amp; Transitions</h1>
         <p class="pg__lede" data-i18n-fa="پیش‌لودرها، پرده‌های عبور و تغییر صفحهٔ سیال.">Preloaders, curtain wipes, fluid page changes.</p>
         <ul class="pg__stats">
-          <li><span class="pg__stat"><span class="force-ltr">00</span> <span data-i18n="variations">variations</span></span></li>
+          <li><span class="pg__stat"><span class="force-ltr">02</span> <span data-i18n="variations">variations</span></span></li>
           <li><span class="pg__stat"><span class="force-ltr">02</span> <span data-i18n="topics">topics</span></span></li>
         </ul>
       </header>
       <nav class="pg__topics" data-i18n-aria="filterTopic">
         <ul class="pg__chips">
             <li>
-              <a class="pg__chip" href="motion/index.html" data-empty="1">
+              <a class="pg__chip" href="motion/index.html">
                 <span class="pg__chip-label" data-i18n-fa="سیستم‌های حرکت">Motion Systems</span>
-                <span class="pg__chip-count force-ltr">00</span>
+                <span class="pg__chip-count force-ltr">02</span>
               </a>
             </li>
             <li>
@@ -101,7 +101,34 @@
             </li>
         </ul>
       </nav>
-      <p class="pg__empty" data-i18n="noVariations">No variation has landed in this topic yet.</p>
+      <section class="pg__block">
+        <div class="pg__block-head">
+          <h2 class="pg__block-title">
+            <a href="motion/index.html" data-i18n-fa="سیستم‌های حرکت">Motion Systems</a>
+          </h2>
+          <p class="pg__block-blurb" data-i18n-fa="موتور اسکرول، قفل صفحه و گذار بین صفحه‌ها.">Scroll engines, pinning, page transitions.</p>
+        </div>
+          <ul class="pg__rows">
+            <li>
+              <a class="pg__row" href="../../component/cinematic-curtain/index.html" style="--row-accent: #d8b877" data-status="planned">
+                <span class="pg__row-id force-ltr">Loader_V01_CinematicCurtain</span>
+                <span class="pg__row-title" data-i18n-fa="پردهٔ سینمایی">Cinematic Curtain</span>
+                <span class="pg__row-vibe" data-i18n-fa="مینیمالیسم لوکس · گذار">Luxury Minimalism · Transition</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Next.js</span><span class="pg__row-chip">React 19</span><span class="pg__row-chip">Motion One</span><span class="pg__row-chip">Route prefetch</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+            <li>
+              <a class="pg__row" href="../../component/shutter-reveal/index.html" style="--row-accent: #7df0d0" data-status="planned">
+                <span class="pg__row-id force-ltr">Loader_V02_ShutterReveal</span>
+                <span class="pg__row-title" data-i18n-fa="پردهٔ کرکره‌ای">Shutter Reveal</span>
+                <span class="pg__row-vibe" data-i18n-fa="تایپوگرافی جنبشی · گذار">Kinetic Typography · Transition</span>
+                <span class="pg__row-stack"><span class="pg__row-chip">Vanilla HTML5</span><span class="pg__row-chip">CSS clip-path</span><span class="pg__row-chip">View Transitions API</span></span>
+                <span class="pg__row-status" data-i18n="planned">planned</span>
+              </a>
+            </li>
+          </ul>
+      </section>
       <section class="pg__block pg__block--aside">
         <h2 class="pg__block-title" data-i18n="disciplines">Disciplines</h2>
         <ul class="pg__chips">

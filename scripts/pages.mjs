@@ -405,7 +405,12 @@ function buildComponentPage({ base, variation, discipline, topic, variations, gi
   // Most variations are a directory and their `href` ends at it; the newsroom variations point
   // straight at a page (`sites/gaming-news/index.html`). Appending the index to both produced
   // `index.htmlindex.html`, so the extension is the test.
-  const rawUrl = `${base}${variation.href}${/\.[a-z0-9]{2,5}$/i.test(variation.href) ? "" : "index.html"}`;
+  // The raw link is the href as the manifest writes it: a directory for an app route, a page for
+  // a composed one. Appending `index.html` looks harmless and is not — the Nuxt export is a router
+  // app, so `/framework/nuxt/<route>/index.html` is a *path it has no route for* and it renders its
+  // 404 inside the frame. Directory URLs work for both static exports (the server resolves the
+  // index), and they are what a visitor's browser actually shows after clicking a link.
+  const rawUrl = `${base}${variation.href}`;
 
   const stage = planned
     ? `      <section class="${PREFIX}__stage ${PREFIX}__stage--planned" data-planned>

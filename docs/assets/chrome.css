@@ -316,7 +316,7 @@
 }
 
 .drawer__section.is-open .drawer__summary {
-  color: var(--accent-2);
+  color: color-mix(in oklab, var(--accent-2) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .drawer__panel {
@@ -422,7 +422,7 @@ body.has-drawer {
 .download__button:hover,
 .download__button:focus-visible,
 .download[open] .download__button {
-  border-color: var(--accent-2);
+  border-color: color-mix(in oklab, var(--accent-2) var(--accent-weight, 100%), var(--ink-700));
   color: var(--ink-000);
   background: var(--accent-2);
 }
@@ -473,7 +473,7 @@ body.has-drawer {
 
 .download__option:hover,
 .download__option:focus-visible {
-  border-color: var(--accent-2);
+  border-color: color-mix(in oklab, var(--accent-2) var(--accent-weight, 100%), var(--ink-700));
   background: var(--ink-200);
 }
 
@@ -585,7 +585,7 @@ body.has-drawer {
 
 .drawer__cta:hover,
 .drawer__cta:focus-visible {
-  border-color: var(--accent-2);
+  border-color: color-mix(in oklab, var(--accent-2) var(--accent-weight, 100%), var(--ink-700));
   background: var(--ink-200);
 }
 

@@ -89,7 +89,7 @@
 
 .site__ticker-sep {
   flex: 0 0 auto;
-  color: var(--site-accent, var(--accent));
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
 }
 
 /* The belt moves only where motion is welcome; the content is identical either way. */
@@ -132,7 +132,7 @@
   font-size: 0.62rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--site-accent, var(--accent));
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .site__lead-title {
@@ -221,7 +221,7 @@
 }
 
 .site__embed-missing a {
-  color: var(--site-accent, var(--accent));
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .site__embed-caption {
@@ -272,7 +272,7 @@
 
 .site__section-link:hover,
 .site__section-link:focus-visible {
-  color: var(--site-accent, var(--accent));
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .site__section--split {
@@ -373,7 +373,7 @@
 .site__live-score {
   font-family: var(--font-mono);
   font-size: 1rem;
-  color: var(--site-accent, var(--accent));
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .site__live-status {
@@ -389,7 +389,7 @@
 
 .site__live-status[data-status="live"] {
   border-color: color-mix(in oklab, var(--accent-4) 60%, var(--ink-300));
-  color: var(--accent-4);
+  color: color-mix(in oklab, var(--accent-4) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .site__review {
@@ -400,7 +400,7 @@
   font-family: var(--font-mono);
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--card-accent, var(--accent));
+  color: color-mix(in oklab, var(--card-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .site__review-verdict {
@@ -461,12 +461,12 @@
 
 .site__chip:hover,
 .site__chip:focus-visible {
-  border-color: var(--site-accent, var(--accent));
+  border-color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
   color: var(--ink-700);
 }
 
 .site__chip.is-active {
-  border-color: var(--site-accent, var(--accent));
+  border-color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
   background: color-mix(in oklab, var(--site-accent, var(--accent)) 14%, transparent);
   color: var(--ink-700);
 }
@@ -603,7 +603,7 @@
 
 .site__pull::before {
   content: "“";
-  color: var(--site-accent, var(--accent));
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
   font-size: 2.4rem;
   line-height: 0;
   vertical-align: -0.35em;
@@ -650,7 +650,7 @@
 
 .site__article-nav a:hover,
 .site__article-nav a:focus-visible {
-  border-color: var(--site-accent, var(--accent));
+  border-color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
 }
 
 /* --------------------------------------------------------------------- foot --- */
@@ -688,7 +688,7 @@
 
 .site__foot a:hover,
 .site__foot a:focus-visible {
-  color: var(--site-accent, var(--accent));
+  color: color-mix(in oklab, var(--site-accent, var(--accent)) var(--accent-weight, 100%), var(--ink-700));
 }
 
 /* ==================================================================== guide === */
@@ -711,7 +711,7 @@
   font-size: 0.62rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .guide__title {
@@ -775,7 +775,7 @@
 
 .guide__toc a:hover,
 .guide__toc a:focus-visible {
-  border-color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
   color: var(--ink-700);
 }
 
@@ -805,7 +805,7 @@
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.1em;
-  color: var(--accent);
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .guide__section-title {
@@ -864,7 +864,7 @@
   font-family: var(--font-mono);
   font-size: 0.66rem;
   letter-spacing: 0.08em;
-  color: var(--accent);
+  color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 .guide__code {
@@ -902,7 +902,7 @@
 
 .guide__foot a:hover,
 .guide__foot a:focus-visible {
-  border-color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) var(--accent-weight, 100%), var(--ink-700));
 }
 
 /* ------------------------------------------------------------------ responsive --- */

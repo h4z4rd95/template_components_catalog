@@ -18,6 +18,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Variation } from "@catalog/shared";
 import { appHref, hubHref } from "@/lib/catalog";
+import { useCatalogSkin } from "@/lib/skin";
 import styles from "./CatalogHUD.module.css";
 
 const STORAGE_KEY = "catalog:hud:collapsed";
@@ -34,6 +35,9 @@ export default function CatalogHUD({ variation, defaultOpen = true }: CatalogHUD
   const [copied, setCopied] = useState<null | "id" | "link">(null);
   const [inIframe, setInIframe] = useState(false);
   const [hidden, setHidden] = useState(false);
+  // The HUD is part of the *catalogue*, not part of the artwork it annotates: it follows the
+  // shell's day/night and direction like every other piece of chrome on the page.
+  const skin = useCatalogSkin();
   const [hub, setHub] = useState("/");
   const [raw, setRaw] = useState("");
   const rootRef = useRef<HTMLElement>(null);
@@ -139,6 +143,9 @@ export default function CatalogHUD({ variation, defaultOpen = true }: CatalogHUD
       style={{ ["--hud-accent" as string]: variation.accent }}
       aria-label={`Metadata for ${variation.id}`}
       data-catalog-hud
+      data-theme={skin.theme}
+      dir={skin.dir}
+      lang={skin.locale}
     >
       <div className={styles.tab}>
         <span className={styles.dot} aria-hidden="true" />
