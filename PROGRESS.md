@@ -1070,3 +1070,60 @@ had already shipped — it now says the next batch.
 `framework/nuxt/dashboard/realtime-wall/`; the route starts prerendering the moment its page file
 lands, which is by construction. Then Batch 3b's remainder: hero variations get their own day palettes.
 `apps/next-catalog/src/app/not-found.tsx` is **closed**.
+
+---
+
+## [2026-09-30 19:05 UTC] · Verification round 2 — the manifest as a contract, and the deployed shape
+
+A second attempt at the same brief ("build the downloadable file; check the demos are what they
+should be and load without problems — so I can push"), and it was worth doing twice: the first
+attempt's audit could only prove that the files on disk load. It could not prove that the catalogue
+tells the truth about itself.
+
+### The gate learned to read the manifest
+
+`verify:demos` now walks the manifest as a promise, not just the file tree: **22 stable variations ×
+2 addresses** — the catalogue's own `component/<slug>/`, and the content address in `href` — each
+required to answer 200 *and to name the variation*. A renamed page with a stale manifest entry, a
+route serving an empty shell, or a variation landing at the wrong URL all ship a catalogue that lies
+about itself while every per-file check stays green.
+
+Two corrections found by running it:
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| 36 of 44 checks "no metadata HUD" | The check demanded one implementation's DOM. The four families carry metadata differently: React/Vue stamp `data-catalog-hud`, the vanilla pages have `.hud` / `.orb-hud`, and a composed storefront has no variation HUD at all — it names the variation it was built from | Assert the **ID**, not a selector |
+| Every Nuxt route "never names its variation" | The Nuxt track ships `ssr: false`: at `load` the shell is empty and Vue has not booted | Bounded 8 s wait for the ID; a page that never says it still fails |
+
+### The deployed shape, verified rather than assumed
+
+Every test until today ran at `/`. GitHub Pages serves this at `/<repo>/`, and the framework exports
+are built with an explicit basePath for exactly that shape — so it was exercised once, with a
+throwaway server standing in for Pages (strips the prefix, serves `docs/`, unknown paths → the real
+404). With `PAGES_BASE_PATH=/template_components_catalog`, seven pages loaded at the prefix — hub
+(5 live frames), both framework tracks (canvas + HUD, zero errors), a component page embedding a
+prefixed route, the shop and the handbook at phone width — **all clean, no overflow, no 404s**. The
+committed shell is prefix-agnostic: only `docs/framework/**` changes, which is gitignored.
+
+### Final state
+
+| Gate | Result |
+| --- | --- |
+| `npm run verify:demos` | **96 pages · 192 loads · 56 frames · 0 problems** + **manifest: 22 stable × 2 addresses — all pass** |
+| `npm test` · `verify:theme` · `verify:shop` · `verify:header` · `verify:pages` · `verify:cards` · `verify:site` · `verify:nav` | all ✓ |
+| Archive | **206 files · 3,330,136 → 1,272,930 bytes**; byte-exact mirror of all 264 tracked files; extracted cold → `npm ci` → `npm run build` → served → hub/route/shop all clean in a browser |
+| GitHub Pages prefix | ✓ (above) |
+
+### Pushed
+
+The sandbox's GitHub credential came back during this round: `git push` succeeded —
+`07189b7..21e55fb` on `arena/01a0c55d-template-components-catalog`. **PR #1 is now current and
+mergeable.** GitHub Pages is not enabled on the repo yet (`gh api .../pages` → 404) and the workflow
+triggers on pushes to `main`, so the sequence is: enable Pages (source: GitHub Actions) → merge PR #1
+→ the workflow runs `npm ci && npm test && npm run build` with the Pages base path, uploads `docs/`
+and deploys. The archive is rebuilt in CI (`docs/download/*.zip` is gitignored by design), so the
+download button serves the artifact of that exact deploy.
+
+Also recovered this round: the sandbox's `.git` was reset to a fresh clone for the third time
+(`b9924f0`) with the working tree intact; the unpushed commits were re-landed as one recovery commit
+and are now on the remote, so a fourth reset costs nothing.
