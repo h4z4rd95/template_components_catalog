@@ -24,7 +24,7 @@
  */
 import puppeteer from "puppeteer-core";
 import { existsSync } from "node:fs";
-import { readdir, stat } from "node:fs/promises";
+import { readdir, readFile, stat } from "node:fs/promises";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -185,6 +185,89 @@ for (const page of pages) {
   }
 }
 
+/* ------------------------------------------------- the manifest, as a promise ---
+ *
+ * The pass above proves every file that exists loads. This one proves the converse, which is the
+ * question the catalogue makes to a visitor: **does every variation it advertises have a page — at
+ * the address it claims, showing the variation it names?**
+ *
+ * A file walk cannot answer that. A page can be renamed and its manifest entry left behind; a route
+ * can exist and serve an empty shell; the wrong variation can land at the right URL after a bad
+ * copy-paste. Each of those ships a catalogue that lies about itself while every per-file check
+ * stays green.
+ *
+ * Two addresses per stable variation, and the rule is the same for both — the page must *be about
+ * this variation*, which is checked by its ID appearing in the served document:
+ *
+ *   · `component/<slug>/` — the catalogue's own page for it, where the metadata HUD is the point;
+ *   · `variation.href`    — the content address: a framework route, a vanilla page, or a composed
+ *                           site. Their HUDs differ by nature (React/Vue stamp `data-catalog-hud`,
+ *                           the vanilla pages carry `.hud` / `.orb-hud`, a composed storefront has
+ *                           no variation HUD at all but names the variation it is built from), so
+ *                           the check is the ID, not one implementation's DOM.
+ *
+ * `textContent` rather than `innerText`: a collapsed HUD is hidden, not absent, and a page whose
+ * metadata is one click away is not a lying page.
+ */
+const manifestPath = join(DOCS, "data", "catalog.json");
+const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+const stable = manifest.variations.filter((v) => v.status === "stable");
+const contractRows = [];
+
+for (const variation of stable) {
+  const targets = [
+    { label: "page", url: `component/${variation.slug}/` },
+    { label: "route", url: variation.href },
+  ];
+
+  for (const target of targets) {
+    if (!target.url) {
+      problems.push(`${variation.id}: the manifest has no href, so nothing can link to it`);
+      contractRows.push({ id: variation.id, label: target.label, ok: false, note: "no href" });
+      continue;
+    }
+    const tab = await browser.newPage();
+    await tab.setViewport({ width: 1440, height: 950 });
+    let status = 0;
+    try {
+      const response = await tab.goto(`http://127.0.0.1:${PORT}/${target.url}`, {
+        waitUntil: "load",
+        timeout: 45_000,
+      });
+      status = response ? response.status() : 0;
+    } catch (error) {
+      problems.push(`${variation.id} (${target.label}): ${error.message.split("\n")[0].slice(0, 70)}`);
+    }
+    // A hydrated app has not named anything at `load`: the Nuxt track ships `ssr: false`, so the
+    // HUD arrives when Vue boots. Wait for the name, bounded — a page that never says it is the
+    // failure this check exists to catch, and it should be reported as such, not waited on forever.
+    // (`innerText` would miss a collapsed HUD; `textContent` sees hidden-but-served content.)
+    try {
+      await tab.waitForFunction(
+        (id) => `${document.title} ${document.documentElement.textContent || ""}`.includes(id),
+        { timeout: 8000 },
+        variation.id,
+      );
+    } catch {
+      /* fall through — the assertion below reports it with the address and the expectation */
+    }
+    const found = await tab.evaluate((id) => {
+      const text = `${document.title} ${document.documentElement.textContent || ""}`;
+      return text.includes(id);
+    }, variation.id);
+
+    if (status !== 200) {
+      problems.push(`${variation.id} (${target.label}): ${target.url} answered ${status}`);
+    } else if (!found) {
+      problems.push(
+        `${variation.id} (${target.label}): ${target.url} loads but never names ${variation.id}`,
+      );
+    }
+    contractRows.push({ id: variation.id, label: target.label, ok: status === 200 && found, status });
+    await tab.close();
+  }
+}
+
 await browser.close();
 
 /* ------------------------------------------------------------------- report --- */
@@ -203,10 +286,22 @@ const unique = [...new Set(pages.map((page) => page.url))];
 console.log("  " + "─".repeat(width + 44));
 console.log(`  ${unique.length} pages · ${rows.length} loads · ${rows.filter((r) => r.frames).length} with a live frame\n`);
 
+// The manifest contract, printed only when something is wrong — a green list of 44 checks is noise.
+const broken = contractRows.filter((row) => !row.ok);
+console.log(
+  `  manifest: ${stable.length} stable variations × 2 addresses (${contractRows.length} loads) — ` +
+    (broken.length ? `${broken.length} BROKEN` : "every variation has its page, at its address, showing its own ID"),
+);
+if (broken.length) {
+  for (const row of broken) console.log(`      ✗ ${row.id} (${row.label})${row.note ? ` — ${row.note}` : ""}`);
+}
+console.log("");
+
 if (problems.length) {
   console.error("PROBLEMS:\n  - " + problems.join("\n  - ") + "\n");
   process.exit(1);
 }
 console.log("─".repeat(72));
-console.log("  ✓ every demo loads: no missing assets, no page errors, nothing empty, nothing clipped");
+console.log("  ✓ every demo loads: no missing assets, no page errors, nothing empty, nothing clipped,");
+console.log("    and every variation the manifest advertises has its page at the address it claims");
 console.log("─".repeat(72) + "\n");
