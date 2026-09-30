@@ -1127,3 +1127,53 @@ download button serves the artifact of that exact deploy.
 Also recovered this round: the sandbox's `.git` was reset to a fresh clone for the third time
 (`b9924f0`) with the working tree intact; the unpushed commits were re-landed as one recovery commit
 and are now on the remote, so a fourth reset costs nothing.
+
+---
+
+## [2026-09-30 20:55 UTC] · PR #1 merged into main — and the one click that stands between it and the live site
+
+**Merged.** `gh pr merge 1 --merge` → `main` is now `1405b98` ("Merge #1: The Catalog — 25
+variations, three tracks, bilingual, dual-theme, commerce + whole-site gate"), PR title and body
+rewritten first, because a merge commit inherits them and the old ones described Batch 3c. The
+session branch was deliberately **not** deleted — it is where this session keeps working, and a
+remote branch here is also its backup: this round the sandbox reset `.git` to `b9924f0` *mid-turn*,
+for the fourth time, and the only reason nothing was lost is that the branch was already pushed.
+Recovery was `git fetch` + `git reset --mixed origin/<branch>`; the working tree had, as always,
+survived untouched.
+
+### The deploy run
+
+`36775372557`, triggered by the push to `main`:
+
+| Step | Result |
+| --- | --- |
+| Install workspaces (`npm ci`) | ✓ |
+| Verify — manifest sync · CSS modules · typecheck · hub smoke | ✓ |
+| Build framework exports (with `PAGES_BASE_PATH=/template_components_catalog`) | ✓ |
+| Report artifact | ✓ |
+| `actions/configure-pages@v5` | ✗ **Get Pages site failed. Error: Not Found** |
+| `upload-pages-artifact` · deploy job | skipped |
+
+So CI on `main` builds and gates the catalogue correctly — it fails one step later, at the point
+where GitHub Pages does not exist yet.
+
+### Why this cannot be fixed from inside the repo
+
+Creating a Pages site is `POST /repos/{owner}/{repo}/pages`, which requires `administration: write`.
+The Actions `GITHUB_TOKEN` cannot be granted that permission at any level, so `enablement: true` on
+`configure-pages` attempts exactly this call and fails identically (`Resource not accessible by
+integration`) — confirmed by the action's own issue tracker, configure-pages#40, and by three
+independent repository histories. `pages: write` is necessary and not sufficient. The sandbox's own
+token is a GitHub App installation with `contents: write` and no admin either, so it cannot do it
+remote-side: `POST .../pages` from here answers 403.
+
+**It is one click, once, by the repository owner:** Settings → Pages → Build and deployment →
+**Source: GitHub Actions**. Afterwards the failed run can be re-run (`gh run rerun 36775372557`) and
+every push to `main` deploys by itself.
+
+Two changes went with that finding, both in `.github/workflows/deploy.yml`:
+
+- the one-time prerequisite is written into the workflow header, next to the error text it explains,
+  so the next person to hit "Get Pages site failed" reads the remedy instead of the API;
+- `concurrency.cancel-in-progress` is now `false`, matching GitHub's own Pages starter workflow —
+  cancelling a production deploy mid-flight can leave the site standing between two versions.
