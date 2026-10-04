@@ -1,0 +1,167 @@
+{
+  "name": "Persian Glossary — Design Catalog Terms",
+  "locale": "fa",
+  "description": "Customer-friendly Persian terms alongside English technical names and plain-language explanations.",
+  "terms": [
+    {
+      "en": "Hero Section",
+      "fa": "بخش قهرمان",
+      "en_plain": "The prominent top section of a page that captures attention"
+    },
+    {
+      "en": "Navigation",
+      "fa": "ناوبری",
+      "en_plain": "The menu system that lets users move between pages"
+    },
+    {
+      "en": "Commerce",
+      "fa": "تجارت الکترونیک",
+      "en_plain": "Online shopping features: storefront, product, cart, checkout"
+    },
+    {
+      "en": "Site Structure",
+      "fa": "ساختار سایت",
+      "en_plain": "Multi-page layouts: news, article, sections"
+    },
+    {
+      "en": "Loader/Transition",
+      "fa": "لودر/انیمیشن انتقال",
+      "en_plain": "Loading states and transition animations between pages"
+    },
+    {
+      "en": "Dashboard",
+      "fa": "داشبورد",
+      "en_plain": "Data visualization and monitoring interfaces"
+    },
+    {
+      "en": "WebGL",
+      "fa": "وب‌جی‌ال",
+      "en_plain": "3D graphics in the browser using GPU"
+    },
+    {
+      "en": "Three.js",
+      "fa": "تری‌جی‌اس",
+      "en_plain": "A JavaScript 3D library built on WebGL"
+    },
+    {
+      "en": "GSAP",
+      "fa": "جی‌اس‌ای‌پی",
+      "en_plain": "Professional animation library for scroll and timeline effects"
+    },
+    {
+      "en": "ScrollTrigger",
+      "fa": "اسکرول‌تریگر",
+      "en_plain": "Animations that trigger based on scroll position"
+    },
+    {
+      "en": "Shader",
+      "fa": "شیدر",
+      "en_plain": "GPU programs that render visual effects like particles, gradients"
+    },
+    {
+      "en": "Glassmorphism",
+      "fa": "شیشه‌ای",
+      "en_plain": "Frosted glass visual style with transparency and blur"
+    },
+    {
+      "en": "Brutalism",
+      "fa": "بروتالیسم",
+      "en_plain": "Bold, raw design with strong typography and high contrast"
+    },
+    {
+      "en": "Editorial",
+      "fa": "اخباری/مجله‌ای",
+      "en_plain": "Magazine-style layout with refined typography"
+    },
+    {
+      "en": "Cyberpunk",
+      "fa": "سایبرپانک",
+      "en_plain": "Futuristic dark aesthetic with neon and glitch effects"
+    },
+    {
+      "en": "Particle",
+      "fa": "ذرات",
+      "en_plain": "Floating/dancing particle visual effects"
+    },
+    {
+      "en": "Responsive",
+      "fa": "واکنش‌گرا",
+      "en_plain": "Layout adapts to different screen sizes"
+    },
+    {
+      "en": "Accessibility (A11y)",
+      "fa": "دسترس‌پذیری",
+      "en_plain": "Features that make the site usable for people with disabilities"
+    },
+    {
+      "en": "Modal/Dialog",
+      "fa": "مدال/دیالوگ",
+      "en_plain": "Popup overlays for important interactions"
+    },
+    {
+      "en": "Toast",
+      "fa": "توست",
+      "en_plain": "Brief notification messages that appear and auto-dismiss"
+    },
+    {
+      "en": "Parallax",
+      "fa": "پارالاکس",
+      "en_plain": "Background moves at different speed than foreground for depth"
+    },
+    {
+      "en": "Design Token",
+      "fa": "توکن طراحی",
+      "en_plain": "Named values (colors, spacing, typography) that ensure consistency"
+    },
+    {
+      "en": "Stack",
+      "fa": "پشته",
+      "en_plain": "The combination of technologies used (e.g., React + Three.js)"
+    },
+    {
+      "en": "Vanilla HTML5",
+      "fa": "اچ‌تی‌ام‌ال۵ ساده",
+      "en_plain": "No framework — pure HTML/CSS/JS for lightweight demos"
+    },
+    {
+      "en": "Next.js",
+      "fa": "نکست‌جی‌اس",
+      "en_plain": "React framework for production web apps"
+    },
+    {
+      "en": "Nuxt",
+      "fa": "نکست",
+      "en_plain": "Vue.js framework, equivalent of Next.js for Vue"
+    },
+    {
+      "en": "Motion One",
+      "fa": "موشن وان",
+      "en_plain": "Lightweight animation library (vanilla, no framework needed)"
+    },
+    {
+      "en": "SplitText",
+      "fa": "تکست‌اسپلیت",
+      "en_plain": "GSAP plugin: animate individual characters/words in text"
+    },
+    {
+      "en": "Lenis",
+      "fa": "لنیز",
+      "en_plain": "Smooth scroll library for buttery scrolling experience"
+    },
+    {
+      "en": "Command Palette",
+      "fa": "پالت فرمان",
+      "en_plain": "Keyboard-driven quick-access menu (like Cmd+K)"
+    },
+    {
+      "en": "Raymarching",
+      "fa": "ری‌مارچینگ",
+      "en_plain": "GPU technique for rendering 3D scenes from mathematical functions"
+    },
+    {
+      "en": "Instancing",
+      "fa": "ایستنسینگ",
+      "en_plain": "GPU optimization: render many objects with one draw call"
+    }
+  ]
+}

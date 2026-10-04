@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Persian Glossary — The Catalog</title>
+<link rel="stylesheet" href="site.css">
+<style>
+.glossary{max-width:72rem;margin:3rem auto;padding:0 2rem}
+.glossary__title{font-size:1.8rem;margin-bottom:1rem;color:var(--accent)}
+.glossary__desc{color:var(--muted);margin-bottom:2rem;font-size:.95rem;line-height:1.6}
+.glossary__search{margin-bottom:2rem}
+.glossary__search input{width:100%;padding:.75rem 1rem;font-size:1rem;background:var(--muted);color:var(--foreground);border:1px solid var(--border);border-radius:8px;outline:none}
+.glossary__search input:focus{border-color:var(--accent)}
+.glossary__grid{display:grid;gap:1rem}
+.glossary__entry{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;transition:background .15s}
+.glossary__entry:hover{background:color-mix(in srgb,var(--card) 90%,var(--accent))}
+.glossary__en{font-weight:700;font-size:1.05rem;margin-bottom:.25rem;color:var(--accent)}
+.glossary__fa{font-size:1.2rem;margin-bottom:.5rem;color:var(--foreground);direction:rtl;text-align:right}
+.glossary__plain{color:var(--muted);font-size:.9rem;line-height:1.5}
+.glossary__count{color:var(--muted);font-size:.85rem;margin-bottom:1.5rem}
+@media(max-width:640px){.glossary{padding:0 1rem}.glossary__entry{padding:1rem}}
+</style>
+</head>
+<body>
+<header class="masthead__bar" style="margin-bottom:2rem">
+  <a class="brand" href="index.html"><span class="brand__dot" aria-hidden="true"></span><span class="brand__name">The Catalog</span></a>
+  <span style="margin-left:auto;color:var(--muted);font-size:.85rem">
+    <a href="index.html" style="color:inherit">← Back to catalog</a>
+  </span>
+</header>
+<main class="glossary" id="glossary">
+  <h1 class="glossary__title">📖 Persian Glossary</h1>
+  <p class="glossary__desc">
+    Customer-friendly Persian terms alongside English technical names and plain-language explanations.
+    Every term maps a visual concept to the right label for Persian-speaking clients and stakeholders.
+  </p>
+  <p class="glossary__count" id="glossary-count"></p>
+  <div class="glossary__search">
+    <input type="search" id="glossary-search" placeholder="Search by English or Persian term…" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="glossary__grid" id="glossary-grid"></div>
+</main>
+<script>
+const glossary = {
+  name: "Persian Glossary — Design Catalog Terms",
+  locale: "fa",
+  description: "Customer-friendly Persian terms alongside English technical names and plain-language explanations.",
+  terms: [
+    {"en":"Hero Section","fa":"بخش قهرمان","en_plain":"The prominent top section of a page that captures attention"},
+    {"en":"Navigation","fa":"ناوبری","en_plain":"The menu system that lets users move between pages"},
+    {"en":"Commerce","fa":"تجارت الکترونیک","en_plain":"Online shopping features: storefront, product, cart, checkout"},
+    {"en":"Site Structure","fa":"ساختار سایت","en_plain":"Multi-page layouts: news, article, sections"},
+    {"en":"Loader/Transition","fa":"لودر/انیمیشن انتقال","en_plain":"Loading states and transition animations between pages"},
+    {"en":"Dashboard","fa":"داشبورد","en_plain":"Data visualization and monitoring interfaces"},
+    {"en":"WebGL","fa":"وب‌جی‌ال","en_plain":"3D graphics in the browser using GPU"},
+    
+    {"en":"GSAP","fa":"جی‌اس‌ای‌پی","en_plain":"Professional animation library for scroll and timeline effects"},
+    {"en":"ScrollTrigger","fa":"اسکرول‌تریگر","en_plain":"Animations that trigger based on scroll position"},
+    {"en":"Shader","fa":"شیدر","en_plain":"GPU programs that render visual effects like particles, gradients"},
+    {"en":"Glassmorphism","fa":"شیشه‌ای","en_plain":"Frosted glass visual style with transparency and blur"},
+    {"en":"Brutalism","fa":"بروتالیسم","en_plain":"Bold, raw design with strong typography and high contrast"},
+    {"en":"Editorial","fa":"اخباری/مجله‌ای","en_plain":"Magazine-style layout with refined typography"},
+    {"en":"Cyberpunk","fa":"سایبرپانک","en_plain":"Futuristic dark aesthetic with neon and glitch effects"},
+    {"en":"Particle","fa":"ذرات","en_plain":"Floating/dancing particle visual effects"},
+    {"en":"Responsive","fa":"واکنش‌گرا","en_plain":"Layout adapts to different screen sizes"},
+    {"en":"Accessibility (A11y)","fa":"دسترس‌پذیری","en_plain":"Features that make the site usable for people with disabilities"},
+    {"en":"Modal/Dialog","fa":"مدال/دیالوگ","en_plain":"Popup overlays for important interactions"},
+    {"en":"Toast","fa":"توست","en_plain":"Brief notification messages that appear and auto-dismiss"},
+    {"en":"Parallax","fa":"پارالاکس","en_plain":"Background moves at different speed than foreground for depth"},
+    {"en":"Design Token","fa":"توکن طراحی","en_plain":"Named values (colors, spacing, typography) that ensure consistency"},
+    {"en":"Stack","fa":"پشته","en_plain":"The combination of technologies used (e.g., React + Three.js)"},
+    {"en":"Vanilla HTML5","fa":"اچ‌تی‌ام‌ال۵ ساده","en_plain":"No framework — pure HTML/CSS/JS for lightweight demos"},
+    {"en":"Next.js","fa":"نکست‌جی‌اس","en_plain":"React framework for production web apps"},
+    {"en":"Nuxt","fa":"نکست","en_plain":"Vue.js framework, equivalent of Next.js for Vue"},
+    {"en":"Motion One","fa":"موشن وان","en_plain":"Lightweight animation library (vanilla, no framework needed)"},
+    {"en":"SplitText","fa":"تکست‌اسپلیت","en_plain":"GSAP plugin: animate individual characters/words in text"},
+    {"en":"Lenis","fa":"لنیز","en_plain":"Smooth scroll library for buttery scrolling experience"},
+    {"en":"Command Palette","fa":"پالت فرمان","en_plain":"Keyboard-driven quick-access menu (like Cmd+K)"},
+    {"en":"Raymarching","fa":"ری‌مارچینگ","en_plain":"GPU technique for rendering 3D scenes from mathematical functions"},
+    {"en":"Instancing","fa":"ایستنسینگ","en_plain":"GPU optimization: render many objects with one draw call"}
+  ]
+};
+
+const grid = document.getElementById('glossary-grid');
+const search = document.getElementById('glossary-search');
+const count = document.getElementById('glossary-count');
+count.textContent = `${glossary.terms.length} terms`;
+
+function render(filter = '') {
+  const f = filter.toLowerCase().trim();
+  const filtered = glossary.terms.filter(t =>
+    !f || t.en.toLowerCase().includes(f) || t.fa.includes(f) || t.en_plain.toLowerCase().includes(f)
+  );
+  count.textContent = `${filtered.length} of ${glossary.terms.length} terms`;
+  grid.innerHTML = filtered.map(t => `
+    <article class="glossary__entry">
+      <div class="glossary__en">${t.en}</div>
+      <div class="glossary__fa">${t.fa}</div>
+      <div class="glossary__plain">${t.en_plain}</div>
+    </article>
+  `).join('');
+}
+
+search.addEventListener('input', e => render(e.target.value));
+render();
+</script>
+</body>
+</html>
