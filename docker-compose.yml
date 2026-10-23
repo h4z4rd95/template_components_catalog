@@ -3,7 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: catalog3-app
+    container_name: compose-generate-digital-card-egspvu
     restart: unless-stopped
     expose:
       - "80"
