@@ -19,7 +19,7 @@ jobs:
           COMPOSE_ID: 9zOqQQInQF4oI6ywZgmgb
         run: |
           for i in 1 2 3; do
-            code=$(curl -s -o /tmp/resp.json -w "%{{http_code}}" -X POST \
+            code=$(curl -s -o /tmp/resp.json -w "%{http_code}" -X POST \
               "https://dokploy.ppsj.ir/api/compose.deploy" \
               -H "x-api-key: ${{ secrets.DOKPLOY_API_KEY }}" \
               -H "Content-Type: application/json" \
