@@ -1,0 +1,30 @@
+name: Dokploy Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Trigger Dokploy auto-deploy
+        env:
+          DOKPLOY_URL: https://dokploy.ppsj.ir
+          DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
+          DOKPLOY_APP_ID: "Ifzv0840cZGFdgVdNUr4Q"
+        run: |
+          for i in 1 2 3; do
+            if curl -sS -f -m 90 -X POST "$DOKPLOY_URL/api/application.deploy" \
+                -H "Content-Type: application/json" \
+                -H "x-api-key: $DOKPLOY_API_KEY" \
+                -d "{\"applicationId\": \"$DOKPLOY_APP_ID\"}"; then
+              echo "Dokploy deploy triggered for $DOKPLOY_APP_ID"
+              exit 0
+            fi
+            echo "Attempt $i failed, retrying in 30s..."
+            sleep 30
+          done
+          echo "::error::Could not trigger Dokploy deploy"
+          exit 1
