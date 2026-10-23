@@ -1,0 +1,8 @@
+**/node_modules
+**/dist
+**/out
+**/.next
+**/.nuxt
+**/.output
+.git
+*.log
