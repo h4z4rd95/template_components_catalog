@@ -1,30 +1,35 @@
-name: Dokploy Deploy
+name: dokploy-deploy
 
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: dokploy-deploy
+  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 10
     steps:
-      - name: Trigger Dokploy auto-deploy
+      - name: Trigger Dokploy compose deploy
         env:
-          DOKPLOY_URL: https://dokploy.ppsj.ir
-          DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
-          DOKPLOY_APP_ID: "Ifzv0840cZGFdgVdNUr4Q"
+          COMPOSE_ID: 9zOqQQInQF4oI6ywZgmgb
         run: |
           for i in 1 2 3; do
-            if curl -sS -f -m 90 -X POST "$DOKPLOY_URL/api/application.deploy" \
-                -H "Content-Type: application/json" \
-                -H "x-api-key: $DOKPLOY_API_KEY" \
-                -d "{\"applicationId\": \"$DOKPLOY_APP_ID\"}"; then
-              echo "Dokploy deploy triggered for $DOKPLOY_APP_ID"
+            code=$(curl -s -o /tmp/resp.json -w "%{{http_code}}" -X POST \
+              "https://dokploy.ppsj.ir/api/compose.deploy" \
+              -H "x-api-key: ${{ secrets.DOKPLOY_API_KEY }}" \
+              -H "Content-Type: application/json" \
+              -d "{\"composeId\":\"$COMPOSE_ID\"}")
+            if [ "$code" = "200" ]; then
+              echo "Dokploy compose deploy triggered for $COMPOSE_ID"
               exit 0
             fi
-            echo "Attempt $i failed, retrying in 30s..."
+            echo "attempt $i: HTTP $code -> $(cat /tmp/resp.json)"
             sleep 30
           done
-          echo "::error::Could not trigger Dokploy deploy"
+          echo "Dokploy deploy trigger failed after 3 attempts"
           exit 1
